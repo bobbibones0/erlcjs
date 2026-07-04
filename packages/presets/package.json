@@ -1,10 +1,11 @@
 {
   "name": "@erlcjs/presets",
-  "description": "presets",
+  "description": "Pre-built moderation, punishment, and utility presets for @erlcjs/core",
   "version": "0.1.0",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "keywords": [ "erlc", "roblox", "prc", "api" ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,7 +13,7 @@
       "require": "./dist/index.cjs"
     }
   },
-  "homepage": "erlcjs.xyz",
+  "homepage": "https://erlcjs.xyz",
   "files": [
     "dist"
   ],
