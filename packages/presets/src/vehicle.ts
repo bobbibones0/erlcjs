@@ -11,6 +11,7 @@ import { type Livery } from './types/index.js';
  * client.on(ERLCEvents.vehicleAdd, banVehicles([ Vehicles.STRUGATTI_ETTORE_2020 ], VehiclePunishments.warnThenKick()))
  * ```
  * @returns Callback function to pass into client event.
+ * @public
  */
 export function banVehicles(vehicles: (Vehicles | string)[], action: (vehicle: Vehicle) => void, allowlist: (number | PlayerPermission)[] = []): (vehicle: Vehicle) => void {
     return (vehicle: Vehicle) => {
@@ -31,6 +32,7 @@ export function banVehicles(vehicles: (Vehicles | string)[], action: (vehicle: V
  * client.on(ERLCEvents.vehicleAdd, banLiveries([ 'Staff' ], LiveryPunishments.warnThenKick(), [ PlayerPermission.Mod, PlayerPermission.Administrator, PlayerPermission.Owner ]))
  * ```
  * @returns Callback function to pass into the client event.
+ * @public
  */
 export function banLiveries(liveries: (Livery | string)[], action: (vehicle: Vehicle) => void, allowlist: (number | PlayerPermission)[] = []) {
     return (vehicle: Vehicle) => {
@@ -42,7 +44,7 @@ export function banLiveries(liveries: (Livery | string)[], action: (vehicle: Veh
                     action(vehicle);
                 }
             } else if (livery.livery === vehicle.texture) {
-                if (livery.vehicle === vehicle.texture || !livery.vehicle) {
+                if (livery.vehicle === vehicle.name || !livery.vehicle) {
                     action(vehicle);
                 }
             }
@@ -60,6 +62,7 @@ export function banLiveries(liveries: (Livery | string)[], action: (vehicle: Veh
  *   VehiclePunishments.warnThenKick(15, true, 'This vehicle is not allowed')
  * ))
  * ```
+ * @public
  */
 export class VehiclePunishments {
     /**
@@ -81,7 +84,7 @@ export class VehiclePunishments {
             setTimeout(async () => {
                 await vehicle.client.waitFor(ERLCEvents.poll, 5000);
                 if (
-                    vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId &&
+                    vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
                     vehicle.client.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
                 )
                     return;
@@ -90,16 +93,16 @@ export class VehiclePunishments {
                     setTimeout(async () => {
                         await vehicle.client.waitFor(ERLCEvents.poll, 5000);
                         if (
-                            vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId &&
+                            vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
                             vehicle.client.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
                         )
                             return;
                         if (vehicle.owner.permission === 'Normal') vehicle.owner.kick('Failure to change from a banned vehicle.')
-                    }, delay)
+                    }, delay * 1000)
                 } else if (vehicle.owner.permission === 'Normal') {
                     vehicle.owner.kick('Failure to change from a banned vehicle.')
                 }
-            }, delay)
+            }, delay * 1000)
         }
     }
 }
@@ -115,6 +118,7 @@ export class VehiclePunishments {
  *   [PlayerPermission.Mod, PlayerPermission.Administrator]
  * ))
  * ```
+ * @public
  */
 export class LiveryPunishments {
     /**
@@ -136,7 +140,7 @@ export class LiveryPunishments {
             setTimeout(async () => {
                 await vehicle.client.waitFor(ERLCEvents.poll, 5000);
                 if (
-                    vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId &&
+                    vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
                     vehicle.client.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
                 )
                     return;
@@ -145,16 +149,16 @@ export class LiveryPunishments {
                     setTimeout(async () => {
                         await vehicle.client.waitFor(ERLCEvents.poll, 5000);
                         if (
-                            vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId &&
+                            vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
                             vehicle.client.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
                         )
                             return;
                         if (vehicle.owner.permission === 'Normal') vehicle.owner.kick('Failure to change from a banned livery.')
-                    }, delay)
+                    }, delay * 1000)
                 } else if (vehicle.owner.permission === 'Normal') {
                     vehicle.owner.kick('Failure to change from a banned livery.')
                 }
-            }, delay)
+            }, delay * 1000)
         }
     }
 }

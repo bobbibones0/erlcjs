@@ -8,6 +8,7 @@ import { Player } from "@erlcjs/core";
  * client.on(ERLCEvents.playerJoin, welcomePlayer())
  * ```
  * @returns Callback function to pass into client event.
+ * @public
  */
 export function welcomePlayer(message?: string): (player: Player) => void {
     return (player: Player) => {
@@ -23,11 +24,12 @@ export function welcomePlayer(message?: string): (player: Player) => void {
  * client.on(ERLCEvents.playerJoin, banKickRejoin())
  * ```
  * @returns Callback function to pass into client event.
+ * @public
  */
-export function banKickRejoin(timespan: number = 30000): (player: Player) => void {
+export function banKickRejoin(timespan: number = 1800): (player: Player) => void {
     return (player: Player) => {
-        const timestamp = Date.now() / 1000 -timespan
-        const kicks = player.client.commandLogs.cache.filter(v => v.timestamp > timestamp  && (v.command.startsWith(`:kick ${player.username}`) || v.command.startsWith(`:kick ${player.id}`)));
+        const timestamp = Date.now() / 1000 - timespan
+        const kicks = player.client.commandLogs.cache.filter(v => v.timestamp > timestamp && (v.command.startsWith(`:kick ${player.username}`) || v.command.startsWith(`:kick ${player.id}`)));
         if (kicks.size >= 1) player.ban(`Rejoin within ${timespan} seconds of a kick.`)
     }
 }

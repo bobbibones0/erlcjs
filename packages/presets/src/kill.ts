@@ -15,8 +15,9 @@ import type { KillLog, PlayerPermission } from "@erlcjs/core";
  * client.on(ERLCEvents.Kill, RDM((log) => log.killer.kick(), [ PlayerPermission.Administrator, PlayerPermission.Owner ], 5, 30));
  * ```
  * @returns - Callback function to pass into client event.
+ * @public
  */
-export function RDM(action: (log: KillLog) => void, allowlist: (number | PlayerPermission)[] = [], minKills: number = 4, timespan: number = 30) {
+export function RDM(action: (log: KillLog) => void, allowlist: (number | PlayerPermission)[] = [], minKills: number = 4, timespan: number = 30): (log: KillLog) => void {
     return (log: KillLog) => {
         if (allowlist.includes(log.killerId) || allowlist.includes(log.killer.permission as any)) return;
         const time = Date.now() / 1000 - timespan;
