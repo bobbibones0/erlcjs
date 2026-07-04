@@ -16,7 +16,7 @@ import { CommandLog, PlayerPermission } from "@erlcjs/core";
  * ```
  * @returns - Callback function to pass into client event.
  */
-export function banCommand(commands: string | string[], action: (log: CommandLog) => void, startsWith: boolean = true, allowlist?: (number | PlayerPermission)[]) {
+export function banCommand(commands: string | string[], action: (log: CommandLog) => void, startsWith: boolean = true, allowlist?: (number | PlayerPermission)[]): (log: CommandLog) => void {
     if (typeof commands === 'string') commands = [commands];
     return (log: CommandLog) => {
         if (allowlist) {

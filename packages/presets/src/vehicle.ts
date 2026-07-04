@@ -14,7 +14,7 @@ import { type Livery } from './types/index.js';
  */
 export function banVehicles(vehicles: (Vehicles | string)[], action: (vehicle: Vehicle) => void, allowlist: (number | PlayerPermission)[] = []): (vehicle: Vehicle) => void {
     return (vehicle: Vehicle) => {
-        if (allowlist.includes(vehicle.ownerId) || allowlist.includes(vehicle.owner.permission as any))
+        if (allowlist.includes(vehicle.ownerId) || allowlist.includes(vehicle.owner.permission as any)) return;
         if (vehicles.includes(vehicle.name)) {
             action(vehicle)
         }
@@ -35,7 +35,7 @@ export function banVehicles(vehicles: (Vehicles | string)[], action: (vehicle: V
 export function banLiveries(liveries: (Livery | string)[], action: (vehicle: Vehicle) => void, allowlist: (number | PlayerPermission)[] = []) {
     return (vehicle: Vehicle) => {
         if (!vehicle.texture) return;
-        if (allowlist.includes(vehicle.ownerId) || allowlist.includes(vehicle.owner.permission as any))
+        if (allowlist.includes(vehicle.ownerId) || allowlist.includes(vehicle.owner.permission as any)) return;
         for (const livery of liveries) {
             if (typeof livery === 'string') {
                 if (livery === vehicle.texture) {
