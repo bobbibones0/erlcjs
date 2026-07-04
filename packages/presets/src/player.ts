@@ -15,6 +15,15 @@ export function welcomePlayer(message?: string): (player: Player) => void {
     }
 }
 
+/**
+ * Bans player that rejoin within a set number of seconds after a kick.
+ * @param timespan - The number of seconds which they can rejoin after, default 1800 (30 minutes).
+ * @example
+ * ```typescript
+ * client.on(ERLCEvents.playerJoin, banKickRejoin())
+ * ```
+ * @returns Callback function to pass into client event.
+ */
 export function banKickRejoin(timespan: number = 30000): (player: Player) => void {
     return (player: Player) => {
         const timestamp = Date.now() / 1000 -timespan
