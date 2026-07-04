@@ -50,7 +50,31 @@ export function banLiveries(liveries: (Livery | string)[], action: (vehicle: Veh
     }
 }
 
+/**
+ * Provides punishment actions for banned vehicles.
+ * @class VehiclePunishments
+ * @example
+ * ```typescript
+ * client.on(ERLCEvents.vehicleAdd, banVehicles(
+ *   [Vehicles.BUGATTI_VEYRON],
+ *   VehiclePunishments.warnThenKick(15, true, 'This vehicle is not allowed')
+ * ))
+ * ```
+ */
 export class VehiclePunishments {
+    /**
+     * Warns a player and kicks them if they don't change vehicles within the specified delay.
+     * @static
+     * @param {number} [delay=10] - Time in seconds before kicking the player.
+     * @param {boolean} [warning=true] - Whether to send a warning message before kicking.
+     * @param {string} [message] - Custom message to send to the player. Defaults to a generic message.
+     * @returns {(vehicle: Vehicle) => void} A callback function that handles the punishment logic.
+     * @example
+     * ```typescript
+     * const punishment = VehiclePunishments.warnThenKick(15, true, 'Please change your vehicle');
+     * client.on(ERLCEvents.vehicleAdd, banVehicles([Vehicles.BUGATTI_VEYRON], punishment))
+     * ```
+     */
     public static warnThenKick(delay: number = 10, warning: boolean = true, message?: string ): (vehicle: Vehicle) => void {
         return (vehicle: Vehicle) => {
             vehicle.owner.message(message ?? 'The vehicle you are using is restricted. Please change it.');
@@ -80,7 +104,32 @@ export class VehiclePunishments {
     }
 }
 
+/**
+ * Provides punishment actions for banned liveries.
+ * @class LiveryPunishments
+ * @example
+ * ```typescript
+ * client.on(ERLCEvents.vehicleAdd, banLiveries(
+ *   ['Staff'],
+ *   LiveryPunishments.warnThenKick(10, true, 'This livery is restricted'),
+ *   [PlayerPermission.Mod, PlayerPermission.Administrator]
+ * ))
+ * ```
+ */
 export class LiveryPunishments {
+    /**
+     * Warns a player and kicks them if they don't change their livery within the specified delay.
+     * @static
+     * @param {number} [delay=10] - Time in seconds before kicking the player.
+     * @param {boolean} [warning=true] - Whether to send a warning message before kicking.
+     * @param {string} [message] - Custom message to send to the player. Defaults to a generic message.
+     * @returns {(vehicle: Vehicle) => void} A callback function that handles the punishment logic.
+     * @example
+     * ```typescript
+     * const punishment = LiveryPunishments.warnThenKick(15, true, 'Change your livery');
+     * client.on(ERLCEvents.vehicleAdd, banLiveries(['Staff'], punishment, [PlayerPermission.Mod]))
+     * ```
+     */
     public static warnThenKick(delay: number = 10, warning: boolean = true, message?: string): (vehicle: Vehicle) => void {
         return (vehicle: Vehicle) => {
             vehicle.owner.message(message ?? 'The livery you are using is restricted. Please change it.');
