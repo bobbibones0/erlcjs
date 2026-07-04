@@ -11,3 +11,9 @@ export function autoAnnouncement(client: Client, message: string, interval: numb
         client.commands.execute(`:m ${message}`)
     }, interval)
 }
+
+export function autoCommand(client: Client, command: string, interval: number = 120000) {
+    return setInterval(() => {
+        client.commands.execute(command)
+    }, interval)
+}
