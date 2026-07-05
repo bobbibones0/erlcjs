@@ -5,6 +5,7 @@ import type { MapType } from "./enums";
  * @param userIds - The userIds to get the headshots for.
  * @param size - The image size, defaults to 60x60px.
  * @returns Map of all player headshots that were successfully returned by the Roblox API.
+ * @public
  */
 export async function fetchRobloxHeadshots(userIds: number[], size: string = '60x60'): Promise<Map<number, string>> {
     const query = new URLSearchParams({
@@ -31,6 +32,7 @@ export async function fetchRobloxHeadshots(userIds: number[], size: string = '60
  * Fetches the map from the ER:LC API.
  * @param map - The map type to fetch.
  * @returns Array Buffer of the map.
+ * @public
  */
 export async function fetchMap(map: MapType): Promise<ArrayBuffer> {
     const response = await fetch(`https://api.erlc.gg/maps/${map}`);

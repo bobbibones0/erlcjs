@@ -1,5 +1,6 @@
 /**
  * Enum of maps provided by ER:LC.
+ * @public
  */
 export enum MapType {
     /**

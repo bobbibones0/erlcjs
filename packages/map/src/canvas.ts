@@ -5,6 +5,7 @@ import sharp from "sharp";
 
 /**
  * Map Options to customise the map generation.
+ * @public
  */
 export interface MapOptions {
     /**
@@ -134,6 +135,7 @@ function createEmergencyCallSVG(size: number, color: string): string {
  * Renders a map using the specified options are returns it as a buffer.
  * @param options - What to include in the map.
  * @returns Image Buffer of the map.
+ * @public
  */
 export async function drawMap(options: MapOptions) {
     const { players: playersInput, emergencyCalls: emergencyCallsInput, map, size: sizeOption, showModCalls: showModCallsInput } = options;
