@@ -1,4 +1,5 @@
 import { CommandLog, PlayerPermission } from "@erlcjs/core";
+import type { Allowlist } from "./types";
 
 /**
  * Ban commands for specific users.
@@ -15,12 +16,15 @@ import { CommandLog, PlayerPermission } from "@erlcjs/core";
  * client.on(ERLCEvents.Command, banCommand([':admin', ':mod'], CommandPunishments.removePermissions(), true, [ PlayerPermission.Owner ] ));
  * ```
  * @returns - Callback function to pass into client event.
+ * @public
  */
-export function banCommand(commands: string | string[], action: (log: CommandLog) => void, startsWith: boolean = true, allowlist?: (number | PlayerPermission)[]) {
+export function banCommand(commands: string | string[], action: (log: CommandLog) => void, startsWith: boolean = true, allowlist: Allowlist = []): (log: CommandLog) => void {
     if (typeof commands === 'string') commands = [commands];
     return (log: CommandLog) => {
-        if (allowlist) {
-            for (const allow of allowlist) {
+        let currentAllowlist = allowlist as (number | PlayerPermission)[];
+        if (typeof allowlist === 'function') currentAllowlist = allowlist();
+        if (currentAllowlist && currentAllowlist.length > 0) {
+            for (const allow of currentAllowlist) {
                 if (typeof allow === 'string') {
                     if (log.player.permission === allow) return;
                 } else {
@@ -39,7 +43,15 @@ export function banCommand(commands: string | string[], action: (log: CommandLog
     }
 }
 
+/**
+ * Provides punishment actions for banned commands.
+ * @public
+ */
 export class CommandPunishments {
+    /**
+     * Removes admin/mod permissions from the player.
+     * @returns A callback that removes permissions from the command sender.
+     */
     public static removePermissions(): (log: CommandLog) => void {
         return (log: CommandLog) => {
             if (log.player.permission === 'Server Administrator') log.player.unadmin();
@@ -47,6 +59,10 @@ export class CommandPunishments {
         }
     }
 
+    /**
+     * Removes permissions and kicks the player.
+     * @returns A callback that kicks the command sender.
+     */
     public static kick(): (log: CommandLog) => void {
         return (log: CommandLog) => {
             this.removePermissions()(log);
@@ -54,6 +70,10 @@ export class CommandPunishments {
         }
     }
 
+    /**
+     * Removes permissions and bans the player.
+     * @returns A callback that bans the command sender.
+     */
     public static ban(): (log: CommandLog) => void {
         return (log: CommandLog) => {
             this.removePermissions()(log);
