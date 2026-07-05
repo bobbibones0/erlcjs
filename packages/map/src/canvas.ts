@@ -3,6 +3,32 @@ import { MapType } from "./enums";
 import { fetchMap, fetchRobloxHeadshots } from "./util";
 import sharp from "sharp";
 
+/**
+ * Map Options to customise the map generation.
+ */
+export interface MapOptions {
+    /**
+     * Player image size, defaults to 60.
+     */
+    size?: 48 | 50 | 60 | 75 | 100 | 110 | 150 | 180;
+    /**
+     * Players to show on the map.
+     */
+    players?: PlayerManager | Player[];
+    /**
+     * Emergency calls to show on the map.
+     */
+    emergencyCalls?: EmergencyCallManager | EmergencyCall[];
+    /**
+     * The map used in the background, can use a preset map from ER:LC or a custom map.
+     */
+    map: MapType | string | Buffer | ArrayBuffer;
+    /**
+     * Whether to show mod calls on the map.
+     */
+    showModCalls?: boolean;
+}
+
 const TEAM_COLORS: Record<string, string> = {
     'Police': '#2563eb',
     'Fire': '#e11d2a',
@@ -21,14 +47,6 @@ function shadeColor(hex: string, percent: number): string {
     const g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + amt));
     const b = Math.min(255, Math.max(0, (num & 0xff) + amt));
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
-}
-
-export interface MapOptions {
-    size?: 48 | 50 | 60 | 75 | 100 | 110 | 150 | 180;
-    players?: PlayerManager | Player[];
-    emergencyCalls?: EmergencyCallManager | EmergencyCall[];
-    map: MapType | string | Buffer | ArrayBuffer;
-    showModCalls?: boolean;
 }
 
 function createPlayerPinSVG(size: number, color: string): string {
@@ -112,6 +130,11 @@ function createEmergencyCallSVG(size: number, color: string): string {
 </svg>`;
 }
 
+/**
+ * Renders a map using the specified options are returns it as a buffer.
+ * @param options - What to include in the map.
+ * @returns Image Buffer of the map.
+ */
 export async function drawMap(options: MapOptions) {
     const { players: playersInput, emergencyCalls: emergencyCallsInput, map, size: sizeOption, showModCalls: showModCallsInput } = options;
     const size = sizeOption ?? 60;
