@@ -54,6 +54,12 @@ export default defineConfig({
                                     { label: 'Getting Started', slug: 'guides/presets/getting-started' },
                                 ],
                             },
+                            { 
+                                label: 'Map Generation', 
+                                items: [
+                                    { label: 'Getting Started', slug: 'guides/map/getting-started' },
+                                ],
+                            },
                         ],
                     },
                     {
