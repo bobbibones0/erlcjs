@@ -191,7 +191,7 @@ export class Client extends EventEmitter<ClientEvents> {
             this.gateway.listen();
         }
 
-        if (options.polling === true || options.polling?.enabled === true) {
+        if (options.polling === true || (options.polling?.enabled === true && !options.polling.autoStartPolling)) {
             (async () => {
                 await this.beginPolling(options.polling === true ? undefined : options.polling?.pollingRateMs);
             })();

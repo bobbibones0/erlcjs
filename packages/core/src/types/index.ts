@@ -51,6 +51,10 @@ export interface ClientOptions {
          * The rate to poll the ER:LC API endpoints. Minimum value of 500.
          */
         pollingRateMs?: number;
+        /**
+         * Automatically start polling after client creation. Defaults to true.
+         */
+        autoStartPolling?: boolean;
     } | true;
     maxCacheSize?: {
         killLog?: number;
