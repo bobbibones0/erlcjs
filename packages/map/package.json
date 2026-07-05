@@ -1,15 +1,16 @@
 {
   "name": "@erlcjs/map",
-  "description": "map",
-  "version": "0.1.0",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "description": "Generates a map using @erlcjs/core.",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "keywords": [ "erlc", "roblox", "prc", "api" ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   },
   "homepage": "https://erlcjs.xyz",
