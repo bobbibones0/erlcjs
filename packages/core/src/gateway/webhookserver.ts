@@ -62,7 +62,7 @@ export class WebhookServer {
                         }
 
                         const payload = JSON.parse(rawBody.toString('utf-8'));
-                        this.handleGatewayEvent(payload);
+                        this.handleGatewayEvent(payload).catch((err) => this.client.emit('error', err));
 
                         res.writeHead(200, { 'Content-Type': 'application/json' });
                         res.end(JSON.stringify({ received: true }));
@@ -100,8 +100,8 @@ export class WebhookServer {
                 this.client.emergencyCalls.removeCall(event.data);
             } else if (event.event === 'CustomCommand') {
                 let command = event.data?.command?.trim();
-                if (command.startsWith(';')) command = command.slice(1);
                 if (!command) continue;
+                if (command.startsWith(';')) command = command.slice(1);
                 const args = event.data?.argument ? event.data.argument.trim().split(' ') : [];
                 let player = this.client.players.cache.get(Number(event.origin));
                 if (!player) {
