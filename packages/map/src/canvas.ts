@@ -28,7 +28,7 @@ export interface MapOptions {
     players?: PlayerManager | Player[];
     emergencyCalls?: EmergencyCallManager | EmergencyCall[];
     map: MapType | string | Buffer | ArrayBuffer;
-    showModCalls: boolean;
+    showModCalls?: boolean;
 }
 
 function createPlayerPinSVG(size: number, color: string): string {
