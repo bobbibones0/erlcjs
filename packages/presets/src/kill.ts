@@ -1,4 +1,5 @@
 import type { KillLog, PlayerPermission } from "@erlcjs/core";
+import type { Allowlist } from "./types";
 
 /**
  * Fires an action if a player reaches a kill threshold in a specific timespan.
@@ -17,9 +18,11 @@ import type { KillLog, PlayerPermission } from "@erlcjs/core";
  * @returns - Callback function to pass into client event.
  * @public
  */
-export function RDM(action: (log: KillLog) => void, allowlist: (number | PlayerPermission)[] = [], minKills: number = 4, timespan: number = 30): (log: KillLog) => void {
+export function RDM(action: (log: KillLog) => void, allowlist: Allowlist = [], minKills: number = 4, timespan: number = 30): (log: KillLog) => void {
     return (log: KillLog) => {
-        if (allowlist.includes(log.killerId) || allowlist.includes(log.killer.permission as any)) return;
+        let currentAllowlist = allowlist as (number | PlayerPermission)[];
+        if (typeof allowlist === 'function') currentAllowlist = allowlist();
+        if (currentAllowlist.includes(log.killerId) || currentAllowlist.includes(log.killer.permission as any)) return;
         const time = Date.now() / 1000 - timespan;
         const kills = log.killer.kills;
         const filterKills = kills.filter(k => k.timestamp >= time);

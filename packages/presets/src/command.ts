@@ -1,4 +1,5 @@
 import { CommandLog, PlayerPermission } from "@erlcjs/core";
+import type { Allowlist } from "./types";
 
 /**
  * Ban commands for specific users.
@@ -17,11 +18,13 @@ import { CommandLog, PlayerPermission } from "@erlcjs/core";
  * @returns - Callback function to pass into client event.
  * @public
  */
-export function banCommand(commands: string | string[], action: (log: CommandLog) => void, startsWith: boolean = true, allowlist?: (number | PlayerPermission)[]): (log: CommandLog) => void {
+export function banCommand(commands: string | string[], action: (log: CommandLog) => void, startsWith: boolean = true, allowlist: Allowlist = []): (log: CommandLog) => void {
     if (typeof commands === 'string') commands = [commands];
     return (log: CommandLog) => {
-        if (allowlist) {
-            for (const allow of allowlist) {
+        let currentAllowlist = allowlist as (number | PlayerPermission)[];
+        if (typeof allowlist === 'function') currentAllowlist = allowlist();
+        if (currentAllowlist && currentAllowlist.length > 0) {
+            for (const allow of currentAllowlist) {
                 if (typeof allow === 'string') {
                     if (log.player.permission === allow) return;
                 } else {

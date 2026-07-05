@@ -1,5 +1,5 @@
 import { Vehicle, ERLCEvents, Vehicles, PlayerPermission } from '@erlcjs/core';
-import { type Livery } from './types/index.js';
+import { type Allowlist, type Livery } from './types/index.js';
 
 /**
  * Bans vehicles for everyone except specific users.
@@ -13,9 +13,11 @@ import { type Livery } from './types/index.js';
  * @returns Callback function to pass into client event.
  * @public
  */
-export function banVehicles(vehicles: (Vehicles | string)[], action: (vehicle: Vehicle) => void, allowlist: (number | PlayerPermission)[] = []): (vehicle: Vehicle) => void {
+export function banVehicles(vehicles: (Vehicles | string)[], action: (vehicle: Vehicle) => void, allowlist: Allowlist = []): (vehicle: Vehicle) => void {
     return (vehicle: Vehicle) => {
-        if (allowlist.includes(vehicle.ownerId) || allowlist.includes(vehicle.owner.permission as any)) return;
+        let currentAllowlist = allowlist as (number | PlayerPermission)[];
+        if (typeof allowlist === 'function') currentAllowlist = allowlist();
+        if (currentAllowlist.includes(vehicle.ownerId) || currentAllowlist.includes(vehicle.owner.permission as any)) return;
         if (vehicles.includes(vehicle.name)) {
             action(vehicle)
         }
@@ -34,10 +36,12 @@ export function banVehicles(vehicles: (Vehicles | string)[], action: (vehicle: V
  * @returns Callback function to pass into the client event.
  * @public
  */
-export function banLiveries(liveries: (Livery | string)[], action: (vehicle: Vehicle) => void, allowlist: (number | PlayerPermission)[] = []) {
+export function banLiveries(liveries: (Livery | string)[], action: (vehicle: Vehicle) => void, allowlist: Allowlist = []) {
     return (vehicle: Vehicle) => {
         if (!vehicle.texture) return;
-        if (allowlist.includes(vehicle.ownerId) || allowlist.includes(vehicle.owner.permission as any)) return;
+        let currentAllowlist = allowlist as (number | PlayerPermission)[];
+        if (typeof allowlist === 'function') currentAllowlist = allowlist();
+        if (currentAllowlist.includes(vehicle.ownerId) || currentAllowlist.includes(vehicle.owner.permission as any)) return;
         for (const livery of liveries) {
             if (typeof livery === 'string') {
                 if (livery === vehicle.texture) {
