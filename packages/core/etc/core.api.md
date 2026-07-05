@@ -49,6 +49,7 @@ export interface ClientEvents {
     error: [error: unknown];
     [ERLCEvents.kill]: [kill: KillLog];
     [ERLCEvents.modCall]: [call: ModCall];
+    [ERLCEvents.modCallAnswered]: [call: ModCall];
     [ERLCEvents.playerJoin]: [player: Player];
     [ERLCEvents.playerLeave]: [player: Player];
     [ERLCEvents.playerUpdate]: [oldPlayer: Player | null, newPlayer: Player];
@@ -72,6 +73,7 @@ export interface ClientOptions {
     maxCacheSize?: {
         killLog?: number;
         commandLog?: number;
+        modCalls?: number;
     };
     polling?: {
         enabled: boolean;
@@ -167,6 +169,7 @@ export enum ERLCEvents {
     emergencyCallUpdate = "EMERGENCY_CALL_UPDATE",
     kill = "KILL",
     modCall = "MOD_CALL",
+    modCallAnswered = "MOD_CALL_ANSWERED",
     playerJoin = "PLAYER_JOIN",
     playerLeave = "PLAYER_LEAVE",
     playerUpdate = "PLAYER_UPDATE",
@@ -247,10 +250,10 @@ export class ModCall extends Base {
 
 // @public
 export class ModCallManager {
-    constructor(client: Client);
+    constructor(client: Client, maxCacheSize?: number | undefined);
     cache: Collection<string, ModCall>;
     fetchAll(): Promise<Collection<string, ModCall>>;
-    updateCache(rawCommands: RawModCall[]): Collection<string, ModCall>;
+    updateCache(rawModCalls: RawModCall[]): Collection<string, ModCall>;
 }
 
 // @public
@@ -484,6 +487,8 @@ export class ServerManager {
     constructor(client: Client);
     cache?: Server;
     fetch(): Promise<RawServerData>;
+    get hasQueue(): boolean;
+    get isFull(): boolean;
 }
 
 // @public

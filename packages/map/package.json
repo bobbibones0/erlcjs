@@ -1,7 +1,7 @@
 {
-  "name": "@erlcjs/core",
-  "description": "ERLC API Wrapper Core",
-  "version": "1.4.0",
+  "name": "@erlcjs/map",
+  "description": "Generates a map using @erlcjs/core.",
+  "version": "1.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -20,7 +20,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/erlc-js/erlcjs.git",
-    "directory": "packages/core"
+    "directory": "packages/map"
   },
   "license": "Apache-2.0",
   "scripts": {
@@ -32,6 +32,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@erlcjs/core": "1.4.0",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "tsup": "^8.5.1"

@@ -16,8 +16,9 @@ export class ModCallManager {
     /**
      * Creates an instance of ModCallManager.
      * @param client - The erlcjs client.
+     * @param maxCacheSize - The maximum number of kill logs to hold in cache.
      */
-    constructor(private readonly client: Client) {}
+    constructor(private readonly client: Client, private readonly maxCacheSize?: number) {}
 
     /**
      * Fetches all moderator calls from the game server.
@@ -37,18 +38,34 @@ export class ModCallManager {
     /**
      * Re-synchronizes the cache with the raw moderator calls.
      * Emits a modCall event for new calls.
-     * @param rawCommands - Raw moderator calls payload.
+     * @param rawModCalls - Raw moderator calls payload.
      * @returns The updated ModCall cache Collection.
      */
-    public updateCache(rawCommands: RawModCall[]) {
-        for (const rawData of rawCommands) {
+    public updateCache(rawModCalls: RawModCall[]) {
+        for (const rawData of rawModCalls) {
             const key = `${rawData.Caller}:${rawData.Timestamp}`;
-            const cachedPlayer = this.cache.get(key);
+            const cachedCall = this.cache.get(key);
 
-            if (!cachedPlayer) {
+            if (!cachedCall) {
                 const newCall = new ModCall(this.client, rawData);
                 this.cache.set(key, newCall);
                 this.client.emit(ERLCEvents.modCall, newCall);
+                if (newCall.moderator) {
+                    this.client.emit(ERLCEvents.modCallAnswered, newCall);
+                }
+            } else {
+                if (!cachedCall.moderator && rawData.Moderator) {
+                    cachedCall._patch(rawData);
+                    this.client.emit(ERLCEvents.modCallAnswered, cachedCall)
+                }
+            }
+        }
+
+        if (this.maxCacheSize && this.maxCacheSize > 0) {
+            while (this.cache.size > this.maxCacheSize) {
+                const oldestKey = this.cache.keys().next().value;
+                if (oldestKey === undefined) break;
+                this.cache.delete(oldestKey);
             }
         }
 

@@ -52,6 +52,8 @@ export enum ERLCEvents {
     command = 'COMMAND',
     /** Emitted when a player requests moderator assistance. */
     modCall = 'MOD_CALL',
+    /** Emitted when a mod call is answered by a moderator. */
+    modCallAnswered = 'MOD_CALL_ANSWERED',
     /** Emitted when a player is killed. */
     kill = 'KILL',
     /** Emitted when an emergency call is created. */
@@ -102,6 +104,8 @@ export interface ClientEvents {
     [ERLCEvents.command]: [log: CommandLog];
     /** Emitted when a player requests moderator assistance. */
     [ERLCEvents.modCall]: [call: ModCall];
+    /** Emitted when a mod call is answered by a moderator. */
+    [ERLCEvents.modCallAnswered]: [call: ModCall];
     /** Emitted when a player is killed. */
     [ERLCEvents.kill]: [kill: KillLog];
 
@@ -177,7 +181,7 @@ export class Client extends EventEmitter<ClientEvents> {
         this.commandLogs = new CommandLogManager(this, options.maxCacheSize?.commandLog);
         this.emergencyCalls = new EmergencyCallManager(this);
         this.killLogs = new KillLogManager(this, options.maxCacheSize?.killLog);
-        this.modCalls = new ModCallManager(this);
+        this.modCalls = new ModCallManager(this, options.maxCacheSize?.modCalls);
         this.staff = new StaffManager(this);
         this.serverId = String(options.serverKey.split('-')[1]);
         this.globalAppId = options.globalAppId;
@@ -187,7 +191,7 @@ export class Client extends EventEmitter<ClientEvents> {
             this.gateway.listen();
         }
 
-        if (options.polling === true || options.polling?.enabled === true) {
+        if (options.polling === true || (options.polling?.enabled === true && !options.polling.autoStartPolling)) {
             (async () => {
                 await this.beginPolling(options.polling === true ? undefined : options.polling?.pollingRateMs);
             })();

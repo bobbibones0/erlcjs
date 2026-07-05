@@ -7,216 +7,246 @@
         "slug": "api/core"
       },
       {
-        "label": "Base",
-        "slug": "api/core/base"
+        "label": "Classes",
+        "items": [
+          {
+            "label": "Base",
+            "slug": "api/core/base"
+          },
+          {
+            "label": "Client",
+            "slug": "api/core/client"
+          },
+          {
+            "label": "Collection",
+            "slug": "api/core/collection"
+          },
+          {
+            "label": "CommandLog",
+            "slug": "api/core/commandlog"
+          },
+          {
+            "label": "CommandLogManager",
+            "slug": "api/core/commandlogmanager"
+          },
+          {
+            "label": "CommandManager",
+            "slug": "api/core/commandmanager"
+          },
+          {
+            "label": "EmergencyCall",
+            "slug": "api/core/emergencycall"
+          },
+          {
+            "label": "EmergencyCallManager",
+            "slug": "api/core/emergencycallmanager"
+          },
+          {
+            "label": "KillLog",
+            "slug": "api/core/killlog"
+          },
+          {
+            "label": "KillLogManager",
+            "slug": "api/core/killlogmanager"
+          },
+          {
+            "label": "ModCall",
+            "slug": "api/core/modcall"
+          },
+          {
+            "label": "ModCallManager",
+            "slug": "api/core/modcallmanager"
+          },
+          {
+            "label": "Player",
+            "slug": "api/core/player"
+          },
+          {
+            "label": "PlayerManager",
+            "slug": "api/core/playermanager"
+          },
+          {
+            "label": "RestManager",
+            "slug": "api/core/restmanager"
+          },
+          {
+            "label": "Server",
+            "slug": "api/core/server"
+          },
+          {
+            "label": "ServerManager",
+            "slug": "api/core/servermanager"
+          },
+          {
+            "label": "Staff",
+            "slug": "api/core/staff"
+          },
+          {
+            "label": "StaffManager",
+            "slug": "api/core/staffmanager"
+          },
+          {
+            "label": "Vehicle",
+            "slug": "api/core/vehicle"
+          },
+          {
+            "label": "VehicleManager",
+            "slug": "api/core/vehiclemanager"
+          },
+          {
+            "label": "WebhookServer",
+            "slug": "api/core/webhookserver"
+          }
+        ]
       },
       {
-        "label": "Client",
-        "slug": "api/core/client"
+        "label": "Functions",
+        "items": [
+          {
+            "label": "convertToPascalCase() function",
+            "slug": "api/core/converttopascalcase"
+          }
+        ]
       },
       {
-        "label": "ClientEvents",
-        "slug": "api/core/clientevents"
+        "label": "Enums",
+        "items": [
+          {
+            "label": "ERLCEvents enum",
+            "slug": "api/core/erlcevents"
+          },
+          {
+            "label": "PlayerPermission enum",
+            "slug": "api/core/playerpermission"
+          },
+          {
+            "label": "Vehicles enum",
+            "slug": "api/core/vehicles"
+          }
+        ]
       },
       {
-        "label": "ClientOptions",
-        "slug": "api/core/clientoptions"
+        "label": "Errors",
+        "items": [
+          {
+            "label": "CustomCommandError",
+            "slug": "api/core/customcommanderror"
+          },
+          {
+            "label": "ERLCAPIError",
+            "slug": "api/core/erlcapierror"
+          },
+          {
+            "label": "InvalidCommandError",
+            "slug": "api/core/invalidcommanderror"
+          },
+          {
+            "label": "InvalidGlobalKeyError",
+            "slug": "api/core/invalidglobalkeyerror"
+          },
+          {
+            "label": "InvalidServerKeyError",
+            "slug": "api/core/invalidserverkeyerror"
+          },
+          {
+            "label": "OutOfDateServerError",
+            "slug": "api/core/outofdateservererror"
+          },
+          {
+            "label": "ProhibitedMessageError",
+            "slug": "api/core/prohibitedmessageerror"
+          },
+          {
+            "label": "RestrictedCommandError",
+            "slug": "api/core/restrictedcommanderror"
+          },
+          {
+            "label": "RestrictedResourceError",
+            "slug": "api/core/restrictedresourceerror"
+          },
+          {
+            "label": "ServerBannedError",
+            "slug": "api/core/serverbannederror"
+          },
+          {
+            "label": "ServerOfflineError",
+            "slug": "api/core/serverofflineerror"
+          },
+          {
+            "label": "TimeoutError",
+            "slug": "api/core/timeouterror"
+          },
+          {
+            "label": "UnauthorizedError",
+            "slug": "api/core/unauthorizederror"
+          }
+        ]
       },
       {
-        "label": "Collection",
-        "slug": "api/core/collection"
+        "label": "Interfaces",
+        "items": [
+          {
+            "label": "ClientEvents",
+            "slug": "api/core/clientevents"
+          },
+          {
+            "label": "ClientOptions",
+            "slug": "api/core/clientoptions"
+          },
+          {
+            "label": "InGameCommand",
+            "slug": "api/core/ingamecommand"
+          },
+          {
+            "label": "RawCommandLog",
+            "slug": "api/core/rawcommandlog"
+          },
+          {
+            "label": "RawEmergencyCall",
+            "slug": "api/core/rawemergencycall"
+          },
+          {
+            "label": "RawJoinLog",
+            "slug": "api/core/rawjoinlog"
+          },
+          {
+            "label": "RawKillLog",
+            "slug": "api/core/rawkilllog"
+          },
+          {
+            "label": "RawModCall",
+            "slug": "api/core/rawmodcall"
+          },
+          {
+            "label": "RawPlayerData",
+            "slug": "api/core/rawplayerdata"
+          },
+          {
+            "label": "RawServerData",
+            "slug": "api/core/rawserverdata"
+          },
+          {
+            "label": "RawStaffData",
+            "slug": "api/core/rawstaffdata"
+          },
+          {
+            "label": "RawVehicle",
+            "slug": "api/core/rawvehicle"
+          },
+          {
+            "label": "RawWebhookEmergencyCall",
+            "slug": "api/core/rawwebhookemergencycall"
+          }
+        ]
       },
       {
-        "label": "CommandLog",
-        "slug": "api/core/commandlog"
-      },
-      {
-        "label": "CommandLogManager",
-        "slug": "api/core/commandlogmanager"
-      },
-      {
-        "label": "CommandManager",
-        "slug": "api/core/commandmanager"
-      },
-      {
-        "label": "convertToPascalCase() function",
-        "slug": "api/core/converttopascalcase"
-      },
-      {
-        "label": "CustomCommandError",
-        "slug": "api/core/customcommanderror"
-      },
-      {
-        "label": "EmergencyCall",
-        "slug": "api/core/emergencycall"
-      },
-      {
-        "label": "EmergencyCallManager",
-        "slug": "api/core/emergencycallmanager"
-      },
-      {
-        "label": "ERLCAPIError",
-        "slug": "api/core/erlcapierror"
-      },
-      {
-        "label": "ERLCEvents enum",
-        "slug": "api/core/erlcevents"
-      },
-      {
-        "label": "InGameCommand",
-        "slug": "api/core/ingamecommand"
-      },
-      {
-        "label": "InvalidCommandError",
-        "slug": "api/core/invalidcommanderror"
-      },
-      {
-        "label": "InvalidGlobalKeyError",
-        "slug": "api/core/invalidglobalkeyerror"
-      },
-      {
-        "label": "InvalidServerKeyError",
-        "slug": "api/core/invalidserverkeyerror"
-      },
-      {
-        "label": "KillLog",
-        "slug": "api/core/killlog"
-      },
-      {
-        "label": "KillLogManager",
-        "slug": "api/core/killlogmanager"
-      },
-      {
-        "label": "ModCall",
-        "slug": "api/core/modcall"
-      },
-      {
-        "label": "ModCallManager",
-        "slug": "api/core/modcallmanager"
-      },
-      {
-        "label": "OutOfDateServerError",
-        "slug": "api/core/outofdateservererror"
-      },
-      {
-        "label": "Player",
-        "slug": "api/core/player"
-      },
-      {
-        "label": "PlayerManager",
-        "slug": "api/core/playermanager"
-      },
-      {
-        "label": "PlayerPermission enum",
-        "slug": "api/core/playerpermission"
-      },
-      {
-        "label": "ProhibitedMessageError",
-        "slug": "api/core/prohibitedmessageerror"
-      },
-      {
-        "label": "RawCommandLog",
-        "slug": "api/core/rawcommandlog"
-      },
-      {
-        "label": "RawEmergencyCall",
-        "slug": "api/core/rawemergencycall"
-      },
-      {
-        "label": "RawJoinLog",
-        "slug": "api/core/rawjoinlog"
-      },
-      {
-        "label": "RawKillLog",
-        "slug": "api/core/rawkilllog"
-      },
-      {
-        "label": "RawModCall",
-        "slug": "api/core/rawmodcall"
-      },
-      {
-        "label": "RawPlayerData",
-        "slug": "api/core/rawplayerdata"
-      },
-      {
-        "label": "RawPlayerPermission type",
-        "slug": "api/core/rawplayerpermission"
-      },
-      {
-        "label": "RawServerData",
-        "slug": "api/core/rawserverdata"
-      },
-      {
-        "label": "RawStaffData",
-        "slug": "api/core/rawstaffdata"
-      },
-      {
-        "label": "RawVehicle",
-        "slug": "api/core/rawvehicle"
-      },
-      {
-        "label": "RawWebhookEmergencyCall",
-        "slug": "api/core/rawwebhookemergencycall"
-      },
-      {
-        "label": "RestManager",
-        "slug": "api/core/restmanager"
-      },
-      {
-        "label": "RestrictedCommandError",
-        "slug": "api/core/restrictedcommanderror"
-      },
-      {
-        "label": "RestrictedResourceError",
-        "slug": "api/core/restrictedresourceerror"
-      },
-      {
-        "label": "Server",
-        "slug": "api/core/server"
-      },
-      {
-        "label": "ServerBannedError",
-        "slug": "api/core/serverbannederror"
-      },
-      {
-        "label": "ServerManager",
-        "slug": "api/core/servermanager"
-      },
-      {
-        "label": "ServerOfflineError",
-        "slug": "api/core/serverofflineerror"
-      },
-      {
-        "label": "Staff",
-        "slug": "api/core/staff"
-      },
-      {
-        "label": "StaffManager",
-        "slug": "api/core/staffmanager"
-      },
-      {
-        "label": "TimeoutError",
-        "slug": "api/core/timeouterror"
-      },
-      {
-        "label": "UnauthorizedError",
-        "slug": "api/core/unauthorizederror"
-      },
-      {
-        "label": "Vehicle",
-        "slug": "api/core/vehicle"
-      },
-      {
-        "label": "VehicleManager",
-        "slug": "api/core/vehiclemanager"
-      },
-      {
-        "label": "Vehicles enum",
-        "slug": "api/core/vehicles"
-      },
-      {
-        "label": "WebhookServer",
-        "slug": "api/core/webhookserver"
+        "label": "Types",
+        "items": [
+          {
+            "label": "RawPlayerPermission type",
+            "slug": "api/core/rawplayerpermission"
+          }
+        ]
       }
     ]
   },
@@ -228,24 +258,34 @@
         "slug": "api/presets"
       },
       {
-        "label": "banLiveries() function",
-        "slug": "api/presets/banliveries"
+        "label": "Classes",
+        "items": [
+          {
+            "label": "LiveryPunishments",
+            "slug": "api/presets/liverypunishments"
+          },
+          {
+            "label": "VehiclePunishments",
+            "slug": "api/presets/vehiclepunishments"
+          }
+        ]
       },
       {
-        "label": "banVehicles() function",
-        "slug": "api/presets/banvehicles"
-      },
-      {
-        "label": "LiveryPunishments",
-        "slug": "api/presets/liverypunishments"
-      },
-      {
-        "label": "VehiclePunishments",
-        "slug": "api/presets/vehiclepunishments"
-      },
-      {
-        "label": "welcomePlayer() function",
-        "slug": "api/presets/welcomeplayer"
+        "label": "Functions",
+        "items": [
+          {
+            "label": "banLiveries() function",
+            "slug": "api/presets/banliveries"
+          },
+          {
+            "label": "banVehicles() function",
+            "slug": "api/presets/banvehicles"
+          },
+          {
+            "label": "welcomePlayer() function",
+            "slug": "api/presets/welcomeplayer"
+          }
+        ]
       }
     ]
   }

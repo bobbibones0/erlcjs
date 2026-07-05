@@ -41,4 +41,18 @@ export class ServerManager {
 
         return rawServerData;
     }
+
+    /**
+     * Returns a boolean whether the server is currently full.
+     */
+    public get isFull(): boolean {
+        return this.cache?.currentPlayers === this.cache?.maxPlayers;
+    }
+
+    /**
+     * Returns a boolean whether the server has a queue.
+     */
+    public get hasQueue(): boolean {
+        return (this.cache?.queue.length && this.cache.queue.length > 0) as boolean;
+    }
 }

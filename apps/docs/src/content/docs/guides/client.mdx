@@ -1,6 +1,8 @@
 ---
 title: Instantiating the Client
 description: Understand client options, connection strategies, polling, and webhook gateway configuration.
+sidebar:
+    order: 1
 ---
 
 The `Client` class is the central coordinator of erlc.js. It coordinates HTTP REST calls, handles token/key management, and manages the cache and event emitters.
@@ -37,7 +39,7 @@ const client = new Client({
 
 erlc.js offers two ways to receive real-time updates from your ER:LC private server: **Polling Mode** and **Webhook Gateway Mode**.
 
-:::info
+:::note
 It is recommended to use polling and webhooks
 :::
 
@@ -91,7 +93,7 @@ It is recommended to still have polling enabled to receive the full suite of eve
   <h3 class="contributors-heading">Contributors</h3>
   <p class="contributors-subtext">Thank you to everyone who contributed to this page!</p>
   <div class="contributors-grid">
-      <a href="https://github.com/Noinkin" target="_blank" rel="noopener noreferrer" class="contributor" title="Noinkin — 7 commits"><img src="https://avatars.githubusercontent.com/u/87577662?v=4&s=64" alt="Noinkin" width="40" height="40" loading="lazy" /><span class="contributor-name">Noinkin</span></a>
-      <a href="https://github.com/devs-des1re" target="_blank" rel="noopener noreferrer" class="contributor" title="devs-des1re — 1 commit"><img src="https://avatars.githubusercontent.com/u/185894185?v=4&s=64" alt="devs-des1re" width="40" height="40" loading="lazy" /><span class="contributor-name">devs-des1re</span></a>
+      <a href="https://github.com/Noinkin" target="_blank" rel="noopener noreferrer" class="contributor"><img src="https://avatars.githubusercontent.com/u/87577662?v=4&s=64" alt="Noinkin" width="40" height="40" loading="lazy" /><span class="contributor-name">Noinkin</span></a>
+      <a href="https://github.com/devs-des1re" target="_blank" rel="noopener noreferrer" class="contributor"><img src="https://avatars.githubusercontent.com/u/185894185?v=4&s=64" alt="devs-des1re" width="40" height="40" loading="lazy" /><span class="contributor-name">devs-des1re</span></a>
   </div>
 </div>
