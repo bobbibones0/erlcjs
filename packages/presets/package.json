@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/noinkin/erlcapi.git",
+    "url": "git+https://github.com/erlc-js/erlcjs.git",
     "directory": "packages/presets"
   },
   "license": "Apache-2.0",
