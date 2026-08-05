@@ -1,18 +1,22 @@
 import { ERLCAPIError, InvalidCommandError, InvalidGlobalKeyError, InvalidServerKeyError, OutOfDateServerError, ProhibitedMessageError, RestrictedCommandError, RestrictedResourceError, ServerBannedError, ServerOfflineError, UnauthorizedError } from '../errors/index.js';
 
-/** Extra time added to rate-limit window resets to avoid racing the server. */
-const SAFETY_BUFFER_MS = 500;
+/** Extra time added to rate-limit window resets to avoid racing the server (covers second-truncated reset headers). */
+const SAFETY_BUFFER_MS = 1000;
 /** The shared per-IP bucket every route falls back to until its bucket is learned. */
 const GLOBAL_BUCKET = 'global';
 /** Maximum in-flight requests before the first rate-limit headers have been received. */
 const COLD_START_MAX_INFLIGHT = 1;
+/** Hard cap on concurrent in-flight requests once rate-limit headers have been received. */
+const MAX_CONCURRENCY = 30;
+/** Maximum random jitter (ms) added to retry-after backoff. */
+const RETRY_JITTER_MS = 1000;
 
 interface BucketInfo {
     /** Whether real rate-limit headers have been observed for this bucket. */
     known: boolean;
     /** The maximum requests allowed per window. */
     limit: number;
-    /** Optimistically decremented remaining requests in the current window. */
+    /** Server-reported remaining requests in the current window. */
     remaining: number;
     /** Epoch ms when the current window resets. */
     reset: number;
@@ -34,10 +38,11 @@ interface QueueItem {
  * Handles communication with the ER:LC HTTP API for all servers managed by a Client,
  * managing rate limits and request queuing on a shared per-IP budget.
  *
- * Buckets are gated optimistically: each dispatched request immediately decrements the
- * bucket's remaining budget and is tracked as in-flight until its response arrives.
- * A bucket's queue is frozen while a `Retry-After` response is active, and window
- * resets include a small safety buffer to avoid racing the server.
+ * Buckets are gated conservatively: the server-reported remaining budget is reduced
+ * by tracked in-flight requests, and no request is dispatched while that effective
+ * budget is exhausted. A bucket's queue is frozen (with jittered backoff) while a
+ * `Retry-After` response is active, and window resets include a small safety buffer
+ * to avoid racing the server. In-flight concurrency is hard-capped to bound bursts.
  * @public
  */
 export class RestManager {
@@ -145,8 +150,6 @@ export class RestManager {
 
                     if (response.status === 429 || data.code === 4001) {
                         const bucketId = this.routeToBucket.get(route) ?? GLOBAL_BUCKET;
-                        const bucket = this.buckets.get(bucketId);
-                        if (bucket) bucket.remaining++; // restore the optimistic decrement
                         this.freezeBucket(bucketId, this.getRetryAfter(response, data));
                         this.queue.unshift({ route, execute: executeTask });
                         return;
@@ -207,7 +210,8 @@ export class RestManager {
      */
     private freezeBucket(bucketId: string, retryAfterMs: number) {
         const bucket = this.buckets.get(bucketId) ?? this.createBucket(bucketId);
-        bucket.frozenUntil = Date.now() + retryAfterMs + SAFETY_BUFFER_MS;
+        const jitter = Math.floor(Math.random() * RETRY_JITTER_MS);
+        bucket.frozenUntil = Date.now() + retryAfterMs + SAFETY_BUFFER_MS + jitter;
     }
 
     private getRetryAfter(response: Response, data: any): number {
@@ -226,15 +230,17 @@ export class RestManager {
 
     /**
      * Returns a snapshot of the current rate-limit state for all known buckets,
-     * useful for monitoring and debugging.
+     * useful for monitoring and debugging. `remaining` is the server-reported
+     * budget; `effective` subtracts in-flight requests to show the usable budget.
      * @returns A record of bucket ID to rate-limit state.
      */
-    public getRateLimits(): Record<string, { limit: number; remaining: number; reset: number; inflight: number; frozenUntil: number }> {
-        const snapshot: Record<string, { limit: number; remaining: number; reset: number; inflight: number; frozenUntil: number }> = {};
+    public getRateLimits(): Record<string, { limit: number; remaining: number; effective: number; reset: number; inflight: number; frozenUntil: number }> {
+        const snapshot: Record<string, { limit: number; remaining: number; effective: number; reset: number; inflight: number; frozenUntil: number }> = {};
         for (const [bucketId, bucket] of this.buckets.entries()) {
             snapshot[bucketId] = {
                 limit: bucket.limit,
                 remaining: bucket.remaining,
+                effective: bucket.known ? bucket.remaining - bucket.inflight : Number.POSITIVE_INFINITY,
                 reset: bucket.reset,
                 inflight: bucket.inflight,
                 frozenUntil: bucket.frozenUntil,
@@ -269,15 +275,18 @@ export class RestManager {
 
     /**
      * The maximum number of in-flight requests allowed. On cold start only a single
-     * request is in flight until the first rate-limit headers reveal the shared budget.
+     * request is in flight until the first rate-limit headers reveal the shared budget,
+     * after which a hard concurrency cap bounds the burst.
      */
     private get maxInflight(): number {
-        return this.headersSeen ? Number.POSITIVE_INFINITY : COLD_START_MAX_INFLIGHT;
+        return this.headersSeen ? MAX_CONCURRENCY : COLD_START_MAX_INFLIGHT;
     }
 
     /**
-     * Processes the request queue, dispatching as many requests as the optimistic
-     * bucket budgets allow.
+     * Processes the request queue, dispatching as many requests as the conservative
+     * effective bucket budgets allow. Items whose bucket is currently blocked
+     * (frozen or exhausted) are skipped so unrelated servers/buckets are not
+     * stalled behind them (head-of-line blocking).
      */
     private async processQueue() {
         if (this.processing) return;
@@ -285,11 +294,6 @@ export class RestManager {
 
         try {
             while (this.queue.length > 0) {
-                const item = this.queue[0];
-                if (!item) continue;
-
-                const bucketId = this.routeToBucket.get(item.route) ?? GLOBAL_BUCKET;
-                const bucket = this.buckets.get(bucketId);
                 const now = Date.now();
 
                 if (this.inflightTotal >= this.maxInflight) {
@@ -297,23 +301,16 @@ export class RestManager {
                     break;
                 }
 
-                if (bucket) {
-                    if (bucket.frozenUntil > now) {
-                        this.scheduleResume(Math.max(0, bucket.frozenUntil - now) + 50);
-                        break;
-                    }
-                    if (bucket.known && now >= bucket.reset) {
-                        bucket.remaining = bucket.limit;
-                    }
-                    if (bucket.known && now < bucket.reset + SAFETY_BUFFER_MS && bucket.remaining <= 0) {
-                        this.scheduleResume(Math.max(0, bucket.reset + SAFETY_BUFFER_MS - now) + 50);
-                        break;
-                    }
+                const dispatchIndex = this.findDispatchableIndex(now);
+                if (dispatchIndex === -1) {
+                    this.scheduleResume(this.getResumeDelay(now));
+                    break;
                 }
 
-                this.queue.shift();
+                const item = this.queue.splice(dispatchIndex, 1)[0]!;
+                const bucketId = this.routeToBucket.get(item.route) ?? GLOBAL_BUCKET;
+                const bucket = this.buckets.get(bucketId);
                 const trackedBucket = bucket ?? this.createBucket(bucketId);
-                trackedBucket.remaining--;
                 trackedBucket.inflight++;
                 this.inflightTotal++;
                 item.bucketId = bucketId;
@@ -324,6 +321,53 @@ export class RestManager {
         } finally {
             this.processing = false;
         }
+    }
+
+    /**
+     * Returns the index of the first queued item whose bucket currently has
+     * budget available, or -1 if every item is blocked.
+     */
+    private findDispatchableIndex(now: number): number {
+        for (let i = 0; i < this.queue.length; i++) {
+            if (this.canDispatch(this.queue[i]!, now)) return i;
+        }
+        return -1;
+    }
+
+    /**
+     * Whether the given queued item can be dispatched right now.
+     */
+    private canDispatch(item: QueueItem, now: number): boolean {
+        const bucketId = this.routeToBucket.get(item.route) ?? GLOBAL_BUCKET;
+        const bucket = this.buckets.get(bucketId);
+        if (!bucket) return true;
+        if (bucket.frozenUntil > now) return false;
+        if (!bucket.known) return true;
+        const windowEnd = bucket.reset + SAFETY_BUFFER_MS;
+        if (now >= windowEnd) {
+            bucket.remaining = bucket.limit;
+        }
+        return bucket.remaining - bucket.inflight > 0;
+    }
+
+    /**
+     * Computes how long to wait before checking the queue again, based on the
+     * earliest unblock (freeze expiry or window reset) among all blocked items.
+     */
+    private getResumeDelay(now: number): number {
+        let earliestBlockedAt = Number.POSITIVE_INFINITY;
+        for (const item of this.queue) {
+            const bucketId = this.routeToBucket.get(item.route) ?? GLOBAL_BUCKET;
+            const bucket = this.buckets.get(bucketId);
+            if (!bucket) continue;
+            if (bucket.frozenUntil > now) {
+                earliestBlockedAt = Math.min(earliestBlockedAt, bucket.frozenUntil);
+            } else if (bucket.known && bucket.remaining - bucket.inflight <= 0) {
+                earliestBlockedAt = Math.min(earliestBlockedAt, bucket.reset + SAFETY_BUFFER_MS);
+            }
+        }
+        if (earliestBlockedAt === Number.POSITIVE_INFINITY) return 50;
+        return Math.max(50, earliestBlockedAt - now + 50);
     }
 
     /**
