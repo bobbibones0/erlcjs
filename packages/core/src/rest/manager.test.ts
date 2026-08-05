@@ -139,4 +139,131 @@ describe('RestManager', () => {
         expect(rm.inflight).toBe(0);
         expect(rm.getRateLimits()).toEqual({});
     });
+
+    it('shares the budget across servers using the same bucket', async () => {
+        let inflight = 0;
+        let maxConcurrent = 0;
+        let callCount = 0;
+
+        globalThis.fetch = (async () => {
+            inflight++;
+            callCount++;
+            maxConcurrent = Math.max(maxConcurrent, inflight);
+            await sleep(15);
+            inflight--;
+            return resp(200, rateHeaders({ limit: 2, remaining: 2 }), { ok: true });
+        }) as any;
+
+        const rm = new RestManager();
+        const reqs = [0, 1, 2].map((i) => rm.request('GET', '/s1', undefined, `erlc-key-${i}-a`))
+            .concat([0, 1, 2].map((i) => rm.request('GET', '/s2', undefined, `erlc-key-${i}-b`)));
+        const results = await Promise.all(reqs);
+        expect(results.every((r) => r.ok === true)).toBe(true);
+        expect(maxConcurrent).toBeLessThanOrEqual(2);
+        expect(callCount).toBe(6);
+    });
+
+    it('exposes effective rate limits (remaining minus inflight)', async () => {
+        let releaseSecond: () => void;
+        const secondGate = new Promise<void>((r) => (releaseSecond = r));
+        let callCount = 0;
+
+        globalThis.fetch = (async () => {
+            callCount++;
+            if (callCount === 2) {
+                await secondGate;
+            }
+            return resp(200, rateHeaders({ limit: 10, remaining: 9 }), { ok: true });
+        }) as any;
+
+        const rm = new RestManager();
+        const p1 = rm.request('GET', '/a');
+        const p2 = rm.request('GET', '/a');
+        await sleep(50);
+        const limits = rm.getRateLimits();
+        expect(limits['global']?.remaining).toBe(9);
+        expect(limits['global']?.effective).toBe(8);
+        releaseSecond!();
+        await Promise.all([p1, p2]);
+    });
+
+    it('does not stall unrelated servers behind a frozen bucket (head-of-line blocking)', async () => {
+        const keyA = 'erlc-aaaaaa-key-a';
+        const keyB = 'erlc-bbbbbb-key-b';
+        let callCount = 0;
+
+        globalThis.fetch = (async (_url?: string, init?: any) => {
+            callCount++;
+            const key = init?.headers?.['Server-Key'];
+            if (key === keyA && callCount === 1) {
+                return resp(429, {
+                    ...rateHeaders({ limit: 1, remaining: 0 }),
+                    'x-ratelimit-bucket': 'bucketA',
+                    'retry-after': '1',
+                }, { code: 4001, message: 'rate limited' });
+            }
+            if (key === keyA) {
+                return resp(200, { ...rateHeaders({ limit: 1, remaining: 0 }), 'x-ratelimit-bucket': 'bucketA' }, { ok: true });
+            }
+            return resp(200, { ...rateHeaders({ limit: 100, remaining: 99 }), 'x-ratelimit-bucket': 'bucketB' }, { ok: true });
+        }) as any;
+
+        const rm = new RestManager();
+        const pA = rm.request('GET', '/v2/server', undefined, keyA);
+        const pB = [0, 1, 2, 3, 4].map((i) => rm.request('GET', `/v2/server?i=${i}`, undefined, keyB));
+
+        const start = Date.now();
+        const bResults = await Promise.allSettled(pB);
+        const elapsed = Date.now() - start;
+
+        expect(bResults.every((r) => r.status === 'fulfilled')).toBe(true);
+        expect(elapsed).toBeLessThan(800);
+        // A's bucket stays frozen (retry-after) with a future reset, so it must not resolve;
+        // leaving it pending is intentional — the point is B wasn't stalled behind it.
+        pA.catch(() => {});
+    });
+
+    it('sustains a burst across multiple reset windows without any 429s', async () => {
+        const limit = 5;
+        const windowMs = 250;
+        const burst = 12;
+        let windowStart = Date.now();
+        let windowResets = 0;
+        let serverCount = 0;
+        let sent429s = 0;
+
+        globalThis.fetch = (async () => {
+            const now = Date.now();
+            if (now > windowStart + windowMs) {
+                windowStart = now;
+                serverCount = 0;
+                windowResets++;
+            }
+            if (serverCount >= limit) {
+                sent429s++;
+                return resp(429, { 'retry-after': '1' }, { code: 4001, message: 'rate limited' });
+            }
+            serverCount++;
+            // truncated-to-second reset header (worst case) exercises the safety buffer
+            const resetSec = Math.floor((windowStart + windowMs) / 1000);
+            return resp(200, {
+                'x-ratelimit-bucket': 'global',
+                'x-ratelimit-limit': String(limit),
+                'x-ratelimit-remaining': String(limit - serverCount),
+                'x-ratelimit-reset': String(resetSec),
+            }, { ok: true });
+        }) as any;
+
+        const rm = new RestManager();
+        const results = await Promise.all(
+            Array.from({ length: burst }, (_, i) => rm.request('GET', `/v2/server?i=${i}`)),
+        );
+
+        expect(sent429s).toBe(0);
+        expect(results.every((r) => r.ok === true)).toBe(true);
+        expect(results.length).toBe(burst);
+        // burst of 12 at limit 5 must span at least 3 windows, proving the
+        // limiter paced itself across reset boundaries instead of overshooting
+        expect(windowResets).toBeGreaterThanOrEqual(2);
+    });
 });
