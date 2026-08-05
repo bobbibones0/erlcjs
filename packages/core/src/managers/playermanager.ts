@@ -1,5 +1,6 @@
-import { Client, ERLCEvents } from '../client/client.js';
-import { Collection } from '../index.js';
+import type { Server } from '../client/server.js';
+import { ERLCEvents } from '../client/events.js';
+import { Collection } from '../util/collection.js';
 import { Player } from '../structures/player.js';
 import { type RawPlayerData, type RawServerData } from '../types/index.js';
 
@@ -16,9 +17,9 @@ export class PlayerManager {
 
     /**
      * Creates an instance of PlayerManager.
-     * @param client - The erlcjs client.
+     * @param server - The server this manager belongs to.
      */
-    constructor(private readonly client: Client) {}
+    constructor(private readonly server: Server) {}
 
     /**
      * Fetches all active players currently in the game server.
@@ -26,7 +27,7 @@ export class PlayerManager {
      * @returns A promise resolving to a Collection of active Players.
      */
     public async fetchAll(): Promise<Collection<number, Player>> {
-        const rawServer: RawServerData = await this.client.rest.request(
+        const rawServer: RawServerData = await this.server.rest.request(
             'GET',
             '/v2/server?Players=true',
         );
@@ -54,19 +55,19 @@ export class PlayerManager {
             const cachedPlayer = this.cache.get(userId);
 
             if (cachedPlayer) {
-                const oldPlayer = new Player(this.client, cachedPlayer.toJSON());
+                const oldPlayer = new Player(this.server, cachedPlayer.toJSON());
                 cachedPlayer._patch(rawData);
-                this.client.emit(ERLCEvents.playerUpdate, oldPlayer, cachedPlayer);
+                this.server.client.emit(ERLCEvents.playerUpdate, oldPlayer, cachedPlayer);
             } else {
-                const newPlayer = new Player(this.client, rawData);
+                const newPlayer = new Player(this.server, rawData);
                 this.cache.set(newPlayer.id, newPlayer);
-                this.client.emit(ERLCEvents.playerJoin, newPlayer);
+                this.server.client.emit(ERLCEvents.playerJoin, newPlayer);
             }
         }
 
         for (const cachedId of this.cache.keys()) {
             if (!activeIds.has(cachedId)) {
-                this.client.emit(ERLCEvents.playerLeave, this.cache.get(cachedId)!);
+                this.server.client.emit(ERLCEvents.playerLeave, this.cache.get(cachedId)!);
                 this.cache.delete(cachedId);
             }
         }
@@ -79,16 +80,20 @@ export class PlayerManager {
     }
 
     /**
-     * Retrieves a player's UserId from their Roblox username.
-     * Attempts to resolve from cache first, otherwise triggers a fresh fetch.
+     * Retrieves a player's UserId from their Roblox username, resolving from cache.
      * @param name - The Roblox username.
-     * @returns The UserId if resolved, otherwise undefined.
+     * @returns The UserId if the username is currently cached, otherwise undefined.
      */
-    public getIdFromName(name: string) {
-        if (this.nameToId.has(name)) return this.nameToId.get(name);
-        this.fetchAll().then(() => {
-            return this.nameToId.get(name);
-        });
+    public getIdFromName(name: string): number | undefined {
+        return this.nameToId.get(name);
+    }
+
+    /**
+     * Clears the player cache and username mappings.
+     */
+    public clear() {
+        this.cache.clear();
+        this.nameToId.clear();
     }
 
     /**
@@ -96,7 +101,7 @@ export class PlayerManager {
      * @param userId - The userId to unban.
      */
     public async unban(userId: number | string) {
-        await this.client.commands.execute(`:unban ${userId}`);
+        await this.server.commands.execute(`:unban ${userId}`);
     }
 
     /**
@@ -104,7 +109,7 @@ export class PlayerManager {
      * @param userId - The userId to unhelper.
      */
     public async unhelper(userId: number | string) {
-        await this.client.commands.execute(`:unhelper ${userId}`);
+        await this.server.commands.execute(`:unhelper ${userId}`);
     }
 
     /**
@@ -112,7 +117,7 @@ export class PlayerManager {
      * @param userId - The userId to unmod.
      */
     public async unmod(userId: number | string) {
-        await this.client.commands.execute(`:unmod ${userId}`);
+        await this.server.commands.execute(`:unmod ${userId}`);
     }
 
     /**
@@ -120,7 +125,7 @@ export class PlayerManager {
      * @param userId - The userId to unadmin.
      */
     public async unadmin(userId: number | string) {
-        await this.client.commands.execute(`:unadmin ${userId}`);
+        await this.server.commands.execute(`:unadmin ${userId}`);
     }
 
     /**

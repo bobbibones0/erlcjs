@@ -5,43 +5,49 @@ sidebar:
     order: 5
 ---
 
-Caching is used throughout to store the latest data fetched using polling. This data can be found in each respective manager class. As this data is updated from polling, it is at most 5 seconds old.
+Caching is used throughout to store the latest data fetched using polling. This data can be found in each respective manager class on a server. As this data is updated from polling, it is at most 5 seconds old.
+
+Each configured server has its own independent caches, accessed through the server object:
+
+```javascript
+const server = client.servers.get('YOUR_SERVER_ID');
+```
 
 ## Players
 
-`client.players.cache` is where all players are stored as instances of the `Player` class.
+`server.players.cache` is where all players are stored as instances of the `Player` class.
 
 ## Vehicles
 
-`client.vehicles.cache` is where all vehicles are stored as instances of the `Vehicle` class.
+`server.vehicles.cache` is where all vehicles are stored as instances of the `Vehicle` class.
 
 ## Command Logs
 
-`client.commandLogs.cache` is where all command logs are stored as instances of the `CommandLog` class.
+`server.commandLogs.cache` is where all command logs are stored as instances of the `CommandLog` class.
 
 ## Emergency Calls
 
-`client.emergencyCalls.cache` is where all emergency calls are stored as instances of the `EmergencyCall` class.
+`server.emergencyCalls.cache` is where all emergency calls are stored as instances of the `EmergencyCall` class.
 
 ## Kill Logs
 
-`client.killLogs.cache` is where all kill logs are stored as instances of the `KillLog` class.
+`server.killLogs.cache` is where all kill logs are stored as instances of the `KillLog` class.
 
 ## Mod Calls
 
-`client.modCalls.cache` is where all mod calls are stored as instances of the `ModCall` class.
+`server.modCalls.cache` is where all mod calls are stored as instances of the `ModCall` class.
 
 ## Staff
 
-`client.staff.helpers` is where all helpers are stored as instances of the `Staff` class.
+`server.staff.helpers` is where all helpers are stored as instances of the `Staff` class.
 
-`client.staff.mods` is where all mods are stored as instances of the `Staff` class.
+`server.staff.mods` is where all mods are stored as instances of the `Staff` class.
 
-`client.staff.admins` is where all admins are stored as instances of the `Staff` class.
+`server.staff.admins` is where all admins are stored as instances of the `Staff` class.
 
 ## Server Information
 
-`client.server.cache` is where all server information is stored. This includes:
+`server.info` is where all server information is stored. This includes:
 - `name` - Server Name
 - `ownerId` - Server Owner Id
 - `coOwnerIds` - Array of Co-Owner Ids

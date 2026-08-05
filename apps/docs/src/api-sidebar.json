@@ -74,6 +74,10 @@
             "slug": "api/core/server"
           },
           {
+            "label": "ServerInfo",
+            "slug": "api/core/serverinfo"
+          },
+          {
             "label": "ServerManager",
             "slug": "api/core/servermanager"
           },
@@ -133,6 +137,10 @@
             "slug": "api/core/customcommanderror"
           },
           {
+            "label": "DuplicateServerError",
+            "slug": "api/core/duplicateservererror"
+          },
+          {
             "label": "ERLCAPIError",
             "slug": "api/core/erlcapierror"
           },
@@ -167,6 +175,10 @@
           {
             "label": "ServerBannedError",
             "slug": "api/core/serverbannederror"
+          },
+          {
+            "label": "ServerNotConfiguredError",
+            "slug": "api/core/servernotconfigurederror"
           },
           {
             "label": "ServerOfflineError",
@@ -251,6 +263,50 @@
     ]
   },
   {
+    "label": "MAP",
+    "items": [
+      {
+        "label": "Map Package",
+        "slug": "api/map"
+      },
+      {
+        "label": "Functions",
+        "items": [
+          {
+            "label": "drawMap() function",
+            "slug": "api/map/drawmap"
+          },
+          {
+            "label": "fetchMap() function",
+            "slug": "api/map/fetchmap"
+          },
+          {
+            "label": "fetchRobloxHeadshots() function",
+            "slug": "api/map/fetchrobloxheadshots"
+          }
+        ]
+      },
+      {
+        "label": "Enums",
+        "items": [
+          {
+            "label": "MapType enum",
+            "slug": "api/map/maptype"
+          }
+        ]
+      },
+      {
+        "label": "Interfaces",
+        "items": [
+          {
+            "label": "MapOptions",
+            "slug": "api/map/mapoptions"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "label": "PRESETS",
     "items": [
       {
@@ -260,6 +316,10 @@
       {
         "label": "Classes",
         "items": [
+          {
+            "label": "CommandPunishments",
+            "slug": "api/presets/commandpunishments"
+          },
           {
             "label": "LiveryPunishments",
             "slug": "api/presets/liverypunishments"
@@ -274,6 +334,26 @@
         "label": "Functions",
         "items": [
           {
+            "label": "autoAnnouncement() function",
+            "slug": "api/presets/autoannouncement"
+          },
+          {
+            "label": "autoCommand() function",
+            "slug": "api/presets/autocommand"
+          },
+          {
+            "label": "autoHint() function",
+            "slug": "api/presets/autohint"
+          },
+          {
+            "label": "banCommand() function",
+            "slug": "api/presets/bancommand"
+          },
+          {
+            "label": "banKickRejoin() function",
+            "slug": "api/presets/bankickrejoin"
+          },
+          {
             "label": "banLiveries() function",
             "slug": "api/presets/banliveries"
           },
@@ -282,8 +362,30 @@
             "slug": "api/presets/banvehicles"
           },
           {
+            "label": "RDM() function",
+            "slug": "api/presets/rdm"
+          },
+          {
             "label": "welcomePlayer() function",
             "slug": "api/presets/welcomeplayer"
+          }
+        ]
+      },
+      {
+        "label": "Interfaces",
+        "items": [
+          {
+            "label": "Livery",
+            "slug": "api/presets/livery"
+          }
+        ]
+      },
+      {
+        "label": "Types",
+        "items": [
+          {
+            "label": "Allowlist type",
+            "slug": "api/presets/allowlist"
           }
         ]
       }

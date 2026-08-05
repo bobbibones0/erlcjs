@@ -7,9 +7,10 @@ import type { Player } from "../structures/player";
  */
 export interface ClientOptions {
     /**
-     * The ER:LC Server API Key.
+     * The ER:LC Server API keys the client should manage.
+     * The server ID of each server is parsed from its key.
      */
-    serverKey: string;
+    servers: string[];
     /**
      * Optional global key for your application.
      */
@@ -34,10 +35,6 @@ export interface ClientOptions {
          * The URL path for incoming webhooks.
          */
         path?: string;
-        /**
-         * Secret key used for authenticating incoming webhooks.
-         */
-        secret?: string;
     };
     /**
      * Configuration to poll the ER:LC API endpoints periodically.
@@ -63,6 +60,10 @@ export interface ClientOptions {
     }
 }
 
+/**
+ * The raw permission values returned by the ER:LC API.
+ * @public
+ */
 export type RawPlayerPermission = 'Normal' | 'Server Administrator' | 'Server Owner' | 'Server Moderator';
 
 /**

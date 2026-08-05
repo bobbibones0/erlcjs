@@ -5,15 +5,18 @@ sidebar:
     order: 2
 ---
 
-Tracking and managing players is one of erlc.js's core strengths. When polling or gateway mode is enabled, the client maintains a real-time player cache under `client.players.cache`.
+Tracking and managing players is one of erlc.js's core strengths. When polling or gateway mode is enabled, the client maintains a real-time player cache per server under `server.players.cache`.
 
 ## Accessing Players
 
 Active players are stored inside a Map keyed by their Roblox UserId:
 
 ```javascript
+// Resolve the server you want to inspect
+const server = client.servers.get('YOUR_SERVER_ID');
+
 // Access the players cache
-const playerCache = client.players.cache;
+const playerCache = server.players.cache;
 
 // Get a specific player by UserId
 const player = playerCache.get(1234567);
@@ -60,7 +63,8 @@ client.on(ERLCEvents.playerJoin, async (player) => {
 Instantly kill the player in-game (resets their character):
 
 ```javascript
-const player = client.players.cache.get(userId);
+const server = client.servers.get('YOUR_SERVER_ID');
+const player = server.players.cache.get(userId);
 if (player) {
     await player.kill();
 }
@@ -71,7 +75,8 @@ if (player) {
 Sends an in-game private message to the player's screen:
 
 ```javascript
-const player = client.players.cache.get(userId);
+const server = client.servers.get('YOUR_SERVER_ID');
+const player = server.players.cache.get(userId);
 if (player) {
     await player.message('Welcome back! Remember to follow the speed limits.');
 }

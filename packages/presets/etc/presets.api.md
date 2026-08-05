@@ -4,28 +4,61 @@
 
 ```ts
 
+import { CommandLog } from '@erlcjs/core';
+import { KillLog } from '@erlcjs/core';
 import { Player } from '@erlcjs/core';
 import { PlayerPermission } from '@erlcjs/core';
+import { Server } from '@erlcjs/core';
 import { Vehicle } from '@erlcjs/core';
 import { Vehicles } from '@erlcjs/core';
 
-// Warning: (ae-forgotten-export) The symbol "Livery" needs to be exported by the entry point index.d.ts
-//
 // @public
-export function banLiveries(liveries: (Livery | string)[], action: (vehicle: Vehicle) => void, allowlist?: (number | PlayerPermission)[]): (vehicle: Vehicle) => void;
+export type Allowlist = (number | PlayerPermission)[] | (() => (number | PlayerPermission)[]);
 
 // @public
-export function banVehicles(vehicles: (Vehicles | string)[], action: (vehicle: Vehicle) => void, allowlist?: (number | PlayerPermission)[]): (vehicle: Vehicle) => void;
+export function autoAnnouncement(server: Server, message: string, interval?: number): NodeJS.Timeout;
 
-// @public (undocumented)
+// @public
+export function autoCommand(server: Server, command: string, interval?: number): NodeJS.Timeout;
+
+// @public
+export function autoHint(server: Server, message: string, interval?: number): NodeJS.Timeout;
+
+// @public
+export function banCommand(commands: string | string[], action: (log: CommandLog) => void, startsWith?: boolean, allowlist?: Allowlist): (log: CommandLog) => void;
+
+// @public
+export function banKickRejoin(timespan?: number): (player: Player) => void;
+
+// @public
+export function banLiveries(liveries: (Livery | string)[], action: (vehicle: Vehicle) => void, allowlist?: Allowlist): (vehicle: Vehicle) => void;
+
+// @public
+export function banVehicles(vehicles: (Vehicles | string)[], action: (vehicle: Vehicle) => void, allowlist?: Allowlist): (vehicle: Vehicle) => void;
+
+// @public
+export class CommandPunishments {
+    static ban(): (log: CommandLog) => void;
+    static kick(): (log: CommandLog) => void;
+    static removePermissions(): (log: CommandLog) => void;
+}
+
+// @public
+export interface Livery {
+    livery: string;
+    vehicle: Vehicles;
+}
+
+// @public
 export class LiveryPunishments {
-    // (undocumented)
     static warnThenKick(delay?: number, warning?: boolean, message?: string): (vehicle: Vehicle) => void;
 }
 
-// @public (undocumented)
+// @public
+export function RDM(action: (log: KillLog) => void, allowlist?: Allowlist, minKills?: number, timespan?: number): (log: KillLog) => void;
+
+// @public
 export class VehiclePunishments {
-    // (undocumented)
     static warnThenKick(delay?: number, warning?: boolean, message?: string): (vehicle: Vehicle) => void;
 }
 

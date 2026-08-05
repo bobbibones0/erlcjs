@@ -1,5 +1,5 @@
 import { Base } from './base.js';
-import { Client } from '../client/client.js';
+import type { Server } from '../client/server.js';
 import { type RawPlayerData } from '../types/index.js';
 
 /**
@@ -49,11 +49,11 @@ export class Player extends Base {
 
     /**
      * Creates an instance of Player.
-     * @param client - The ERLCApi client.
+     * @param server - The server the player is in.
      * @param data - The raw player data to initialize.
      */
-    constructor(client: Client, data: RawPlayerData) {
-        super(client);
+    constructor(server: Server, data: RawPlayerData) {
+        super(server);
         this._patch(data);
     }
 
@@ -86,7 +86,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the kick command is sent.
      */
     public async kick(reason: string = 'Kicked by API'): Promise<void> {
-        await this.client.commands.execute(`:kick ${this.username} ${reason}`);
+        await this.server.commands.execute(`:kick ${this.username} ${reason}`);
     }
 
     /**
@@ -95,7 +95,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the ban command is sent.
      */
     public async ban(reason: string = 'Banned by API'): Promise<void> {
-        await this.client.commands.execute(`:ban ${this.username} ${reason}`);
+        await this.server.commands.execute(`:ban ${this.username} ${reason}`);
     }
 
     /**
@@ -103,7 +103,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the jail command is sent.
      */
     public async jail(): Promise<void> {
-        await this.client.commands.execute(`:jail ${this.username}`);
+        await this.server.commands.execute(`:jail ${this.username}`);
     }
 
     /**
@@ -111,7 +111,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the heal command is sent.
      */
     public async heal(): Promise<void> {
-        await this.client.commands.execute(`:heal ${this.username}`);
+        await this.server.commands.execute(`:heal ${this.username}`);
     }
 
     /**
@@ -119,7 +119,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the kill command is sent.
      */
     public async kill(): Promise<void> {
-        await this.client.commands.execute(`:kill ${this.username}`);
+        await this.server.commands.execute(`:kill ${this.username}`);
     }
 
     /**
@@ -127,7 +127,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the wanted command is sent.
      */
     public async wanted(): Promise<void> {
-        await this.client.commands.execute(`:wanted ${this.username}`);
+        await this.server.commands.execute(`:wanted ${this.username}`);
     }
 
     /**
@@ -135,7 +135,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the respawn command is sent.
      */
     public async respawn(): Promise<void> {
-        await this.client.commands.execute(`:respawn ${this.username}`);
+        await this.server.commands.execute(`:respawn ${this.username}`);
     }
 
     /**
@@ -143,7 +143,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the load command is sent.
      */
     public async load(): Promise<void> {
-        await this.client.commands.execute(`:load ${this.username}`);
+        await this.server.commands.execute(`:load ${this.username}`);
     }
 
     /**
@@ -151,7 +151,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the refresh command is sent.
      */
     public async refresh(): Promise<void> {
-        await this.client.commands.execute(`:refresh ${this.username}`);
+        await this.server.commands.execute(`:refresh ${this.username}`);
     }
 
     /**
@@ -159,7 +159,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the helper command is sent.
      */
     public async helper(): Promise<void> {
-        await this.client.commands.execute(`:helper ${this.username}`);
+        await this.server.commands.execute(`:helper ${this.username}`);
     }
 
     /**
@@ -167,7 +167,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the unhelper command is sent.
      */
     public async unhelper(): Promise<void> {
-        await this.client.commands.execute(`:unhelper ${this.username}`);
+        await this.server.commands.execute(`:unhelper ${this.username}`);
     }
 
     /**
@@ -175,7 +175,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the mod command is sent.
      */
     public async mod(): Promise<void> {
-        await this.client.commands.execute(`:mod ${this.username}`);
+        await this.server.commands.execute(`:mod ${this.username}`);
     }
 
     /**
@@ -183,7 +183,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the unmod command is sent.
      */
     public async unmod(): Promise<void> {
-        await this.client.commands.execute(`:unmod ${this.username}`);
+        await this.server.commands.execute(`:unmod ${this.username}`);
     }
 
     /**
@@ -191,7 +191,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the admin command is sent.
      */
     public async admin(): Promise<void> {
-        await this.client.commands.execute(`:admin ${this.username}`);
+        await this.server.commands.execute(`:admin ${this.username}`);
     }
 
     /**
@@ -199,7 +199,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the unadmin command is sent.
      */
     public async unadmin(): Promise<void> {
-        await this.client.commands.execute(`:unadmin ${this.username}`);
+        await this.server.commands.execute(`:unadmin ${this.username}`);
     }
 
     /**
@@ -209,7 +209,7 @@ export class Player extends Base {
      */
     public async tp(player: Player | number): Promise<void> {
         const playerId = player instanceof Player ? player.id : player;
-        await this.client.commands.execute(`:tp ${this.username} ${playerId}`);
+        await this.server.commands.execute(`:tp ${this.username} ${playerId}`);
     }
 
     /**
@@ -218,7 +218,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the message command is sent.
      */
     public async message(text: string): Promise<void> {
-        await this.client.commands.execute(`:pm ${this.username} ${text}`);
+        await this.server.commands.execute(`:pm ${this.username} ${text}`);
     }
 
     /**
@@ -227,7 +227,7 @@ export class Player extends Base {
      * @returns A promise that resolves when the message command is sent.
      */
     public async pm(text: string): Promise<void> {
-        await this.client.commands.execute(`:pm ${this.username} ${text}`);
+        await this.server.commands.execute(`:pm ${this.username} ${text}`);
     }
 
     /**
@@ -237,7 +237,7 @@ export class Player extends Base {
      * It does not fetch new data from the server, so it may not be up-to-date.
      */
     public get vehicles() {
-        return Array.from(this.client.vehicles.cache.values()).filter(v => v.owner.id === this.id);
+        return Array.from(this.server.vehicles.cache.values()).filter(v => v.owner.id === this.id);
     }
 
     /**
@@ -247,7 +247,7 @@ export class Player extends Base {
      * It does not fetch new data from the server, so it may not be up-to-date.
      */
     public get commandLogs() {
-        return Array.from(this.client.commandLogs.cache.values()).filter(log => log.player.id === this.id);
+        return Array.from(this.server.commandLogs.cache.values()).filter(log => log.player.id === this.id);
     }
 
     /**
@@ -257,7 +257,7 @@ export class Player extends Base {
      * It does not fetch new data from the server, so it may not be up-to-date.
      */
     public get kills() {
-        return Array.from(this.client.killLogs.cache.values()).filter(log => log.killer.id === this.id);
+        return Array.from(this.server.killLogs.cache.values()).filter(log => log.killer.id === this.id);
     }
 
     /**
@@ -267,7 +267,7 @@ export class Player extends Base {
      * It does not fetch new data from the server, so it may not be up-to-date.
      */
     public get deaths() {
-        return Array.from(this.client.killLogs.cache.values()).filter(log => log.killed.id === this.id);
+        return Array.from(this.server.killLogs.cache.values()).filter(log => log.killed.id === this.id);
     }
 
     /**

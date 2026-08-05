@@ -4,33 +4,34 @@
 
 ```ts
 
+import { EmergencyCall } from '@erlcjs/core';
+import { EmergencyCallManager } from '@erlcjs/core';
 import { Player } from '@erlcjs/core';
 import { PlayerManager } from '@erlcjs/core';
 
-// @public (undocumented)
-export function drawMap(players: PlayerManager | Player[], map: MapType | string | Buffer | ArrayBuffer, options?: MapOptions): Promise<Buffer<ArrayBufferLike>>;
+// @public
+export function drawMap(options: MapOptions): Promise<Buffer<ArrayBufferLike>>;
 
-// @public (undocumented)
+// @public
 export function fetchMap(map: MapType): Promise<ArrayBuffer>;
 
-// @public (undocumented)
+// @public
 export function fetchRobloxHeadshots(userIds: number[], size?: string): Promise<Map<number, string>>;
 
-// @public (undocumented)
+// @public
 export interface MapOptions {
-    // (undocumented)
+    emergencyCalls?: EmergencyCallManager | EmergencyCall[];
+    map: MapType | string | Buffer | ArrayBuffer;
+    players?: PlayerManager | Player[];
+    showModCalls?: boolean;
     size?: 48 | 50 | 60 | 75 | 100 | 110 | 150 | 180;
 }
 
-// @public (undocumented)
+// @public
 export enum MapType {
-    // (undocumented)
     fall = "fall_blank.png",
-    // (undocumented)
     fall_postals = "fall_postals.png",
-    // (undocumented)
     snow = "snow_blank.png",
-    // (undocumented)
     snow_postals = "snow_postals.png"
 }
 

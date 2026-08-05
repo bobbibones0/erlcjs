@@ -5,7 +5,7 @@ sidebar:
     order: 1
 ---
 
-The `Client` class is the central coordinator of erlc.js. It coordinates HTTP REST calls, handles token/key management, and manages the cache and event emitters.
+The `Client` class is the central coordinator of erlc.js. It manages multiple ER:LC game servers, coordinates HTTP REST calls, handles token/key management, and manages per-server caches and event emitters.
 
 ## Initialization Options
 
@@ -15,18 +15,26 @@ To construct a new `Client` instance, pass in a config object conforming to the 
 import { Client } from '@erlcjs/core';
 
 const client = new Client({
-    serverKey: 'YOUR_SERVER_KEY',
+    servers: ['YOUR_SERVER_KEY_1', 'YOUR_SERVER_KEY_2'], // each key's server ID is parsed automatically
     globalKey: 'OPTIONAL_GLOBAL_KEY',
     globalAppId: 'OPTIONAL_GLOBAL_APP_ID',
     polling: true,
 });
 ```
 
+Each server is registered under `client.servers`, keyed by its server ID (parsed from the key). Access a server's managers and caches through its `Server` object:
+
+```typescript
+const server = client.servers.get('YOUR_SERVER_ID');
+server.players.cache;
+server.commands.execute(':pm jamie hello');
+```
+
 ### Option Fields
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
-| `serverKey` | `string` | **Required.** The Server API key retrieved from your private server settings. |
+| `servers` | `string[]` | **Required.** The Server API keys to manage, retrieved from your private server settings. |
 | `globalKey` | `string` | *Optional.* A global key generated for your application. |
 | `globalAppId` | `string | number` | **Optional.** The global app ID generated for your application. Used to create authorization links.
 | `polling` | `object | boolean` | *Optional.* If `true`, the client requests server data updates every 5 seconds. |
@@ -45,13 +53,13 @@ It is recommended to use polling and webhooks
 
 ### 1. Polling Mode
 
-In Polling Mode, the client triggers a background timer that fetches server logs and status every 5 seconds.
+In Polling Mode, the client triggers a background timer that fetches server logs and status every 5 seconds for every configured server.
 *   **Pros:** Requires no public IP, port forwarding, or domain names. Great for local developer environments or simple scripts.
 *   **Cons:** Higher resource utilization (HTTP overhead) and up to a 5-second delay for game events.
 
 ```javascript
 const client = new Client({
-    serverKey: 'YOUR_KEY',
+    servers: ['YOUR_KEY'],
     polling: { // Starts polling immediately upon construction
         enabled: true
     }
@@ -64,18 +72,17 @@ Webhooks are required to receive custom command events
 
 ### 2. Webhook Gateway Mode
 
-In Webhook Gateway Mode, your script spins up a local HTTP server that waits for incoming POST webhooks pushed by ER:LC server hooks.
+In Webhook Gateway Mode, your script spins up a local HTTP server that waits for incoming POST webhooks pushed by ER:LC server hooks. A single webhook server handles all managed servers, routing events to the correct server by their origin.
 *   **Pros:** Extremely fast (near real-time latency), highly efficient (no constant polling requests).
 *   **Cons:** Your server must expose a public port (or use a tunnel like ngrok) to allow Roblox servers to reach it.
 
 ```javascript
 const client = new Client({
-    serverKey: 'YOUR_KEY',
+    servers: ['YOUR_KEY'],
     webhook: {
         enabled: true,
         port: 3000,
-        path: '/webhook',
-        secret: 'my-webhook-secret' // Verify requests security
+        path: '/webhook'
     }
 });
 ```

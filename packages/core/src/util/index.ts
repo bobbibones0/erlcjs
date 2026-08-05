@@ -2,6 +2,7 @@
  * Recursively converts all object keys in a JSON payload from camelCase to PascalCase.
  * @param obj - The raw JSON payload or array.
  * @returns The converted object with PascalCase keys.
+ * @public
  */
 export function convertToPascalCase(obj: any): any {
     if (typeof obj !== 'object' || obj === null) {

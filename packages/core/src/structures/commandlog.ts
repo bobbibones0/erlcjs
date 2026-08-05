@@ -1,4 +1,4 @@
-import { Client } from '../client/client.js';
+import type { Server } from '../client/server.js';
 import { Base } from './base.js';
 import type { RawCommandLog } from '../types/index.js';
 import { Player } from './player.js';
@@ -31,11 +31,11 @@ export class CommandLog extends Base {
 
     /**
      * Creates an instance of CommandLog.
-     * @param client - The ERLCApi client.
+     * @param server - The server the command was run in.
      * @param data - The raw command log data to initialize.
      */
-    constructor(client: Client, data: RawCommandLog) {
-        super(client);
+    constructor(server: Server, data: RawCommandLog) {
+        super(server);
         this._patch(data);
     }
 
@@ -48,7 +48,7 @@ export class CommandLog extends Base {
         const splitPlayer = data.Player.split(':');
         this.playerId = Number(splitPlayer[1]);
         this.playerUsername = splitPlayer[0]!;
-        this.player = this.client.players.cache.get(this.playerId)!;
+        this.player = this.server.players.cache.get(this.playerId)!;
         this.command = data.Command;
         this.timestamp = data.Timestamp;
         return this;

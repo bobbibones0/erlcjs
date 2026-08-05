@@ -191,60 +191,11 @@
         {
           "kind": "Function",
           "canonicalReference": "@erlcjs/map!drawMap:function(1)",
-          "docComment": "",
+          "docComment": "/**\n * Renders a map using the specified options are returns it as a buffer.\n *\n * @param options - What to include in the map.\n *\n * @returns Image Buffer of the map.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "declare function drawMap(players: "
-            },
-            {
-              "kind": "Reference",
-              "text": "PlayerManager",
-              "canonicalReference": "@erlcjs/core!PlayerManager:class"
-            },
-            {
-              "kind": "Content",
-              "text": " | "
-            },
-            {
-              "kind": "Reference",
-              "text": "Player",
-              "canonicalReference": "@erlcjs/core!Player:class"
-            },
-            {
-              "kind": "Content",
-              "text": "[]"
-            },
-            {
-              "kind": "Content",
-              "text": ", map: "
-            },
-            {
-              "kind": "Reference",
-              "text": "MapType",
-              "canonicalReference": "@erlcjs/map!MapType:enum"
-            },
-            {
-              "kind": "Content",
-              "text": " | string | "
-            },
-            {
-              "kind": "Reference",
-              "text": "Buffer",
-              "canonicalReference": "!\"\\\"node:buffer\\\"\".__global.Buffer:interface"
-            },
-            {
-              "kind": "Content",
-              "text": " | "
-            },
-            {
-              "kind": "Reference",
-              "text": "ArrayBuffer",
-              "canonicalReference": "!ArrayBuffer:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ", options?: "
+              "text": "declare function drawMap(options: "
             },
             {
               "kind": "Reference",
@@ -289,35 +240,19 @@
           ],
           "fileUrlPath": "dist/index.d.ts",
           "returnTypeTokenRange": {
-            "startIndex": 14,
-            "endIndex": 20
+            "startIndex": 3,
+            "endIndex": 9
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
           "parameters": [
             {
-              "parameterName": "players",
-              "parameterTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 5
-              },
-              "isOptional": false
-            },
-            {
-              "parameterName": "map",
-              "parameterTypeTokenRange": {
-                "startIndex": 6,
-                "endIndex": 11
-              },
-              "isOptional": false
-            },
-            {
               "parameterName": "options",
               "parameterTypeTokenRange": {
-                "startIndex": 12,
-                "endIndex": 13
+                "startIndex": 1,
+                "endIndex": 2
               },
-              "isOptional": true
+              "isOptional": false
             }
           ],
           "name": "drawMap"
@@ -325,7 +260,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@erlcjs/map!fetchMap:function(1)",
-          "docComment": "",
+          "docComment": "/**\n * Fetches the map from the ER:LC API.\n *\n * @param map - The map type to fetch.\n *\n * @returns Array Buffer of the map.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -385,7 +320,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@erlcjs/map!fetchRobloxHeadshots:function(1)",
-          "docComment": "",
+          "docComment": "/**\n * Fetches headshots of players from the Roblox API.\n *\n * @param userIds - The userIds to get the headshots for.\n *\n * @param size - The image size, defaults to 60x60px.\n *\n * @returns Map of all player headshots that were successfully returned by the Roblox API.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -460,7 +395,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@erlcjs/map!MapOptions:interface",
-          "docComment": "",
+          "docComment": "/**\n * Map Options to customise the map generation.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -474,8 +409,163 @@
           "members": [
             {
               "kind": "PropertySignature",
+              "canonicalReference": "@erlcjs/map!MapOptions#emergencyCalls:member",
+              "docComment": "/**\n * Emergency calls to show on the map.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "emergencyCalls?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "EmergencyCallManager",
+                  "canonicalReference": "@erlcjs/core!EmergencyCallManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "EmergencyCall",
+                  "canonicalReference": "@erlcjs/core!EmergencyCall:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "emergencyCalls",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@erlcjs/map!MapOptions#map:member",
+              "docComment": "/**\n * The map used in the background, can use a preset map from ER:LC or a custom map.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "map: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "MapType",
+                  "canonicalReference": "@erlcjs/map!MapType:enum"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | string | "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Buffer",
+                  "canonicalReference": "!\"\\\"node:buffer\\\"\".__global.Buffer:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ArrayBuffer",
+                  "canonicalReference": "!ArrayBuffer:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "map",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 6
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@erlcjs/map!MapOptions#players:member",
+              "docComment": "/**\n * Players to show on the map.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "players?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "PlayerManager",
+                  "canonicalReference": "@erlcjs/core!PlayerManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Player",
+                  "canonicalReference": "@erlcjs/core!Player:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "players",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@erlcjs/map!MapOptions#showModCalls:member",
+              "docComment": "/**\n * Whether to show mod calls on the map.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "showModCalls?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "showModCalls",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
               "canonicalReference": "@erlcjs/map!MapOptions#size:member",
-              "docComment": "",
+              "docComment": "/**\n * Player image size, defaults to 60.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -505,7 +595,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@erlcjs/map!MapType:enum",
-          "docComment": "",
+          "docComment": "/**\n * Enum of maps provided by ER:LC.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -520,7 +610,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@erlcjs/map!MapType.fall:member",
-              "docComment": "",
+              "docComment": "/**\n * Fall Map\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -541,7 +631,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@erlcjs/map!MapType.fall_postals:member",
-              "docComment": "",
+              "docComment": "/**\n * Fall Map with Postals\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -562,7 +652,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@erlcjs/map!MapType.snow:member",
-              "docComment": "",
+              "docComment": "/**\n * Snow Map\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -583,7 +673,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@erlcjs/map!MapType.snow_postals:member",
-              "docComment": "",
+              "docComment": "/**\n * Snow Map with Postals\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",

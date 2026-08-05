@@ -1,12 +1,12 @@
-import { Client } from '../client/client.js';
 import { Base } from './base.js';
+import type { Server } from '../client/server.js';
 import type { RawServerData } from '../types/index.js';
 
 /**
- * Represents the ER:LC game server and its current configuration/state.
+ * Represents the current configuration/state snapshot of an ER:LC game server.
  * @public
  */
-export class Server extends Base {
+export class ServerInfo extends Base {
     /**
      * The name of the server.
      */
@@ -45,19 +45,19 @@ export class Server extends Base {
     queue!: number[];
 
     /**
-     * Creates an instance of Server.
-     * @param client - The ERLCApi client.
+     * Creates an instance of ServerInfo.
+     * @param server - The server this information belongs to.
      * @param data - The raw server data to initialize.
      */
-    constructor(client: Client, data: RawServerData) {
-        super(client);
+    constructor(server: Server, data: RawServerData) {
+        super(server);
         this._patch(data);
     }
 
     /**
-     * Patches the Server instance with new raw data.
+     * Patches the ServerInfo instance with new raw data.
      * @param data - The new raw server data.
-     * @returns This server instance.
+     * @returns This ServerInfo instance.
      */
     public _patch(data: RawServerData): this {
         this.name = data.Name;
@@ -92,7 +92,7 @@ export class Server extends Base {
     }
 
     /**
-     * Converts this Server instance back to its raw JSON structure.
+     * Converts this ServerInfo instance back to its raw JSON structure.
      * @returns The raw server data.
      */
     public toJSON(): RawServerData {

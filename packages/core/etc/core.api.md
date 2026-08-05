@@ -8,34 +8,33 @@ import { EventEmitter } from 'node:events';
 
 // @public
 export class Base {
-    constructor(client: Client);
+    constructor(server: Server);
+    get client(): Client;
     // (undocumented)
-    readonly client: Client;
+    readonly server: Server;
 }
 
 // @public
 export class Client extends EventEmitter<ClientEvents> {
     constructor(options: ClientOptions);
-    get authorizationLink(): string;
-    commandLogs: CommandLogManager;
-    commands: CommandManager;
+    addServer(key: string): Server;
     destroy(): void;
-    emergencyCalls: EmergencyCallManager;
+    // @internal
+    _emitError(err: unknown): void;
     globalAppId?: string | number;
-    killLogs: KillLogManager;
-    modCalls: ModCallManager;
+    // @internal
+    _handleServerReady(): void;
+    get isPolling(): boolean;
+    onceReady(): Promise<this>;
     // (undocumented)
     options: ClientOptions;
-    players: PlayerManager;
     registerCommand(cmd: InGameCommand): void;
+    removeServer(id: string | number): boolean;
     rest: RestManager;
-    server: ServerManager;
-    serverId: string;
-    staff: StaffManager;
-    startPolling(pollRateMs: number): void;
+    servers: ServerManager;
+    startPolling(pollRateMs?: number): void;
     stopPolling(): void;
     unregisterCommand(commandName: string): void;
-    vehicles: VehicleManager;
     waitFor<K extends keyof ClientEvents>(event: K, timeoutMs?: number): Promise<ClientEvents[K]>;
 }
 
@@ -53,16 +52,19 @@ export interface ClientEvents {
     [ERLCEvents.playerJoin]: [player: Player];
     [ERLCEvents.playerLeave]: [player: Player];
     [ERLCEvents.playerUpdate]: [oldPlayer: Player | null, newPlayer: Player];
-    [ERLCEvents.poll]: [server: RawServerData];
+    [ERLCEvents.poll]: [server: Server];
     [ERLCEvents.ready]: [];
-    [ERLCEvents.serverCreate]: [server: Server];
-    [ERLCEvents.serverUpdate]: [oldServer: Server | null, newServer: Server];
+    [ERLCEvents.serverCreate]: [server: ServerInfo];
+    [ERLCEvents.serverOffline]: [server: Server];
+    [ERLCEvents.serverOnline]: [server: Server];
+    [ERLCEvents.serverReady]: [server: Server];
+    [ERLCEvents.serverUpdate]: [oldServer: ServerInfo | null, newServer: ServerInfo];
     [ERLCEvents.staffAdd]: [staff: Staff, type: 'Admin' | 'Mod' | 'Helper'];
     [ERLCEvents.staffRemove]: [staff: Staff, type: 'Admin' | 'Mod' | 'Helper'];
     [ERLCEvents.vehicleAdd]: [vehicle: Vehicle];
     [ERLCEvents.vehicleRemove]: [vehicle: Vehicle];
     [ERLCEvents.vehicleUpdate]: [oldVehicle: Vehicle | null, newVehicle: Vehicle];
-    [ERLCEvents.webhookProbe]: [];
+    [ERLCEvents.webhookProbe]: [server: Server];
 }
 
 // @public
@@ -78,25 +80,31 @@ export interface ClientOptions {
     polling?: {
         enabled: boolean;
         pollingRateMs?: number;
+        autoStartPolling?: boolean;
     } | true;
-    serverKey: string;
+    servers: string[];
     webhook?: {
         enabled: boolean;
         port: number;
         path?: string;
-        secret?: string;
     };
 }
 
 // @public
 export class Collection<K, V> extends Map<K, V> {
+    at(index: number): V | undefined;
+    every(predicate: (value: V, key: K) => boolean): boolean;
     filter(predicate: (value: V, key: K) => boolean): Collection<K, V>;
     find(predicate: (value: V, key: K) => boolean): V | undefined;
+    findKey(predicate: (value: V, key: K) => boolean): K | undefined;
+    first(): V | undefined;
+    last(): V | undefined;
+    some(predicate: (value: V, key: K) => boolean): boolean;
 }
 
 // @public
 export class CommandLog extends Base {
-    constructor(client: Client, data: RawCommandLog);
+    constructor(server: Server, data: RawCommandLog);
     command: string;
     _patch(data: RawCommandLog): this;
     player: Player;
@@ -108,7 +116,7 @@ export class CommandLog extends Base {
 
 // @public
 export class CommandLogManager {
-    constructor(client: Client, maxCacheSize?: number | undefined);
+    constructor(server: Server, maxCacheSize?: number | undefined);
     cache: Collection<string, CommandLog>;
     fetchAll(): Promise<Collection<string, CommandLog>>;
     updateCache(rawCommands: RawCommandLog[]): Collection<string, CommandLog>;
@@ -116,7 +124,7 @@ export class CommandLogManager {
 
 // @public
 export class CommandManager {
-    constructor(client: Client);
+    constructor(server: Server);
     execute(command: string): Promise<string>;
 }
 
@@ -129,8 +137,13 @@ export class CustomCommandError extends Error {
 }
 
 // @public
+export class DuplicateServerError extends Error {
+    constructor(serverId: string, message?: string);
+}
+
+// @public
 export class EmergencyCall extends Base {
-    constructor(client: Client, data: RawEmergencyCall);
+    constructor(server: Server, data: RawEmergencyCall);
     caller: Player;
     callerId: number;
     callNumber: number;
@@ -147,7 +160,7 @@ export class EmergencyCall extends Base {
 
 // @public
 export class EmergencyCallManager {
-    constructor(client: Client);
+    constructor(server: Server);
     addCall(callData: RawWebhookEmergencyCall): void;
     cache: Collection<number, EmergencyCall>;
     fetchAll(): Promise<Collection<number, EmergencyCall>>;
@@ -176,6 +189,9 @@ export enum ERLCEvents {
     poll = "POLL",
     ready = "READY",
     serverCreate = "SERVER_CREATE",
+    serverOffline = "SERVER_OFFLINE",
+    serverOnline = "SERVER_ONLINE",
+    serverReady = "SERVER_READY",
     serverUpdate = "SERVER_UPDATE",
     staffAdd = "STAFF_ADD",
     staffRemove = "STAFF_REMOVE",
@@ -214,7 +230,7 @@ export class InvalidServerKeyError extends Error {
 
 // @public
 export class KillLog extends Base {
-    constructor(client: Client, data: RawKillLog);
+    constructor(server: Server, data: RawKillLog);
     killed: Player;
     killedId: number;
     killedUsername: string;
@@ -228,7 +244,7 @@ export class KillLog extends Base {
 
 // @public
 export class KillLogManager {
-    constructor(client: Client, maxCacheSize?: number | undefined);
+    constructor(server: Server, maxCacheSize?: number | undefined);
     cache: Collection<string, KillLog>;
     fetchAll(): Promise<Collection<string, KillLog>>;
     updateCache(rawCommands: RawKillLog[]): Collection<string, KillLog>;
@@ -236,7 +252,7 @@ export class KillLogManager {
 
 // @public
 export class ModCall extends Base {
-    constructor(client: Client, data: RawModCall);
+    constructor(server: Server, data: RawModCall);
     caller: Player;
     callerId: number;
     callerUsername: string;
@@ -250,7 +266,7 @@ export class ModCall extends Base {
 
 // @public
 export class ModCallManager {
-    constructor(client: Client, maxCacheSize?: number | undefined);
+    constructor(server: Server, maxCacheSize?: number | undefined);
     cache: Collection<string, ModCall>;
     fetchAll(): Promise<Collection<string, ModCall>>;
     updateCache(rawModCalls: RawModCall[]): Collection<string, ModCall>;
@@ -263,7 +279,7 @@ export class OutOfDateServerError extends Error {
 
 // @public
 export class Player extends Base {
-    constructor(client: Client, data: RawPlayerData);
+    constructor(server: Server, data: RawPlayerData);
     admin(): Promise<void>;
     ban(reason?: string): Promise<void>;
     callsign?: string;
@@ -305,8 +321,9 @@ export class Player extends Base {
 
 // @public
 export class PlayerManager {
-    constructor(client: Client);
+    constructor(server: Server);
     cache: Collection<number, Player>;
+    clear(): void;
     fetchAll(): Promise<Collection<number, Player>>;
     getIdFromName(name: string): number | undefined;
     get onlineStaff(): Player[];
@@ -318,7 +335,7 @@ export class PlayerManager {
     get wanted(): Player[];
 }
 
-// @public (undocumented)
+// @public
 export enum PlayerPermission {
     // (undocumented)
     Administrator = "Server Administrator",
@@ -391,7 +408,7 @@ export interface RawPlayerData {
     WantedStars: number;
 }
 
-// @public (undocumented)
+// @public
 export type RawPlayerPermission = 'Normal' | 'Server Administrator' | 'Server Owner' | 'Server Moderator';
 
 // @public
@@ -446,8 +463,16 @@ export interface RawWebhookEmergencyCall {
 
 // @public
 export class RestManager {
-    constructor(options: ClientOptions);
-    request(method: 'GET' | 'POST', endpoint: string, body?: any): Promise<any>;
+    constructor(globalKey?: string | undefined);
+    getRateLimits(): Record<string, {
+        limit: number;
+        remaining: number;
+        reset: number;
+        inflight: number;
+        frozenUntil: number;
+    }>;
+    get inflight(): number;
+    request(method: 'GET' | 'POST', endpoint: string, body?: any, serverKey?: string): Promise<any>;
 }
 
 // @public
@@ -461,8 +486,47 @@ export class RestrictedResourceError extends Error {
 }
 
 // @public
-export class Server extends Base {
-    constructor(client: Client, data: RawServerData);
+export class Server {
+    constructor(client: Client, key: string);
+    get authorizationLink(): string;
+    clearCaches(): void;
+    readonly client: Client;
+    commandLogs: CommandLogManager;
+    commands: CommandManager;
+    destroy(): void;
+    emergencyCalls: EmergencyCallManager;
+    fetch(): Promise<RawServerData>;
+    get hasPolledOnce(): boolean;
+    get hasQueue(): boolean;
+    readonly id: string;
+    info?: ServerInfo;
+    readonly inGameCommands: Collection<string, InGameCommand>;
+    get isFull(): boolean;
+    get isPolling(): boolean;
+    readonly key: string;
+    killLogs: KillLogManager;
+    modCalls: ModCallManager;
+    offline: boolean;
+    players: PlayerManager;
+    registerCommand(cmd: InGameCommand): void;
+    request(method: 'GET' | 'POST', endpoint: string, body?: any): Promise<any>;
+    readonly rest: Pick<RestManager, 'request'>;
+    staff: StaffManager;
+    startPolling(pollRateMs?: number): void;
+    stopPolling(): void;
+    unregisterCommand(commandName: string): void;
+    vehicles: VehicleManager;
+    waitFor<K extends keyof ClientEvents>(event: K, timeoutMs?: number): Promise<ClientEvents[K]>;
+}
+
+// @public
+export class ServerBannedError extends Error {
+    constructor(message?: string);
+}
+
+// @public
+export class ServerInfo extends Base {
+    constructor(server: Server, data: RawServerData);
     accVerifiedReq: 'Disabled' | 'Email' | 'Phone/ID';
     compare(data: RawServerData): boolean;
     coOwnerIds: number[];
@@ -478,17 +542,16 @@ export class Server extends Base {
 }
 
 // @public
-export class ServerBannedError extends Error {
-    constructor(message?: string);
+export class ServerManager extends Collection<string, Server> {
+    constructor(client: Client);
+    add(server: Server): this;
+    clearServers(): void;
+    resolve(id: string | number): Server | undefined;
 }
 
 // @public
-export class ServerManager {
-    constructor(client: Client);
-    cache?: Server;
-    fetch(): Promise<RawServerData>;
-    get hasQueue(): boolean;
-    get isFull(): boolean;
+export class ServerNotConfiguredError extends Error {
+    constructor(serverId?: string, message?: string);
 }
 
 // @public
@@ -498,7 +561,7 @@ export class ServerOfflineError extends Error {
 
 // @public
 export class Staff extends Base {
-    constructor(client: Client, userId: string, username: string);
+    constructor(server: Server, userId: string, username: string);
     id: number;
     online: boolean;
     _patch(userId: string, username: string): this;
@@ -508,7 +571,7 @@ export class Staff extends Base {
 
 // @public
 export class StaffManager {
-    constructor(client: Client);
+    constructor(server: Server);
     admins: Collection<number, Staff>;
     fetchAll(): Promise<Collection<string, Collection<number, Staff>>>;
     helpers: Collection<number, Staff>;
@@ -528,7 +591,7 @@ export class UnauthorizedError extends Error {
 
 // @public
 export class Vehicle extends Base {
-    constructor(client: Client, data: RawVehicle);
+    constructor(server: Server, data: RawVehicle);
     colorHex: string;
     colorName: string;
     name: string;
@@ -543,16 +606,14 @@ export class Vehicle extends Base {
 
 // @public
 export class VehicleManager {
-    constructor(client: Client);
+    constructor(server: Server);
     cache: Collection<string, Vehicle>;
     fetchAll(): Promise<Collection<string, Vehicle>>;
     updateCache(rawVehicles: RawVehicle[]): Collection<string, Vehicle>;
 }
 
-// @public (undocumented)
+// @public
 export enum Vehicles {
-    // (undocumented)
-    _4_WHEELER = "4-Wheeler",
     // (undocumented)
     AIKAWA_STREET_SWEEPER_2010 = "Aikawa Street Sweeper 2010",
     // (undocumented)

@@ -1,5 +1,6 @@
-import { Client, ERLCEvents } from '../client/client.js';
-import { Collection } from '../index.js';
+import type { Server } from '../client/server.js';
+import { ERLCEvents } from '../client/events.js';
+import { Collection } from '../util/collection.js';
 import { Vehicle } from '../structures/vehicle.js';
 import type { RawServerData, RawVehicle } from '../types/index.js';
 
@@ -15,9 +16,9 @@ export class VehicleManager {
 
     /**
      * Creates an instance of VehicleManager.
-     * @param client - The erlcjs client.
+     * @param server - The server this manager belongs to.
      */
-    constructor(private readonly client: Client) {}
+    constructor(private readonly server: Server) {}
 
     /**
      * Fetches all active vehicles currently spawned in the game server.
@@ -25,7 +26,7 @@ export class VehicleManager {
      * @returns A promise resolving to a Collection of active Vehicles.
      */
     public async fetchAll(): Promise<Collection<string, Vehicle>> {
-        const rawServer: RawServerData = await this.client.rest.request(
+        const rawServer: RawServerData = await this.server.rest.request(
             'GET',
             '/v2/server?Vehicles=true',
         );
@@ -49,24 +50,24 @@ export class VehicleManager {
             const cachedVehicle = this.cache.get(plate);
 
             if (cachedVehicle) {
-                const oldVehicle = new Vehicle(this.client, cachedVehicle.toJSON());
+                const oldVehicle = new Vehicle(this.server, cachedVehicle.toJSON());
                 cachedVehicle._patch(rawData);
                 if (oldVehicle.name === rawData.Name) {
-                    this.client.emit(ERLCEvents.vehicleUpdate, oldVehicle, cachedVehicle);
+                    this.server.client.emit(ERLCEvents.vehicleUpdate, oldVehicle, cachedVehicle);
                 } else {
-                    this.client.emit(ERLCEvents.vehicleRemove, oldVehicle);
-                    this.client.emit(ERLCEvents.vehicleAdd, cachedVehicle);
+                    this.server.client.emit(ERLCEvents.vehicleRemove, oldVehicle);
+                    this.server.client.emit(ERLCEvents.vehicleAdd, cachedVehicle);
                 }
             } else {
-                const newVehicle = new Vehicle(this.client, rawData);
+                const newVehicle = new Vehicle(this.server, rawData);
                 this.cache.set(newVehicle.plate, newVehicle);
-                this.client.emit(ERLCEvents.vehicleAdd, newVehicle);
+                this.server.client.emit(ERLCEvents.vehicleAdd, newVehicle);
             }
         }
 
         for (const cachedPlate of this.cache.keys()) {
             if (!activePlates.has(cachedPlate)) {
-                this.client.emit(ERLCEvents.vehicleRemove, this.cache.get(cachedPlate)!);
+                this.server.client.emit(ERLCEvents.vehicleRemove, this.cache.get(cachedPlate)!);
                 this.cache.delete(cachedPlate);
             }
         }

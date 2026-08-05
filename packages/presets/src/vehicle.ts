@@ -86,19 +86,19 @@ export class VehiclePunishments {
         return (vehicle: Vehicle) => {
             vehicle.owner.message(message ?? 'The vehicle you are using is restricted. Please change it.');
             setTimeout(async () => {
-                await vehicle.client.waitFor(ERLCEvents.poll, 5000);
+                await vehicle.server.waitFor(ERLCEvents.poll, 5000);
                 if (
-                    vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
-                    vehicle.client.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
+                    vehicle.server.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
+                    vehicle.server.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
                 )
                     return;
                 if (warning) {
                     vehicle.owner.message(`Change the vehicle in ${delay} seconds or you will be kicked.`);
                     setTimeout(async () => {
-                        await vehicle.client.waitFor(ERLCEvents.poll, 5000);
+                        await vehicle.server.waitFor(ERLCEvents.poll, 5000);
                         if (
-                            vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
-                            vehicle.client.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
+                            vehicle.server.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
+                            vehicle.server.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
                         )
                             return;
                         if (vehicle.owner.permission === 'Normal') vehicle.owner.kick('Failure to change from a banned vehicle.')
@@ -142,19 +142,19 @@ export class LiveryPunishments {
         return (vehicle: Vehicle) => {
             vehicle.owner.message(message ?? 'The livery you are using is restricted. Please change it.');
             setTimeout(async () => {
-                await vehicle.client.waitFor(ERLCEvents.poll, 5000);
+                await vehicle.server.waitFor(ERLCEvents.poll, 5000);
                 if (
-                    vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
-                    vehicle.client.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
+                    vehicle.server.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
+                    vehicle.server.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
                 )
                     return;
                 if (warning) {
                     vehicle.owner.message(`Change the livery in ${delay} seconds or you will be kicked.`);
                     setTimeout(async () => {
-                        await vehicle.client.waitFor(ERLCEvents.poll, 5000);
+                        await vehicle.server.waitFor(ERLCEvents.poll, 5000);
                         if (
-                            vehicle.client.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
-                            vehicle.client.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
+                            vehicle.server.vehicles.cache.get(vehicle.plate)?.ownerId !== vehicle.ownerId ||
+                            vehicle.server.vehicles.cache.get(vehicle.plate)?.name !== vehicle.name
                         )
                             return;
                         if (vehicle.owner.permission === 'Normal') vehicle.owner.kick('Failure to change from a banned livery.')

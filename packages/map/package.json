@@ -34,7 +34,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@erlcjs/core": "1.4.0",
+    "@erlcjs/core": "workspace:^",
     "sharp": "^0.34.5"
   },
   "devDependencies": {

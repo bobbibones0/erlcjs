@@ -190,7 +190,7 @@ export async function drawMap(options: MapOptions) {
                 top: Math.round(player.location.z - size / 2 - pinSize / 2),
             });
             if (showModCalls) {
-                const filtered = player.client.modCalls.cache.filter(v => v.callerId === player.id && (v.moderatorId === null || v.moderatorId === undefined))
+                const filtered = player.server.modCalls.cache.filter(v => v.callerId === player.id && (v.moderatorId === null || v.moderatorId === undefined))
                 if (filtered.size > 0) {
                     const modCallSVG = createModCallSVG(size, '#ffca2a');
                     const modCallSize = Math.round(size * 0.6);

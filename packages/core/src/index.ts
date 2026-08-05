@@ -1,5 +1,7 @@
 // Client
 export * from './client/client.js';
+export * from './client/server.js';
+export * from './client/events.js';
 
 // Gateway
 export * from './gateway/webhookserver.js';
@@ -21,7 +23,7 @@ export * from './managers/staffmanager.js';
 // Structures
 export * from './structures/base.js';
 export * from './structures/player.js';
-export * from './structures/server.js';
+export * from './structures/serverinfo.js';
 export * from './structures/vehicle.js';
 export * from './structures/commandlog.js';
 export * from './structures/emergencycall.js';

@@ -1,4 +1,5 @@
-import { Client, ERLCEvents } from '../client/client.js';
+import type { Server } from '../client/server.js';
+import { ERLCEvents } from '../client/events.js';
 import { EmergencyCall } from '../structures/emergencycall.js';
 import {
     type RawEmergencyCall,
@@ -20,9 +21,9 @@ export class EmergencyCallManager {
 
     /**
      * Creates an instance of EmergencyCallManager.
-     * @param client - The erlcjs client.
+     * @param server - The server this manager belongs to.
      */
-    constructor(private readonly client: Client) {}
+    constructor(private readonly server: Server) {}
 
     /**
      * Fetches all active emergency calls from the game server.
@@ -30,7 +31,7 @@ export class EmergencyCallManager {
      * @returns A promise resolving to a Collection of active EmergencyCalls.
      */
     public async fetchAll(): Promise<Collection<number, EmergencyCall>> {
-        const rawServer: RawServerData = await this.client.rest.request(
+        const rawServer: RawServerData = await this.server.rest.request(
             'GET',
             '/v2/server?EmergencyCalls=true',
         );
@@ -54,19 +55,19 @@ export class EmergencyCallManager {
             const cachedCall = this.cache.get(callNum);
 
             if (cachedCall) {
-                const oldCall = new EmergencyCall(this.client, cachedCall.toJSON());
+                const oldCall = new EmergencyCall(this.server, cachedCall.toJSON());
                 cachedCall._patch(rawData);
-                this.client.emit(ERLCEvents.emergencyCallUpdate, oldCall, cachedCall);
+                this.server.client.emit(ERLCEvents.emergencyCallUpdate, oldCall, cachedCall);
             } else {
-                const newCall = new EmergencyCall(this.client, rawData);
+                const newCall = new EmergencyCall(this.server, rawData);
                 this.cache.set(newCall.callNumber, newCall);
-                this.client.emit(ERLCEvents.emergencyCallAdd, newCall);
+                this.server.client.emit(ERLCEvents.emergencyCallAdd, newCall);
             }
         }
 
         for (const cachedCall of this.cache.keys()) {
             if (!activeCalls.has(cachedCall)) {
-                this.client.emit(ERLCEvents.emergencyCallRemove, this.cache.get(cachedCall)!);
+                this.server.client.emit(ERLCEvents.emergencyCallRemove, this.cache.get(cachedCall)!);
                 this.cache.delete(cachedCall);
             }
         }
@@ -89,9 +90,9 @@ export class EmergencyCallManager {
             // Polling found first ignore.
             return;
         } else {
-            const newCall = new EmergencyCall(this.client, pascalCallData);
+            const newCall = new EmergencyCall(this.server, pascalCallData);
             this.cache.set(newCall.callNumber, newCall);
-            this.client.emit(ERLCEvents.emergencyCallAdd, newCall);
+            this.server.client.emit(ERLCEvents.emergencyCallAdd, newCall);
         }
     }
 
@@ -104,7 +105,7 @@ export class EmergencyCallManager {
         const callNum = callData.callNumber;
         const exists = this.cache.has(callNum);
         if (!exists) return;
-        this.client.emit(ERLCEvents.emergencyCallRemove, this.cache.get(callNum)!);
+        this.server.client.emit(ERLCEvents.emergencyCallRemove, this.cache.get(callNum)!);
         this.cache.delete(callNum);
     }
 }

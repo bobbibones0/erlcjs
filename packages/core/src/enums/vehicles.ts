@@ -1,3 +1,7 @@
+/**
+ * Enumeration of vehicle names available in ER:LC.
+ * @public
+ */
 export enum Vehicles {
     // CIVILIAN VEHICLES
     // Normal Vehicles in price order
@@ -15,7 +19,6 @@ export enum Vehicles {
     FALCON_TRAVELLER_2003 = 'Falcon Traveller 2003',
     FALCON_ADVANCE_100_1956 = 'Falcon Advance 100 1956',
     FOUR_WHEELER = '4-Wheeler',
-    _4_WHEELER = '4-Wheeler',
     VELLFIRE_EVERTT_EXTENDED_CAB_1995 = 'Vellfire Evertt Extended Cab 1995',
     CHEVLON_L15_1981 = 'Chevlon L15 1981',
     CHEVLON_L15_SIDE_STEP_1981 = 'Chevlon L15 Side Step 1981',

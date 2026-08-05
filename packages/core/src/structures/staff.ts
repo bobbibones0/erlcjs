@@ -1,6 +1,5 @@
-import { Client } from '../client/client.js';
+import type { Server } from '../client/server.js';
 import { Base } from './base.js';
-import type { RawKillLog } from '../types/index.js';
 import { Player } from './player.js';
 
 /**
@@ -27,12 +26,12 @@ export class Staff extends Base {
 
     /**
      * Creates an instance of Staff.
-     * @param client - The ERLCApi client.
+     * @param server - The server the staff member belongs to.
      * @param userId - The user id.
      * @param username - The username.
      */
-    constructor(client: Client, userId: string, username: string) {
-        super(client);
+    constructor(server: Server, userId: string, username: string) {
+        super(server);
         this._patch(userId, username);
     }
 
@@ -45,9 +44,9 @@ export class Staff extends Base {
     public _patch(userId: string, username: string): this {
         this.id = Number(userId);
         this.username = username;
-        this.online = this.client.players.cache.has(this.id);
+        this.online = this.server.players.cache.has(this.id);
         this.player = undefined;
-        if (this.online === true) this.player = this.client.players.cache.get(this.id);
+        if (this.online === true) this.player = this.server.players.cache.get(this.id);
         return this;
     }
 }

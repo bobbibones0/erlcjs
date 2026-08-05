@@ -135,7 +135,30 @@ export class RestrictedResourceError extends Error {
 }
 
 /**
+ * Error thrown when a webhook event targets a server that has no configured API key.
+ * @public
+ */
+export class ServerNotConfiguredError extends Error {
+    constructor(serverId?: string, message: string = `No server key is configured for server "${serverId}". Add it to ClientOptions.servers.`) {
+        super(message);
+        this.name = 'ServerNotConfiguredError';
+    }
+}
+
+/**
+ * Error thrown when two configured server keys resolve to the same server ID.
+ * @public
+ */
+export class DuplicateServerError extends Error {
+    constructor(serverId: string, message: string = `Multiple server keys resolve to the same server ID "${serverId}". Each key must belong to a unique server.`) {
+        super(message);
+        this.name = 'DuplicateServerError';
+    }
+}
+
+/**
  * Error thrown when the server being accessed is out of date.
+ * @public
  */
 export class OutOfDateServerError extends Error {
     constructor(message: string = 'The server being accessed is out of date. Try restarting it.') {

@@ -207,16 +207,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!Base:constructor(1)",
-              "docComment": "/**\n * Creates an instance of the Base class.\n *\n * @param client - The ERLCApi client instance.\n */\n",
+              "docComment": "/**\n * Creates an instance of the Base class.\n *\n * @param server - The server this structure belongs to.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -228,7 +228,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -240,11 +240,11 @@
             {
               "kind": "Property",
               "canonicalReference": "@erlcjs/core!Base#client:member",
-              "docComment": "",
+              "docComment": "/**\n * The client that owns the server this structure belongs to.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "readonly client: "
+                  "text": "get client(): "
                 },
                 {
                   "kind": "Reference",
@@ -267,6 +267,37 @@
               "isStatic": false,
               "isProtected": false,
               "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Base#server:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly server: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "server",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
             }
           ],
           "implementsTokenRanges": []
@@ -274,7 +305,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@erlcjs/core!Client:class",
-          "docComment": "/**\n * The main client for interacting with the ER:LC API and gateway.\n *\n * @public\n */\n",
+          "docComment": "/**\n * The main client for interacting with the ER:LC API and gateway. Manages multiple ER:LC game servers, each with its own caches and polling loop.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -343,13 +374,13 @@
               ]
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#authorizationLink:member",
-              "docComment": "/**\n * Creates an authorization link for this server to allow post requests.\n */\n",
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Client#addServer:member(1)",
+              "docComment": "/**\n * Adds a server to the client at runtime, returning the created server. Polling is started automatically if the client options enable auto-start polling.\n *\n * @param key - The ER:LC Server API key.\n *\n * @returns The created Server.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "get authorizationLink(): "
+                  "text": "addServer(key: "
                 },
                 {
                   "kind": "Content",
@@ -357,82 +388,39 @@
                 },
                 {
                   "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "authorizationLink",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#commandLogs:member",
-              "docComment": "/**\n * Manager for command execution log events.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "commandLogs: "
+                  "text": "): "
                 },
                 {
                   "kind": "Reference",
-                  "text": "CommandLogManager",
-                  "canonicalReference": "@erlcjs/core!CommandLogManager:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "commandLogs",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
               "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
               "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#commands:member",
-              "docComment": "/**\n * Manager for executing server-side console commands.\n */\n",
-              "excerptTokens": [
+              "overloadIndex": 1,
+              "parameters": [
                 {
-                  "kind": "Content",
-                  "text": "commands: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "CommandManager",
-                  "canonicalReference": "@erlcjs/core!CommandManager:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
+                  "parameterName": "key",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
                 }
               ],
-              "isReadonly": false,
               "isOptional": false,
-              "releaseTag": "Public",
-              "name": "commands",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
+              "isAbstract": false,
+              "name": "addServer"
             },
             {
               "kind": "Method",
@@ -467,37 +455,6 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#emergencyCalls:member",
-              "docComment": "/**\n * Manager for active emergency calls.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "emergencyCalls: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "EmergencyCallManager",
-                  "canonicalReference": "@erlcjs/core!EmergencyCallManager:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "emergencyCalls",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
               "canonicalReference": "@erlcjs/core!Client#globalAppId:member",
               "docComment": "/**\n * Global App ID.\n */\n",
               "excerptTokens": [
@@ -528,27 +485,26 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#killLogs:member",
-              "docComment": "/**\n * Manager for kill logs.\n */\n",
+              "canonicalReference": "@erlcjs/core!Client#isPolling:member",
+              "docComment": "/**\n * Whether any managed server is currently being polled.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "killLogs: "
+                  "text": "get isPolling(): "
                 },
                 {
-                  "kind": "Reference",
-                  "text": "KillLogManager",
-                  "canonicalReference": "@erlcjs/core!KillLogManager:class"
+                  "kind": "Content",
+                  "text": "boolean"
                 },
                 {
                   "kind": "Content",
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
-              "name": "killLogs",
+              "name": "isPolling",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -558,35 +514,40 @@
               "isAbstract": false
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#modCalls:member",
-              "docComment": "/**\n * Manager for moderator call logs.\n */\n",
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Client#onceReady:member(1)",
+              "docComment": "/**\n * Resolves once the client is ready (after every server's first poll), or immediately if it is already ready.\n *\n * @returns This client.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "modCalls: "
+                  "text": "onceReady(): "
                 },
                 {
                   "kind": "Reference",
-                  "text": "ModCallManager",
-                  "canonicalReference": "@erlcjs/core!ModCallManager:class"
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<this>"
                 },
                 {
                   "kind": "Content",
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "modCalls",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
               "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "releaseTag": "Public",
               "isProtected": false,
-              "isAbstract": false
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "onceReady"
             },
             {
               "kind": "Property",
@@ -620,40 +581,9 @@
               "isAbstract": false
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#players:member",
-              "docComment": "/**\n * Manager for player caching, joining, and management actions.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "players: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "PlayerManager",
-                  "canonicalReference": "@erlcjs/core!PlayerManager:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "players",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
               "kind": "Method",
               "canonicalReference": "@erlcjs/core!Client#registerCommand:member(1)",
-              "docComment": "/**\n * Registers an in-game custom command.\n *\n * @param command - The command to register.\n */\n",
+              "docComment": "/**\n * Registers an in-game custom command globally, available on all managed servers.\n *\n * @param cmd - The command to register.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -700,9 +630,57 @@
               "name": "registerCommand"
             },
             {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Client#removeServer:member(1)",
+              "docComment": "/**\n * Removes and destroys a server by its ID, stopping its polling and clearing its caches.\n *\n * @param id - The server ID.\n *\n * @returns True if a server was removed.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "removeServer(id: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string | number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "id",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "removeServer"
+            },
+            {
               "kind": "Property",
               "canonicalReference": "@erlcjs/core!Client#rest:member",
-              "docComment": "/**\n * REST Manager for sending manual requests to the ER:LC API.\n */\n",
+              "docComment": "/**\n * REST Manager for sending manual requests to the ER:LC API, shared across all servers.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -732,12 +710,12 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#server:member",
-              "docComment": "/**\n * Manager for fetching and caching general server configuration.\n */\n",
+              "canonicalReference": "@erlcjs/core!Client#servers:member",
+              "docComment": "/**\n * Collection of the game servers managed by this client, keyed by server ID.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "server: "
+                  "text": "servers: "
                 },
                 {
                   "kind": "Reference",
@@ -752,68 +730,7 @@
               "isReadonly": false,
               "isOptional": false,
               "releaseTag": "Public",
-              "name": "server",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#serverId:member",
-              "docComment": "/**\n * Internal Server ID.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "serverId: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "serverId",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#staff:member",
-              "docComment": "/**\n * Manager for staff members.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "staff: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "StaffManager",
-                  "canonicalReference": "@erlcjs/core!StaffManager:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "staff",
+              "name": "servers",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -825,11 +742,11 @@
             {
               "kind": "Method",
               "canonicalReference": "@erlcjs/core!Client#startPolling:member(1)",
-              "docComment": "/**\n * Starts polling the ER:LC API with a set poll rate, restarts the poll if it is already exists.\n *\n * @param pollRateMs - The new poll rate, minimum 500.\n */\n",
+              "docComment": "/**\n * Starts polling the ER:LC API for all servers, restarting any existing polls.\n *\n * @param pollRateMs - The new poll rate, minimum 500.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "startPolling(pollRateMs: "
+                  "text": "startPolling(pollRateMs?: "
                 },
                 {
                   "kind": "Content",
@@ -863,7 +780,7 @@
                     "startIndex": 1,
                     "endIndex": 2
                   },
-                  "isOptional": false
+                  "isOptional": true
                 }
               ],
               "isOptional": false,
@@ -873,7 +790,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@erlcjs/core!Client#stopPolling:member(1)",
-              "docComment": "/**\n * Stops polling the ER:LC API.\n */\n",
+              "docComment": "/**\n * Stops polling the ER:LC API for all servers.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -904,7 +821,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@erlcjs/core!Client#unregisterCommand:member(1)",
-              "docComment": "/**\n * Unregisters an in-game custom command.\n *\n * @param commandName - The command name to unregister.\n */\n",
+              "docComment": "/**\n * Unregisters a globally registered in-game custom command.\n *\n * @param commandName - The command name to unregister.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -948,37 +865,6 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "unregisterCommand"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Client#vehicles:member",
-              "docComment": "/**\n * Manager for spawned vehicles cache and events.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "vehicles: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "VehicleManager",
-                  "canonicalReference": "@erlcjs/core!VehicleManager:class"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "vehicles",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
             },
             {
               "kind": "Method",
@@ -1505,7 +1391,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@erlcjs/core!ClientEvents#PLAYER_JOIN:member",
-              "docComment": "/**\n * Emitted when a player joins the server.\n */\n",
+              "docComment": "/**\n * Emitted when a player joins a server.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1550,7 +1436,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@erlcjs/core!ClientEvents#PLAYER_LEAVE:member",
-              "docComment": "/**\n * Emitted when a player leaves the server.\n */\n",
+              "docComment": "/**\n * Emitted when a player leaves a server.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1670,8 +1556,8 @@
                 },
                 {
                   "kind": "Reference",
-                  "text": "RawServerData",
-                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -1694,7 +1580,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@erlcjs/core!ClientEvents#READY:member",
-              "docComment": "/**\n * Emitted when the first poll is complete and the client is ready.\n */\n",
+              "docComment": "/**\n * Emitted when every configured server has completed its first poll and the client is ready.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1751,6 +1637,51 @@
                 },
                 {
                   "kind": "Reference",
+                  "text": "ServerInfo",
+                  "canonicalReference": "@erlcjs/core!ServerInfo:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": "]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "SERVER_CREATE",
+              "propertyTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 6
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@erlcjs/core!ClientEvents#SERVER_OFFLINE:member",
+              "docComment": "/**\n * Emitted when a server goes offline and its caches are cleared.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "["
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ERLCEvents.serverOffline",
+                  "canonicalReference": "@erlcjs/core!ERLCEvents.serverOffline:member"
+                },
+                {
+                  "kind": "Content",
+                  "text": "]: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "[server: "
+                },
+                {
+                  "kind": "Reference",
                   "text": "Server",
                   "canonicalReference": "@erlcjs/core!Server:class"
                 },
@@ -1766,7 +1697,97 @@
               "isReadonly": false,
               "isOptional": false,
               "releaseTag": "Public",
-              "name": "SERVER_CREATE",
+              "name": "SERVER_OFFLINE",
+              "propertyTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 6
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@erlcjs/core!ClientEvents#SERVER_ONLINE:member",
+              "docComment": "/**\n * Emitted when an offline server recovers and becomes reachable again.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "["
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ERLCEvents.serverOnline",
+                  "canonicalReference": "@erlcjs/core!ERLCEvents.serverOnline:member"
+                },
+                {
+                  "kind": "Content",
+                  "text": "]: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "[server: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": "]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "SERVER_ONLINE",
+              "propertyTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 6
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@erlcjs/core!ClientEvents#SERVER_READY:member",
+              "docComment": "/**\n * Emitted when a server completes its first successful poll.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "["
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ERLCEvents.serverReady",
+                  "canonicalReference": "@erlcjs/core!ERLCEvents.serverReady:member"
+                },
+                {
+                  "kind": "Content",
+                  "text": "]: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "[server: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": "]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "SERVER_READY",
               "propertyTypeTokenRange": {
                 "startIndex": 3,
                 "endIndex": 6
@@ -1796,8 +1817,8 @@
                 },
                 {
                   "kind": "Reference",
-                  "text": "Server",
-                  "canonicalReference": "@erlcjs/core!Server:class"
+                  "text": "ServerInfo",
+                  "canonicalReference": "@erlcjs/core!ServerInfo:class"
                 },
                 {
                   "kind": "Content",
@@ -1805,8 +1826,8 @@
                 },
                 {
                   "kind": "Reference",
-                  "text": "Server",
-                  "canonicalReference": "@erlcjs/core!Server:class"
+                  "text": "ServerInfo",
+                  "canonicalReference": "@erlcjs/core!ServerInfo:class"
                 },
                 {
                   "kind": "Content",
@@ -2080,7 +2101,16 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "[]"
+                  "text": "[server: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": "]"
                 },
                 {
                   "kind": "Content",
@@ -2093,7 +2123,7 @@
               "name": "WEBHOOK_PROBE",
               "propertyTypeTokenRange": {
                 "startIndex": 3,
-                "endIndex": 4
+                "endIndex": 6
               }
             }
           ],
@@ -2206,7 +2236,7 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "{\n        enabled: boolean;\n        pollingRateMs?: number;\n    } | true"
+                  "text": "{\n        enabled: boolean;\n        pollingRateMs?: number;\n        autoStartPolling?: boolean;\n    } | true"
                 },
                 {
                   "kind": "Content",
@@ -2224,16 +2254,16 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@erlcjs/core!ClientOptions#serverKey:member",
-              "docComment": "/**\n * The ER:LC Server API Key.\n */\n",
+              "canonicalReference": "@erlcjs/core!ClientOptions#servers:member",
+              "docComment": "/**\n * The ER:LC Server API keys the client should manage. The server ID of each server is parsed from its key.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "serverKey: "
+                  "text": "servers: "
                 },
                 {
                   "kind": "Content",
-                  "text": "string"
+                  "text": "string[]"
                 },
                 {
                   "kind": "Content",
@@ -2243,7 +2273,7 @@
               "isReadonly": false,
               "isOptional": false,
               "releaseTag": "Public",
-              "name": "serverKey",
+              "name": "servers",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -2260,7 +2290,7 @@
                 },
                 {
                   "kind": "Content",
-                  "text": "{\n        enabled: boolean;\n        port: number;\n        path?: string;\n        secret?: string;\n    }"
+                  "text": "{\n        enabled: boolean;\n        port: number;\n        path?: string;\n    }"
                 },
                 {
                   "kind": "Content",
@@ -2332,6 +2362,102 @@
           "name": "Collection",
           "preserveMemberOrder": false,
           "members": [
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Collection#at:member(1)",
+              "docComment": "/**\n * Returns the value at the given index (supports negative indices from the end), or undefined if out of bounds.\n *\n * @param index - The index of the value.\n *\n * @returns The value at the index, if any.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "at(index: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "V | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "index",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "at"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Collection#every:member(1)",
+              "docComment": "/**\n * Returns whether every value in the collection satisfies the predicate.\n *\n * @param predicate - A function that tests each value in the collection.\n *\n * @returns True if every value satisfies the predicate, or the collection is empty.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "every(predicate: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(value: V, key: K) => boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "predicate",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "every"
+            },
             {
               "kind": "Method",
               "canonicalReference": "@erlcjs/core!Collection#filter:member(1)",
@@ -2432,6 +2558,164 @@
               "isOptional": false,
               "isAbstract": false,
               "name": "find"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Collection#findKey:member(1)",
+              "docComment": "/**\n * Returns the first key in the collection whose value satisfies the predicate.\n *\n * @param predicate - A function that tests each value in the collection.\n *\n * @returns The first matching key, if any.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "findKey(predicate: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(value: V, key: K) => boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "K | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "predicate",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "findKey"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Collection#first:member(1)",
+              "docComment": "/**\n * Returns the first value in the collection, or undefined if the collection is empty.\n *\n * @returns The first value, if any.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "first(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "V | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "first"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Collection#last:member(1)",
+              "docComment": "/**\n * Returns the last value in the collection, or undefined if the collection is empty.\n *\n * @returns The last value, if any.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "last(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "V | undefined"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "last"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Collection#some:member(1)",
+              "docComment": "/**\n * Returns whether any value in the collection satisfies the predicate.\n *\n * @param predicate - A function that tests each value in the collection.\n *\n * @returns True if at least one value satisfies the predicate.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "some(predicate: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(value: V, key: K) => boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "predicate",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "some"
             }
           ],
           "extendsTokenRange": {
@@ -2517,16 +2801,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!CommandLog:constructor(1)",
-              "docComment": "/**\n * Creates an instance of CommandLog.\n *\n * @param client - The ERLCApi client.\n *\n * @param data - The raw command log data to initialize.\n */\n",
+              "docComment": "/**\n * Creates an instance of CommandLog.\n *\n * @param server - The server the command was run in.\n *\n * @param data - The raw command log data to initialize.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -2547,7 +2831,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -2773,16 +3057,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!CommandLogManager:constructor(1)",
-              "docComment": "/**\n * Creates an instance of CommandLogManager.\n *\n * @param client - The erlcjs client.\n *\n * @param maxCacheSize - The maximum number of command logs to hold in cache.\n */\n",
+              "docComment": "/**\n * Creates an instance of CommandLogManager.\n *\n * @param server - The server this manager belongs to.\n *\n * @param maxCacheSize - The maximum number of command logs to hold in cache.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -2802,7 +3086,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -3006,16 +3290,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!CommandManager:constructor(1)",
-              "docComment": "/**\n * Creates an instance of CommandManager.\n *\n * @param client - The erlcjs client.\n */\n",
+              "docComment": "/**\n * Creates an instance of CommandManager.\n *\n * @param server - The server this manager belongs to.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -3027,7 +3311,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -3039,7 +3323,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@erlcjs/core!CommandManager#execute:member(1)",
-              "docComment": "/**\n * Executes a server command via the ER:LC API.\n *\n * @param command - The full command string to execute (e.g. `:pm jamie hello`).\n *\n * @returns A promise resolving to the API response string status.\n */\n",
+              "docComment": "/**\n * Executes a server command via the ER:LC API.\n *\n * @param command - The full command string to execute (e.g. `:pm alex hello`).\n *\n * @returns A promise resolving to the API response string status.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -3095,7 +3379,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@erlcjs/core!convertToPascalCase:function(1)",
-          "docComment": "/**\n * Recursively converts all object keys in a JSON payload from camelCase to PascalCase.\n *\n * @param obj - The raw JSON payload or array.\n *\n * @returns The converted object with PascalCase keys.\n */\n",
+          "docComment": "/**\n * Recursively converts all object keys in a JSON payload from camelCase to PascalCase.\n *\n * @param obj - The raw JSON payload or array.\n *\n * @returns The converted object with PascalCase keys.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -3203,6 +3487,86 @@
         },
         {
           "kind": "Class",
+          "canonicalReference": "@erlcjs/core!DuplicateServerError:class",
+          "docComment": "/**\n * Error thrown when two configured server keys resolve to the same server ID.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class DuplicateServerError extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "Error",
+              "canonicalReference": "!Error:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "releaseTag": "Public",
+          "isAbstract": false,
+          "name": "DuplicateServerError",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@erlcjs/core!DuplicateServerError:constructor(1)",
+              "docComment": "/**\n * Constructs a new instance of the `DuplicateServerError` class\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(serverId: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", message?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "serverId",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "message",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": true
+                }
+              ]
+            }
+          ],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
           "canonicalReference": "@erlcjs/core!EmergencyCall:class",
           "docComment": "/**\n * Represents an active emergency call in the ER:LC server.\n *\n * @public\n */\n",
           "excerptTokens": [
@@ -3278,16 +3642,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!EmergencyCall:constructor(1)",
-              "docComment": "/**\n * Creates an instance of EmergencyCall.\n *\n * @param client - The ERLCApi client.\n *\n * @param data - The raw emergency call data to initialize.\n */\n",
+              "docComment": "/**\n * Creates an instance of EmergencyCall.\n *\n * @param server - The server the call belongs to.\n *\n * @param data - The raw emergency call data to initialize.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -3308,7 +3672,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -3689,16 +4053,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!EmergencyCallManager:constructor(1)",
-              "docComment": "/**\n * Creates an instance of EmergencyCallManager.\n *\n * @param client - The erlcjs client.\n */\n",
+              "docComment": "/**\n * Creates an instance of EmergencyCallManager.\n *\n * @param server - The server this manager belongs to.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -3710,7 +4074,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -4052,7 +4416,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@erlcjs/core!ERLCEvents:enum",
-          "docComment": "/**\n * Event names emitted by the ERLCApi Client.\n *\n * @public\n */\n",
+          "docComment": "/**\n * Event names emitted by the erlcjs Client.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -4235,7 +4599,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@erlcjs/core!ERLCEvents.playerJoin:member",
-              "docComment": "/**\n * Emitted when a player joins the server.\n */\n",
+              "docComment": "/**\n * Emitted when a player joins a server.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4256,7 +4620,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@erlcjs/core!ERLCEvents.playerLeave:member",
-              "docComment": "/**\n * Emitted when a player leaves the server.\n */\n",
+              "docComment": "/**\n * Emitted when a player leaves a server.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4319,7 +4683,7 @@
             {
               "kind": "EnumMember",
               "canonicalReference": "@erlcjs/core!ERLCEvents.ready:member",
-              "docComment": "/**\n * Emitted when the first poll is complete and the client is ready.\n */\n",
+              "docComment": "/**\n * Emitted when every configured server has completed its first poll and the client is ready.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -4357,6 +4721,69 @@
               },
               "releaseTag": "Public",
               "name": "serverCreate"
+            },
+            {
+              "kind": "EnumMember",
+              "canonicalReference": "@erlcjs/core!ERLCEvents.serverOffline:member",
+              "docComment": "/**\n * Emitted when a server goes offline and its caches are cleared.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "serverOffline = "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"SERVER_OFFLINE\""
+                }
+              ],
+              "initializerTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "name": "serverOffline"
+            },
+            {
+              "kind": "EnumMember",
+              "canonicalReference": "@erlcjs/core!ERLCEvents.serverOnline:member",
+              "docComment": "/**\n * Emitted when an offline server recovers and becomes reachable again.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "serverOnline = "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"SERVER_ONLINE\""
+                }
+              ],
+              "initializerTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "name": "serverOnline"
+            },
+            {
+              "kind": "EnumMember",
+              "canonicalReference": "@erlcjs/core!ERLCEvents.serverReady:member",
+              "docComment": "/**\n * Emitted when a server completes its first successful poll.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "serverReady = "
+                },
+                {
+                  "kind": "Content",
+                  "text": "\"SERVER_READY\""
+                }
+              ],
+              "initializerTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "name": "serverReady"
             },
             {
               "kind": "EnumMember",
@@ -4956,16 +5383,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!KillLog:constructor(1)",
-              "docComment": "/**\n * Creates an instance of KillLog.\n *\n * @param client - The ERLCApi client.\n *\n * @param data - The raw kill log data.\n */\n",
+              "docComment": "/**\n * Creates an instance of KillLog.\n *\n * @param server - The server the kill occurred in.\n *\n * @param data - The raw kill log data.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -4986,7 +5413,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -5273,16 +5700,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!KillLogManager:constructor(1)",
-              "docComment": "/**\n * Creates an instance of KillLogManager.\n *\n * @param client - The erlcjs client.\n *\n * @param maxCacheSize - The maximum number of kill logs to hold in cache.\n */\n",
+              "docComment": "/**\n * Creates an instance of KillLogManager.\n *\n * @param server - The server this manager belongs to.\n *\n * @param maxCacheSize - The maximum number of kill logs to hold in cache.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -5302,7 +5729,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -5564,16 +5991,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!ModCall:constructor(1)",
-              "docComment": "/**\n * Creates an instance of ModCall.\n *\n * @param client - The ERLCApi client.\n *\n * @param data - The raw moderator call data.\n */\n",
+              "docComment": "/**\n * Creates an instance of ModCall.\n *\n * @param server - The server the mod call was made in.\n *\n * @param data - The raw moderator call data.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -5594,7 +6021,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -5881,16 +6308,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!ModCallManager:constructor(1)",
-              "docComment": "/**\n * Creates an instance of ModCallManager.\n *\n * @param client - The erlcjs client.\n *\n * @param maxCacheSize - The maximum number of kill logs to hold in cache.\n */\n",
+              "docComment": "/**\n * Creates an instance of ModCallManager.\n *\n * @param server - The server this manager belongs to.\n *\n * @param maxCacheSize - The maximum number of kill logs to hold in cache.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -5910,7 +6337,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -6098,7 +6525,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@erlcjs/core!OutOfDateServerError:class",
-          "docComment": "/**\n * Error thrown when the server being accessed is out of date.\n */\n",
+          "docComment": "/**\n * Error thrown when the server being accessed is out of date.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -6236,16 +6663,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!Player:constructor(1)",
-              "docComment": "/**\n * Creates an instance of Player.\n *\n * @param client - The ERLCApi client.\n *\n * @param data - The raw player data to initialize.\n */\n",
+              "docComment": "/**\n * Creates an instance of Player.\n *\n * @param server - The server the player is in.\n *\n * @param data - The raw player data to initialize.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -6266,7 +6693,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -7429,16 +7856,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!PlayerManager:constructor(1)",
-              "docComment": "/**\n * Creates an instance of PlayerManager.\n *\n * @param client - The erlcjs client.\n */\n",
+              "docComment": "/**\n * Creates an instance of PlayerManager.\n *\n * @param server - The server this manager belongs to.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -7450,7 +7877,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -7502,6 +7929,37 @@
               "isStatic": false,
               "isProtected": false,
               "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!PlayerManager#clear:member(1)",
+              "docComment": "/**\n * Clears the player cache and username mappings.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "clear(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "clear"
             },
             {
               "kind": "Method",
@@ -7560,7 +8018,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@erlcjs/core!PlayerManager#getIdFromName:member(1)",
-              "docComment": "/**\n * Retrieves a player's UserId from their Roblox username. Attempts to resolve from cache first, otherwise triggers a fresh fetch.\n *\n * @param name - The Roblox username.\n *\n * @returns The UserId if resolved, otherwise undefined.\n */\n",
+              "docComment": "/**\n * Retrieves a player's UserId from their Roblox username, resolving from cache.\n *\n * @param name - The Roblox username.\n *\n * @returns The UserId if the username is currently cached, otherwise undefined.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -7960,7 +8418,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@erlcjs/core!PlayerPermission:enum",
-          "docComment": "",
+          "docComment": "/**\n * The permission levels a player can hold in an ER:LC server.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -8936,7 +9394,7 @@
         {
           "kind": "TypeAlias",
           "canonicalReference": "@erlcjs/core!RawPlayerPermission:type",
-          "docComment": "",
+          "docComment": "/**\n * The raw permission values returned by the ER:LC API.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -10003,7 +10461,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@erlcjs/core!RestManager:class",
-          "docComment": "/**\n * Handles communication with the ER:LC HTTP API, managing rate limits and request queuing.\n *\n * @public\n */\n",
+          "docComment": "/**\n * Handles communication with the ER:LC HTTP API for all servers managed by a Client, managing rate limits and request queuing on a shared per-IP budget.\n *\n * Buckets are gated optimistically: each dispatched request immediately decrements the bucket's remaining budget and is tracked as in-flight until its response arrives. A bucket's queue is frozen while a `Retry-After` response is active, and window resets include a small safety buffer to avoid racing the server.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -10019,16 +10477,15 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!RestManager:constructor(1)",
-              "docComment": "/**\n * Creates an instance of RestManager.\n *\n * @param options - The ClientOptions configuration.\n */\n",
+              "docComment": "/**\n * Creates an instance of RestManager.\n *\n * @param globalKey - The global API key for the application, if any.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(options: "
+                  "text": "constructor(globalKey?: "
                 },
                 {
-                  "kind": "Reference",
-                  "text": "ClientOptions",
-                  "canonicalReference": "@erlcjs/core!ClientOptions:interface"
+                  "kind": "Content",
+                  "text": "string | undefined"
                 },
                 {
                   "kind": "Content",
@@ -10040,19 +10497,85 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "options",
+                  "parameterName": "globalKey",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
                   },
-                  "isOptional": false
+                  "isOptional": true
                 }
               ]
             },
             {
               "kind": "Method",
+              "canonicalReference": "@erlcjs/core!RestManager#getRateLimits:member(1)",
+              "docComment": "/**\n * Returns a snapshot of the current rate-limit state for all known buckets, useful for monitoring and debugging.\n *\n * @returns A record of bucket ID to rate-limit state.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "getRateLimits(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Record",
+                  "canonicalReference": "!Record:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string, {\n        limit: number;\n        remaining: number;\n        reset: number;\n        inflight: number;\n        frozenUntil: number;\n    }>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "getRateLimits"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!RestManager#inflight:member",
+              "docComment": "/**\n * The number of requests currently in flight awaiting a response.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get inflight(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "inflight",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
               "canonicalReference": "@erlcjs/core!RestManager#request:member(1)",
-              "docComment": "/**\n * Enqueues and sends an HTTP request to the ER:LC API.\n *\n * @param method - The HTTP method to use ('GET' or 'POST').\n *\n * @param endpoint - The API endpoint path.\n *\n * @param body - The optional request body payload.\n *\n * @returns A promise resolving to the API response data.\n *\n * @throws\n *\n * {@link InvalidServerKeyError} if the server API key is invalid (403).\n *\n * @throws\n *\n * Error - for other HTTP error codes.\n */\n",
+              "docComment": "/**\n * Enqueues and sends an HTTP request to the ER:LC API.\n *\n * @param method - The HTTP method to use ('GET' or 'POST').\n *\n * @param endpoint - The API endpoint path.\n *\n * @param body - The optional request body payload.\n *\n * @param serverKey - The server API key to authenticate with.\n *\n * @returns A promise resolving to the API response data.\n *\n * @throws\n *\n * {@link InvalidServerKeyError} if the server API key is invalid (403).\n *\n * @throws\n *\n * Error - for other HTTP error codes.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10080,6 +10603,14 @@
                 },
                 {
                   "kind": "Content",
+                  "text": ", serverKey?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
                   "text": "): "
                 },
                 {
@@ -10098,8 +10629,8 @@
               ],
               "isStatic": false,
               "returnTypeTokenRange": {
-                "startIndex": 7,
-                "endIndex": 9
+                "startIndex": 9,
+                "endIndex": 11
               },
               "releaseTag": "Public",
               "isProtected": false,
@@ -10126,6 +10657,14 @@
                   "parameterTypeTokenRange": {
                     "startIndex": 5,
                     "endIndex": 6
+                  },
+                  "isOptional": true
+                },
+                {
+                  "parameterName": "serverKey",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 7,
+                    "endIndex": 8
                   },
                   "isOptional": true
                 }
@@ -10268,20 +10807,11 @@
         {
           "kind": "Class",
           "canonicalReference": "@erlcjs/core!Server:class",
-          "docComment": "/**\n * Represents the ER:LC game server and its current configuration/state.\n *\n * @public\n */\n",
+          "docComment": "/**\n * Represents a single ER:LC game server managed by a {@link Client}. Holds the server's own managers, caches, polling loop, and webhook routing.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "declare class Server extends "
-            },
-            {
-              "kind": "Reference",
-              "text": "Base",
-              "canonicalReference": "@erlcjs/core!Base:class"
-            },
-            {
-              "kind": "Content",
-              "text": " "
+              "text": "declare class Server "
             }
           ],
           "fileUrlPath": "dist/index.d.ts",
@@ -10291,58 +10821,9 @@
           "preserveMemberOrder": false,
           "members": [
             {
-              "kind": "Method",
-              "canonicalReference": "@erlcjs/core!Server#_patch:member(1)",
-              "docComment": "/**\n * Patches the Server instance with new raw data.\n *\n * @param data - The new raw server data.\n *\n * @returns This server instance.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "_patch(data: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "RawServerData",
-                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "this"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 3,
-                "endIndex": 4
-              },
-              "releaseTag": "Public",
-              "isProtected": false,
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "data",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  },
-                  "isOptional": false
-                }
-              ],
-              "isOptional": false,
-              "isAbstract": false,
-              "name": "_patch"
-            },
-            {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!Server:constructor(1)",
-              "docComment": "/**\n * Creates an instance of Server.\n *\n * @param client - The ERLCApi client.\n *\n * @param data - The raw server data to initialize.\n */\n",
+              "docComment": "/**\n * Creates an instance of Server.\n *\n * @param client - The client that owns this server.\n *\n * @param key - The ER:LC Server API key.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -10355,12 +10836,11 @@
                 },
                 {
                   "kind": "Content",
-                  "text": ", data: "
+                  "text": ", key: "
                 },
                 {
-                  "kind": "Reference",
-                  "text": "RawServerData",
-                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
+                  "kind": "Content",
+                  "text": "string"
                 },
                 {
                   "kind": "Content",
@@ -10380,7 +10860,7 @@
                   "isOptional": false
                 },
                 {
-                  "parameterName": "data",
+                  "parameterName": "key",
                   "parameterTypeTokenRange": {
                     "startIndex": 3,
                     "endIndex": 4
@@ -10391,151 +10871,12 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Server#accVerifiedReq:member",
-              "docComment": "/**\n * Account verification requirements for joining.\n */\n",
+              "canonicalReference": "@erlcjs/core!Server#authorizationLink:member",
+              "docComment": "/**\n * Creates an authorization link for this server to allow post requests.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "accVerifiedReq: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "'Disabled' | 'Email' | 'Phone/ID'"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "accVerifiedReq",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Method",
-              "canonicalReference": "@erlcjs/core!Server#compare:member(1)",
-              "docComment": "/**\n * Compares the current server data with another raw data payload to check if it's identical.\n *\n * @param data - The raw server data to compare against.\n *\n * @returns True if the properties are identical, false otherwise.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "compare(data: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "RawServerData",
-                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": "): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isStatic": false,
-              "returnTypeTokenRange": {
-                "startIndex": 3,
-                "endIndex": 4
-              },
-              "releaseTag": "Public",
-              "isProtected": false,
-              "overloadIndex": 1,
-              "parameters": [
-                {
-                  "parameterName": "data",
-                  "parameterTypeTokenRange": {
-                    "startIndex": 1,
-                    "endIndex": 2
-                  },
-                  "isOptional": false
-                }
-              ],
-              "isOptional": false,
-              "isAbstract": false,
-              "name": "compare"
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Server#coOwnerIds:member",
-              "docComment": "/**\n * Array of UserIds of server co-owners.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "coOwnerIds: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "number[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "coOwnerIds",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Server#currentPlayers:member",
-              "docComment": "/**\n * The current number of players connected to the server.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "currentPlayers: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "number"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "currentPlayers",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Server#joinKey:member",
-              "docComment": "/**\n * The join key of the server.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "joinKey: "
+                  "text": "get authorizationLink(): "
                 },
                 {
                   "kind": "Content",
@@ -10546,160 +10887,10 @@
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
+              "isReadonly": true,
               "isOptional": false,
               "releaseTag": "Public",
-              "name": "joinKey",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Server#maxPlayers:member",
-              "docComment": "/**\n * The maximum number of players allowed in the server.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "maxPlayers: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "number"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "maxPlayers",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Server#name:member",
-              "docComment": "/**\n * The name of the server.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "name: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "string"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "name",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Server#ownerId:member",
-              "docComment": "/**\n * The UserId of the server owner.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "ownerId: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "number"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "ownerId",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Server#queue:member",
-              "docComment": "/**\n * The queue of players waiting to join the server.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "queue: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "number[]"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "queue",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!Server#teamBalance:member",
-              "docComment": "/**\n * Whether team balance enforcement is enabled.\n */\n",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "teamBalance: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "teamBalance",
+              "name": "authorizationLink",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2
@@ -10710,17 +10901,16 @@
             },
             {
               "kind": "Method",
-              "canonicalReference": "@erlcjs/core!Server#toJSON:member(1)",
-              "docComment": "/**\n * Converts this Server instance back to its raw JSON structure.\n *\n * @returns The raw server data.\n */\n",
+              "canonicalReference": "@erlcjs/core!Server#clearCaches:member(1)",
+              "docComment": "/**\n * Clears all volatile caches for this server. Called automatically when the server goes offline.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "toJSON(): "
+                  "text": "clearCaches(): "
                 },
                 {
-                  "kind": "Reference",
-                  "text": "RawServerData",
-                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
+                  "kind": "Content",
+                  "text": "void"
                 },
                 {
                   "kind": "Content",
@@ -10738,13 +10928,1058 @@
               "parameters": [],
               "isOptional": false,
               "isAbstract": false,
-              "name": "toJSON"
+              "name": "clearCaches"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#client:member",
+              "docComment": "/**\n * The Client that manages this server.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly client: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Client",
+                  "canonicalReference": "@erlcjs/core!Client:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "client",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#commandLogs:member",
+              "docComment": "/**\n * Manager for command execution log events.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "commandLogs: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CommandLogManager",
+                  "canonicalReference": "@erlcjs/core!CommandLogManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "commandLogs",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#commands:member",
+              "docComment": "/**\n * Manager for player caching, joining, and management actions.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "commands: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CommandManager",
+                  "canonicalReference": "@erlcjs/core!CommandManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "commands",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Server#destroy:member(1)",
+              "docComment": "/**\n * Cleans up the server, stopping polling and clearing all caches.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "destroy(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "destroy"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#emergencyCalls:member",
+              "docComment": "/**\n * Manager for active emergency calls.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "emergencyCalls: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "EmergencyCallManager",
+                  "canonicalReference": "@erlcjs/core!EmergencyCallManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "emergencyCalls",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Server#fetch:member(1)",
+              "docComment": "/**\n * Fetches the latest server data and applies it to the caches and info snapshot.\n *\n * @returns A promise resolving to the raw server data from the API.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "fetch(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "RawServerData",
+                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "fetch"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#hasPolledOnce:member",
+              "docComment": "/**\n * Whether the first poll attempt has completed.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get hasPolledOnce(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "hasPolledOnce",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#hasQueue:member",
+              "docComment": "/**\n * Returns a boolean whether the server has a queue.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get hasQueue(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "hasQueue",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#id:member",
+              "docComment": "/**\n * The ER:LC server ID, parsed from the server API key.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly id: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "id",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#info:member",
+              "docComment": "/**\n * The current server information snapshot, populated after the first successful poll.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "info?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ServerInfo",
+                  "canonicalReference": "@erlcjs/core!ServerInfo:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "info",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#inGameCommands:member",
+              "docComment": "/**\n * A collection of in-game custom commands registered for this server only.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly inGameCommands: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Collection",
+                  "canonicalReference": "@erlcjs/core!Collection:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string, "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "InGameCommand",
+                  "canonicalReference": "@erlcjs/core!InGameCommand:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "inGameCommands",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#isFull:member",
+              "docComment": "/**\n * Returns a boolean whether the server is currently full.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get isFull(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "isFull",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#isPolling:member",
+              "docComment": "/**\n * Whether this server is currently being polled.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get isPolling(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "isPolling",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#key:member",
+              "docComment": "/**\n * The ER:LC Server API key.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly key: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "key",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#killLogs:member",
+              "docComment": "/**\n * Manager for kill logs.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "killLogs: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "KillLogManager",
+                  "canonicalReference": "@erlcjs/core!KillLogManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "killLogs",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#modCalls:member",
+              "docComment": "/**\n * Manager for moderator call logs.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "modCalls: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ModCallManager",
+                  "canonicalReference": "@erlcjs/core!ModCallManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "modCalls",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#offline:member",
+              "docComment": "/**\n * Whether the server is currently offline (unreachable via the API).\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "offline: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "offline",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#players:member",
+              "docComment": "/**\n * Manager for fetching and caching general server configuration.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "players: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "PlayerManager",
+                  "canonicalReference": "@erlcjs/core!PlayerManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "players",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Server#registerCommand:member(1)",
+              "docComment": "/**\n * Registers an in-game custom command scoped to this server.\n *\n * @param cmd - The command to register.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "registerCommand(cmd: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "InGameCommand",
+                  "canonicalReference": "@erlcjs/core!InGameCommand:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "cmd",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "registerCommand"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Server#request:member(1)",
+              "docComment": "/**\n * Sends a request to the ER:LC API on behalf of this server.\n *\n * @param method - The HTTP method to use ('GET' or 'POST').\n *\n * @param endpoint - The API endpoint path.\n *\n * @param body - The optional request body payload.\n *\n * @returns A promise resolving to the API response data.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "request(method: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "'GET' | 'POST'"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", endpoint: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", body?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<any>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 7,
+                "endIndex": 9
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "method",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "endpoint",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "body",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 5,
+                    "endIndex": 6
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "request"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#rest:member",
+              "docComment": "/**\n * REST adapter bound to this server's API key.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "readonly rest: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Pick",
+                  "canonicalReference": "!Pick:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "RestManager",
+                  "canonicalReference": "@erlcjs/core!RestManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", 'request'>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "rest",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#staff:member",
+              "docComment": "/**\n * Manager for staff members.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "staff: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "StaffManager",
+                  "canonicalReference": "@erlcjs/core!StaffManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "staff",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Server#startPolling:member(1)",
+              "docComment": "/**\n * Starts polling the ER:LC API with a set poll rate, restarts the poll if one already exists.\n *\n * @param pollRateMs - The new poll rate, minimum 500. Defaults to 5000.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "startPolling(pollRateMs?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "pollRateMs",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "startPolling"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Server#stopPolling:member(1)",
+              "docComment": "/**\n * Stops polling the ER:LC API.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "stopPolling(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "stopPolling"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Server#unregisterCommand:member(1)",
+              "docComment": "/**\n * Unregisters an in-game custom command scoped to this server.\n *\n * @param commandName - The command name to unregister.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "unregisterCommand(commandName: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "commandName",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "unregisterCommand"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!Server#vehicles:member",
+              "docComment": "/**\n * Manager for spawned vehicles cache and events.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "vehicles: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "VehicleManager",
+                  "canonicalReference": "@erlcjs/core!VehicleManager:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "vehicles",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!Server#waitFor:member(1)",
+              "docComment": "/**\n * Waits for a specific client event to be emitted for this server.\n *\n * @param event - The event to wait for.\n *\n * @param timeoutMs - The maximum time to wait in milliseconds.\n *\n * @returns A promise resolving to the event arguments.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "waitFor<K extends "
+                },
+                {
+                  "kind": "Content",
+                  "text": "keyof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ClientEvents",
+                  "canonicalReference": "@erlcjs/core!ClientEvents:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">(event: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "K"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", timeoutMs?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ClientEvents",
+                  "canonicalReference": "@erlcjs/core!ClientEvents:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[K]>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "typeParameters": [
+                {
+                  "typeParameterName": "K",
+                  "constraintTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 3
+                  },
+                  "defaultTypeTokenRange": {
+                    "startIndex": 0,
+                    "endIndex": 0
+                  }
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 8,
+                "endIndex": 12
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "event",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 4,
+                    "endIndex": 5
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "timeoutMs",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 6,
+                    "endIndex": 7
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "waitFor"
             }
           ],
-          "extendsTokenRange": {
-            "startIndex": 1,
-            "endIndex": 2
-          },
           "implementsTokenRanges": []
         },
         {
@@ -10813,12 +12048,516 @@
         },
         {
           "kind": "Class",
-          "canonicalReference": "@erlcjs/core!ServerManager:class",
-          "docComment": "/**\n * Manager responsible for fetching and caching the ER:LC Server details.\n *\n * @public\n */\n",
+          "canonicalReference": "@erlcjs/core!ServerInfo:class",
+          "docComment": "/**\n * Represents the current configuration/state snapshot of an ER:LC game server.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "declare class ServerManager "
+              "text": "declare class ServerInfo extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "Base",
+              "canonicalReference": "@erlcjs/core!Base:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "releaseTag": "Public",
+          "isAbstract": false,
+          "name": "ServerInfo",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!ServerInfo#_patch:member(1)",
+              "docComment": "/**\n * Patches the ServerInfo instance with new raw data.\n *\n * @param data - The new raw server data.\n *\n * @returns This ServerInfo instance.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "_patch(data: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "RawServerData",
+                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "this"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "data",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "_patch"
+            },
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@erlcjs/core!ServerInfo:constructor(1)",
+              "docComment": "/**\n * Creates an instance of ServerInfo.\n *\n * @param server - The server this information belongs to.\n *\n * @param data - The raw server data to initialize.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(server: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", data: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "RawServerData",
+                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "server",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "data",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                }
+              ]
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!ServerInfo#accVerifiedReq:member",
+              "docComment": "/**\n * Account verification requirements for joining.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accVerifiedReq: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "'Disabled' | 'Email' | 'Phone/ID'"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "accVerifiedReq",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!ServerInfo#compare:member(1)",
+              "docComment": "/**\n * Compares the current server data with another raw data payload to check if it's identical.\n *\n * @param data - The raw server data to compare against.\n *\n * @returns True if the properties are identical, false otherwise.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "compare(data: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "RawServerData",
+                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "data",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "compare"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!ServerInfo#coOwnerIds:member",
+              "docComment": "/**\n * Array of UserIds of server co-owners.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "coOwnerIds: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "coOwnerIds",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!ServerInfo#currentPlayers:member",
+              "docComment": "/**\n * The current number of players connected to the server.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "currentPlayers: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "currentPlayers",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!ServerInfo#joinKey:member",
+              "docComment": "/**\n * The join key of the server.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "joinKey: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "joinKey",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!ServerInfo#maxPlayers:member",
+              "docComment": "/**\n * The maximum number of players allowed in the server.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "maxPlayers: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "maxPlayers",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!ServerInfo#name:member",
+              "docComment": "/**\n * The name of the server.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "name: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "name",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!ServerInfo#ownerId:member",
+              "docComment": "/**\n * The UserId of the server owner.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "ownerId: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "ownerId",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!ServerInfo#queue:member",
+              "docComment": "/**\n * The queue of players waiting to join the server.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "queue: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "queue",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@erlcjs/core!ServerInfo#teamBalance:member",
+              "docComment": "/**\n * Whether team balance enforcement is enabled.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "teamBalance: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "teamBalance",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!ServerInfo#toJSON:member(1)",
+              "docComment": "/**\n * Converts this ServerInfo instance back to its raw JSON structure.\n *\n * @returns The raw server data.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "toJSON(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "RawServerData",
+                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "toJSON"
+            }
+          ],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@erlcjs/core!ServerManager:class",
+          "docComment": "/**\n * Collection of the ER:LC game servers managed by a Client, keyed by server ID.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class ServerManager extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "Collection",
+              "canonicalReference": "@erlcjs/core!Collection:class"
+            },
+            {
+              "kind": "Content",
+              "text": "<string, "
+            },
+            {
+              "kind": "Reference",
+              "text": "Server",
+              "canonicalReference": "@erlcjs/core!Server:class"
+            },
+            {
+              "kind": "Content",
+              "text": ">"
+            },
+            {
+              "kind": "Content",
+              "text": " "
             }
           ],
           "fileUrlPath": "dist/index.d.ts",
@@ -10861,13 +12600,13 @@
               ]
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!ServerManager#cache:member",
-              "docComment": "/**\n * Cached Server structure instance, if fetched.\n */\n",
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!ServerManager#add:member(1)",
+              "docComment": "/**\n * Adds a server to the manager, keyed by its server ID.\n *\n * @param server - The server to add.\n *\n * @returns This manager.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "cache?: "
+                  "text": "add(server: "
                 },
                 {
                   "kind": "Reference",
@@ -10876,47 +12615,51 @@
                 },
                 {
                   "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "this"
+                },
+                {
+                  "kind": "Content",
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
-              "isOptional": true,
-              "releaseTag": "Public",
-              "name": "cache",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
               "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
               "isProtected": false,
-              "isAbstract": false
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "server",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "add"
             },
             {
               "kind": "Method",
-              "canonicalReference": "@erlcjs/core!ServerManager#fetch:member(1)",
-              "docComment": "/**\n * Fetches current server information from the API. Patches the cache and emits event updates if there are changes.\n *\n * @returns A promise resolving to the raw server data from the API.\n */\n",
+              "canonicalReference": "@erlcjs/core!ServerManager#clearServers:member(1)",
+              "docComment": "/**\n * Destroys and removes all managed servers.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "fetch(): "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "Promise",
-                  "canonicalReference": "!Promise:interface"
+                  "text": "clearServers(): "
                 },
                 {
                   "kind": "Content",
-                  "text": "<"
-                },
-                {
-                  "kind": "Reference",
-                  "text": "RawServerData",
-                  "canonicalReference": "@erlcjs/core!RawServerData:interface"
-                },
-                {
-                  "kind": "Content",
-                  "text": ">"
+                  "text": "void"
                 },
                 {
                   "kind": "Content",
@@ -10926,7 +12669,7 @@
               "isStatic": false,
               "returnTypeTokenRange": {
                 "startIndex": 1,
-                "endIndex": 5
+                "endIndex": 2
               },
               "releaseTag": "Public",
               "isProtected": false,
@@ -10934,69 +12677,146 @@
               "parameters": [],
               "isOptional": false,
               "isAbstract": false,
-              "name": "fetch"
+              "name": "clearServers"
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!ServerManager#hasQueue:member",
-              "docComment": "/**\n * Returns a boolean whether the server has a queue.\n */\n",
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/core!ServerManager#resolve:member(1)",
+              "docComment": "/**\n * Resolves a server by its server ID, accepting a string or number.\n *\n * @param id - The server ID.\n *\n * @returns The server, if found.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "get hasQueue(): "
+                  "text": "resolve(id: "
                 },
                 {
                   "kind": "Content",
-                  "text": "boolean"
+                  "text": "string | number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | undefined"
                 },
                 {
                   "kind": "Content",
                   "text": ";"
                 }
               ],
-              "isReadonly": true,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "hasQueue",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
               "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 5
+              },
+              "releaseTag": "Public",
               "isProtected": false,
-              "isAbstract": false
-            },
-            {
-              "kind": "Property",
-              "canonicalReference": "@erlcjs/core!ServerManager#isFull:member",
-              "docComment": "/**\n * Returns a boolean whether the server is currently full.\n */\n",
-              "excerptTokens": [
+              "overloadIndex": 1,
+              "parameters": [
                 {
-                  "kind": "Content",
-                  "text": "get isFull(): "
-                },
-                {
-                  "kind": "Content",
-                  "text": "boolean"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
+                  "parameterName": "id",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
                 }
               ],
-              "isReadonly": true,
               "isOptional": false,
-              "releaseTag": "Public",
-              "name": "isFull",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "isStatic": false,
-              "isProtected": false,
-              "isAbstract": false
+              "isAbstract": false,
+              "name": "resolve"
             }
           ],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 5
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@erlcjs/core!ServerNotConfiguredError:class",
+          "docComment": "/**\n * Error thrown when a webhook event targets a server that has no configured API key.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class ServerNotConfiguredError extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "Error",
+              "canonicalReference": "!Error:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "releaseTag": "Public",
+          "isAbstract": false,
+          "name": "ServerNotConfiguredError",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@erlcjs/core!ServerNotConfiguredError:constructor(1)",
+              "docComment": "/**\n * Constructs a new instance of the `ServerNotConfiguredError` class\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(serverId?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", message?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "serverId",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": true
+                },
+                {
+                  "parameterName": "message",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": true
+                }
+              ]
+            }
+          ],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          },
           "implementsTokenRanges": []
         },
         {
@@ -11155,16 +12975,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!Staff:constructor(1)",
-              "docComment": "/**\n * Creates an instance of Staff.\n *\n * @param client - The ERLCApi client.\n *\n * @param userId - The user id.\n *\n * @param username - The username.\n */\n",
+              "docComment": "/**\n * Creates an instance of Staff.\n *\n * @param server - The server the staff member belongs to.\n *\n * @param userId - The user id.\n *\n * @param username - The username.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -11192,7 +13012,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -11364,16 +13184,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!StaffManager:constructor(1)",
-              "docComment": "/**\n * Creates an instance of StaffManager.\n *\n * @param client - The erlcjs client.\n */\n",
+              "docComment": "/**\n * Creates an instance of StaffManager.\n *\n * @param server - The server this manager belongs to.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -11385,7 +13205,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -11869,16 +13689,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!Vehicle:constructor(1)",
-              "docComment": "/**\n * Creates an instance of Vehicle.\n *\n * @param client - The ERLCApi client.\n *\n * @param data - The raw vehicle data to initialize.\n */\n",
+              "docComment": "/**\n * Creates an instance of Vehicle.\n *\n * @param server - The server the vehicle is in.\n *\n * @param data - The raw vehicle data to initialize.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -11899,7 +13719,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -12215,16 +14035,16 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!VehicleManager:constructor(1)",
-              "docComment": "/**\n * Creates an instance of VehicleManager.\n *\n * @param client - The erlcjs client.\n */\n",
+              "docComment": "/**\n * Creates an instance of VehicleManager.\n *\n * @param server - The server this manager belongs to.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "constructor(client: "
+                  "text": "constructor(server: "
                 },
                 {
                   "kind": "Reference",
-                  "text": "Client",
-                  "canonicalReference": "@erlcjs/core!Client:class"
+                  "text": "Server",
+                  "canonicalReference": "@erlcjs/core!Server:class"
                 },
                 {
                   "kind": "Content",
@@ -12236,7 +14056,7 @@
               "overloadIndex": 1,
               "parameters": [
                 {
-                  "parameterName": "client",
+                  "parameterName": "server",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
                     "endIndex": 2
@@ -12416,7 +14236,7 @@
         {
           "kind": "Enum",
           "canonicalReference": "@erlcjs/core!Vehicles:enum",
-          "docComment": "",
+          "docComment": "/**\n * Enumeration of vehicle names available in ER:LC.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -12428,27 +14248,6 @@
           "name": "Vehicles",
           "preserveMemberOrder": false,
           "members": [
-            {
-              "kind": "EnumMember",
-              "canonicalReference": "@erlcjs/core!Vehicles._4_WHEELER:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "_4_WHEELER = "
-                },
-                {
-                  "kind": "Content",
-                  "text": "\"4-Wheeler\""
-                }
-              ],
-              "initializerTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              },
-              "releaseTag": "Public",
-              "name": "_4_WHEELER"
-            },
             {
               "kind": "EnumMember",
               "canonicalReference": "@erlcjs/core!Vehicles.AIKAWA_STREET_SWEEPER_2010:member",
@@ -16444,7 +18243,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@erlcjs/core!WebhookServer:class",
-          "docComment": "/**\n * Webhook Server for handling real-time gateway events pushed by ER:LC.\n *\n * @public\n */\n",
+          "docComment": "/**\n * Webhook Server for handling real-time gateway events pushed by ER:LC for all managed servers. Incoming events are routed to the matching server by their `origin` field.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -16460,7 +18259,7 @@
             {
               "kind": "Constructor",
               "canonicalReference": "@erlcjs/core!WebhookServer:constructor(1)",
-              "docComment": "/**\n * Creates an instance of WebhookServer.\n *\n * @param client - The ERLCApi client.\n */\n",
+              "docComment": "/**\n * Creates an instance of WebhookServer.\n *\n * @param client - The erlcjs client.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",

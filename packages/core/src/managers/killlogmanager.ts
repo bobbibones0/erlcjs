@@ -1,5 +1,6 @@
-import { Client, ERLCEvents } from '../client/client.js';
-import { Collection } from '../index.js';
+import type { Server } from '../client/server.js';
+import { ERLCEvents } from '../client/events.js';
+import { Collection } from '../util/collection.js';
 import { KillLog } from '../structures/killlog.js';
 import { type RawKillLog, type RawServerData } from '../types/index.js';
 
@@ -15,10 +16,10 @@ export class KillLogManager {
 
     /**
      * Creates an instance of KillLogManager.
-     * @param client - The erlcjs client.
+     * @param server - The server this manager belongs to.
      * @param maxCacheSize - The maximum number of kill logs to hold in cache.
      */
-    constructor(private readonly client: Client, private readonly maxCacheSize?: number) {}
+    constructor(private readonly server: Server, private readonly maxCacheSize?: number) {}
 
     /**
      * Fetches all kill logs from the game server.
@@ -26,7 +27,7 @@ export class KillLogManager {
      * @returns A promise resolving to a Collection of KillLogs.
      */
     public async fetchAll(): Promise<Collection<string, KillLog>> {
-        const rawServer: RawServerData = await this.client.rest.request(
+        const rawServer: RawServerData = await this.server.rest.request(
             'GET',
             '/v2/server?KillLogs=true',
         );
@@ -47,9 +48,9 @@ export class KillLogManager {
             const cachedPlayer = this.cache.get(key);
 
             if (!cachedPlayer) {
-                const newKill = new KillLog(this.client, rawData);
+                const newKill = new KillLog(this.server, rawData);
                 this.cache.set(key, newKill);
-                this.client.emit(ERLCEvents.kill, newKill);
+                this.server.client.emit(ERLCEvents.kill, newKill);
             }
         }
 

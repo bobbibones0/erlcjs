@@ -43,7 +43,8 @@ The `@erlcjs/map` package provides easy-to-use customizable quick map rendering.
     import { drawMap, MapType } from '@erlcjs/map';
     import { Client, ERLCEvents } from '@erlcjs/core';
 
-    const client = new Client({ serverKey: 'YOUR_SERVER_KEY', polling: { enabled: true } });
+    const client = new Client({ servers: ['YOUR_SERVER_KEY'], polling: { enabled: true } });
+    const server = client.servers.get('YOUR_SERVER_ID');
     ```
 
 3.  ### Draw map.png every poll
@@ -53,10 +54,12 @@ The `@erlcjs/map` package provides easy-to-use customizable quick map rendering.
     ```ts
     client.on(
         ERLCEvents.poll,
-        () => {
-            const map = await drawMap({ players: client.players, emergencyCalls: client.emergencyCalls, map: MapType.fall, showModCalls: true });
-            if (!map) return;
-            await sharp(map).png().toFile('map.png');
+        (server) => {
+            drawMap({ players: server.players, emergencyCalls: server.emergencyCalls, map: MapType.fall, showModCalls: true })
+                .then((map) => {
+                    if (!map) return;
+                    return sharp(map).png().toFile('map.png');
+                });
         }
     );
     ```
@@ -70,6 +73,6 @@ The `@erlcjs/map` package provides easy-to-use customizable quick map rendering.
   <h3 class="contributors-heading">Contributors</h3>
   <p class="contributors-subtext">Thank you to everyone who contributed to this page!</p>
   <div class="contributors-grid">
-      <a href="https://github.com/Noinkin" target="_blank" rel="noopener noreferrer" class="contributor" title="Noinkin — 1 commit"><img src="https://avatars.githubusercontent.com/u/87577662?v=4&s=64" alt="Noinkin" width="40" height="40" loading="lazy" /><span class="contributor-name">Noinkin</span></a>
+      <a href="https://github.com/Noinkin" target="_blank" rel="noopener noreferrer" class="contributor"><img src="https://avatars.githubusercontent.com/u/87577662?v=4&s=64" alt="Noinkin" width="40" height="40" loading="lazy" /><span class="contributor-name">Noinkin</span></a>
   </div>
 </div>

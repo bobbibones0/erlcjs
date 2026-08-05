@@ -1,4 +1,5 @@
-import { Client, ERLCEvents } from '../client/client.js';
+import type { Server } from '../client/server.js';
+import { ERLCEvents } from '../client/events.js';
 import { CommandLog } from '../structures/commandlog.js';
 import { type RawCommandLog, type RawServerData } from '../types/index.js';
 import { Collection } from '../util/collection.js';
@@ -15,10 +16,10 @@ export class CommandLogManager {
 
     /**
      * Creates an instance of CommandLogManager.
-     * @param client - The erlcjs client.
+     * @param server - The server this manager belongs to.
      * @param maxCacheSize - The maximum number of command logs to hold in cache.
      */
-    constructor(private readonly client: Client, private readonly maxCacheSize?: number) {}
+    constructor(private readonly server: Server, private readonly maxCacheSize?: number) {}
 
     /**
      * Fetches all command logs from the game server.
@@ -26,7 +27,7 @@ export class CommandLogManager {
      * @returns A promise resolving to a Collection of CommandLogs.
      */
     public async fetchAll(): Promise<Collection<string, CommandLog>> {
-        const rawServer: RawServerData = await this.client.rest.request(
+        const rawServer: RawServerData = await this.server.rest.request(
             'GET',
             '/v2/server?CommandLogs=true',
         );
@@ -47,9 +48,9 @@ export class CommandLogManager {
             const cachedPlayer = this.cache.get(key);
 
             if (!cachedPlayer) {
-                const newCommand = new CommandLog(this.client, rawData);
+                const newCommand = new CommandLog(this.server, rawData);
                 this.cache.set(key, newCommand);
-                this.client.emit(ERLCEvents.command, newCommand);
+                this.server.client.emit(ERLCEvents.command, newCommand);
             }
         }
 

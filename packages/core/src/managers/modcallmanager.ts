@@ -1,5 +1,6 @@
-import { Client, ERLCEvents } from '../client/client.js';
-import { Collection } from '../index.js';
+import type { Server } from '../client/server.js';
+import { ERLCEvents } from '../client/events.js';
+import { Collection } from '../util/collection.js';
 import { ModCall } from '../structures/modcall.js';
 import { type RawModCall, type RawServerData } from '../types/index.js';
 
@@ -15,10 +16,10 @@ export class ModCallManager {
 
     /**
      * Creates an instance of ModCallManager.
-     * @param client - The erlcjs client.
+     * @param server - The server this manager belongs to.
      * @param maxCacheSize - The maximum number of kill logs to hold in cache.
      */
-    constructor(private readonly client: Client, private readonly maxCacheSize?: number) {}
+    constructor(private readonly server: Server, private readonly maxCacheSize?: number) {}
 
     /**
      * Fetches all moderator calls from the game server.
@@ -26,7 +27,7 @@ export class ModCallManager {
      * @returns A promise resolving to a Collection of ModCalls.
      */
     public async fetchAll(): Promise<Collection<string, ModCall>> {
-        const rawServer: RawServerData = await this.client.rest.request(
+        const rawServer: RawServerData = await this.server.rest.request(
             'GET',
             '/v2/server?ModCalls=true',
         );
@@ -47,16 +48,16 @@ export class ModCallManager {
             const cachedCall = this.cache.get(key);
 
             if (!cachedCall) {
-                const newCall = new ModCall(this.client, rawData);
+                const newCall = new ModCall(this.server, rawData);
                 this.cache.set(key, newCall);
-                this.client.emit(ERLCEvents.modCall, newCall);
+                this.server.client.emit(ERLCEvents.modCall, newCall);
                 if (newCall.moderator) {
-                    this.client.emit(ERLCEvents.modCallAnswered, newCall);
+                    this.server.client.emit(ERLCEvents.modCallAnswered, newCall);
                 }
             } else {
                 if (!cachedCall.moderator && rawData.Moderator) {
                     cachedCall._patch(rawData);
-                    this.client.emit(ERLCEvents.modCallAnswered, cachedCall)
+                    this.server.client.emit(ERLCEvents.modCallAnswered, cachedCall);
                 }
             }
         }

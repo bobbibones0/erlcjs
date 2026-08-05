@@ -1,4 +1,4 @@
-import { Client } from '../client/client.js';
+import type { Server } from '../client/server.js';
 import { Base } from './base.js';
 import type { RawEmergencyCall } from '../types/index.js';
 import { Player } from './player.js';
@@ -51,11 +51,11 @@ export class EmergencyCall extends Base {
 
     /**
      * Creates an instance of EmergencyCall.
-     * @param client - The ERLCApi client.
+     * @param server - The server the call belongs to.
      * @param data - The raw emergency call data to initialize.
      */
-    constructor(client: Client, data: RawEmergencyCall) {
-        super(client);
+    constructor(server: Server, data: RawEmergencyCall) {
+        super(server);
         this._patch(data);
     }
 
@@ -66,12 +66,12 @@ export class EmergencyCall extends Base {
      */
     public _patch(data: RawEmergencyCall): this {
         this.callerId = data.Caller;
-        this.caller = this.client.players.cache.get(this.callerId)!;
+        this.caller = this.server.players.cache.get(this.callerId)!;
         this.team = data.Team;
         this.playerIds = data.Players;
         this.players = [];
         for (const playerId of data.Players) {
-            const player = this.client.players.cache.get(playerId);
+            const player = this.server.players.cache.get(playerId);
             if (player) this.players.push(player);
         }
         this.position = data.Position;

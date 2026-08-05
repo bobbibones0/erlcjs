@@ -1,0 +1,220 @@
+---
+title: Migrating from v1 to v2
+description: Breaking changes and step-by-step guidance for moving your erlc.js project from v1 to the multi-server v2 client.
+sidebar:
+    order: 6
+---
+
+The biggest change in v2 is that **one `Client` now manages multiple ER:LC servers**, following a discord.js-style design. All of the managers and caches that used to live on the `Client` now live on a per-server `Server` object. This is a breaking major release, but the migration is mostly mechanical.
+
+## Quick Summary
+
+| v1 | v2 |
+| :--- | :--- |
+| `new Client({ serverKey })` | `new Client({ servers: [key1, key2] })` |
+| `client.players` | `client.servers.get(id).players` |
+| `client.commands.execute()` | `server.commands.execute()` |
+| `client.server.cache` (data) | `server.info` (`ServerInfo`) |
+| `Server` (data structure) | `ServerInfo` (snapshot) + `Server` (container) |
+| `client.authorizationLink` | `server.authorizationLink` |
+| `client.registerCommand()` only | `client.registerCommand()` (global) and/or `server.registerCommand()` |
+| `ready` fired immediately | `ready` fires after every server's first poll |
+
+## 1. Constructing the Client
+
+In v1 you passed a single server key:
+
+```javascript
+// v1
+const client = new Client({
+    serverKey: 'YOUR_SERVER_KEY',
+    polling: true,
+});
+```
+
+In v2 you pass an array of server keys. Each key's server ID is parsed automatically, and every server is registered under `client.servers`:
+
+```javascript
+// v2
+const client = new Client({
+    servers: ['YOUR_SERVER_KEY_1', 'YOUR_SERVER_KEY_2'],
+    polling: true,
+});
+```
+
+The `globalKey` and `globalAppId` options are unchanged. Providing two keys that resolve to the same server ID throws a `DuplicateServerError`.
+
+## 2. Accessing a Server
+
+Grab a server by its ID (parsed from the key) and interact with its managers and caches through it:
+
+```javascript
+// v2
+const server = client.servers.get('YOUR_SERVER_ID');
+
+console.log(server.id);
+console.log(server.isFull);
+console.log(server.hasQueue);
+```
+
+`client.servers` is a `ServerManager` that extends `Collection`, so you can also use `.resolve(id)` with a numeric ID, `.find(...)`, `.filter(...)`, `.size`, etc.
+
+## 3. Managers Moved to the Server
+
+Every manager that previously lived on the client now lives on the server. Update these references:
+
+| v1 | v2 |
+| :--- | :--- |
+| `client.players` | `server.players` |
+| `client.vehicles` | `server.vehicles` |
+| `client.commands` | `server.commands` |
+| `client.commandLogs` | `server.commandLogs` |
+| `client.emergencyCalls` | `server.emergencyCalls` |
+| `client.killLogs` | `server.killLogs` |
+| `client.modCalls` | `server.modCalls` |
+| `client.staff` | `server.staff` |
+
+```javascript
+// v1
+const player = client.players.cache.get(userId);
+await client.commands.execute(':pm jamie hi');
+
+// v2
+const player = server.players.cache.get(userId);
+await server.commands.execute(':pm jamie hi');
+```
+
+Each server keeps **independent caches**, so two servers never share player or vehicle data.
+
+## 4. `Server` Structure is Now `ServerInfo`
+
+The old `Server` data structure (name, player counts, join key, etc.) has been renamed to `ServerInfo`, and is exposed at `server.info` instead of `client.server.cache`:
+
+```javascript
+// v1
+const name = client.server.cache?.name;
+const current = client.server.cache?.currentPlayers;
+
+// v2
+const name = server.info?.name;
+const current = server.info?.currentPlayers;
+```
+
+The `Server` class name is now the per-server container (the object that holds managers and caches).
+
+## 5. Events
+
+Events are still emitted on the `Client` via `client.on(...)`, and **every emitted structure now exposes `.server`** so you always know which server an update came from:
+
+```javascript
+client.on(ERLCEvents.playerJoin, (player) => {
+    console.log(`${player.username} joined ${player.server.id}`);
+});
+```
+
+### `ready` semantics
+
+In v1, `ready` fired immediately on construction. In v2, `ready` fires **once every configured server has completed its first poll** (or immediately when polling is disabled).
+
+### New lifecycle events
+
+Use these to react to individual servers coming up or going down:
+
+```javascript
+client.on(ERLCEvents.serverReady, (server) => {});
+client.on(ERLCEvents.serverOnline, (server) => {});
+client.on(ERLCEvents.serverOffline, (server) => {});
+```
+
+### Changed signatures
+
+* `poll`: `[server: RawServerData]` → `[server: Server]`
+* `serverCreate`: `[server: Server]` → `[server: ServerInfo]`
+* `serverUpdate`: `[old, new]` now uses `ServerInfo` instances
+* `webhookProbe`: `[]` → `[server: Server]`
+
+### Server going offline
+
+When a server goes offline, v2 emits `serverOffline` and **automatically clears that server's volatile caches** (players, vehicles, emergency calls, and staff). Polling continues so the client detects recovery and emits `serverOnline` once the server is reachable again.
+
+## 6. Custom Commands
+
+v1 only allowed registering commands on the client. v2 supports both scopes:
+
+```javascript
+// Global: available on every managed server
+client.registerCommand({
+    name: 'global',
+    execute: ({ player, args }) => { /* ... */ },
+});
+
+// Per-server: only fires on that server
+server.registerCommand({
+    name: 'local',
+    execute: ({ player, args }) => { /* ... */ },
+});
+```
+
+When a command is executed in-game, the server-scoped command takes priority over the global one.
+
+## 7. Authorization Link
+
+`authorizationLink` moved from the client to the server:
+
+```javascript
+// v1
+console.log(client.authorizationLink);
+
+// v2
+console.log(server.authorizationLink);
+```
+
+## 8. REST
+
+`client.rest` still exists, but `RestManager.request(method, endpoint, body)` now takes the target server key as a fourth argument. In practice you'll rarely call it directly — use `server.rest.request(method, endpoint, body)` or `server.request(method, endpoint, body)`, which bind the correct key automatically:
+
+```javascript
+// v2
+const data = await server.rest.request('GET', '/v2/server?Players=true');
+```
+
+Rate limiting is now shared across all servers on the ER:LC per-IP budget, with optimistic bucket accounting and retry-after freeze handling.
+
+## 9. Presets and Map Packages
+
+`@erlcjs/presets` helpers that took a client now take a server:
+
+```javascript
+// v1
+autoHint(client, 'Welcome!');
+
+// v2
+autoHint(server, 'Welcome!');
+```
+
+Event-based presets (like `welcomePlayer`, `banVehicles`, `RDM`) are unchanged — pass them straight into `client.on(...)` as before.
+
+For `@erlcjs/map`, pass the server's managers instead of the client's:
+
+```javascript
+// v2
+const map = await drawMap({
+    players: server.players,
+    emergencyCalls: server.emergencyCalls,
+    map: MapType.fall,
+    showModCalls: true,
+});
+```
+
+## 10. Migration Checklist
+
+1. [ ] Replace `serverKey` with `servers: [...]` in your `Client` options.
+2. [ ] Resolve each server with `client.servers.get(id)`.
+3. [ ] Move manager access onto the server (`client.players` → `server.players`, etc.).
+4. [ ] Replace `client.server.cache` with `server.info`.
+5. [ ] Move `client.authorizationLink` to `server.authorizationLink`.
+6. [ ] Move `client.commands.execute()` calls to `server.commands.execute()`.
+7. [ ] Update `poll`/`serverCreate`/`serverUpdate`/`webhookProbe` handlers for the new signatures.
+8. [ ] If you relied on `ready` firing immediately, listen for `serverReady`/`serverOnline` instead.
+9. [ ] Update presets/map calls that passed the client to pass a server.
+10. [ ] Update `client.rest.request(...)` calls to use `server.rest.request(...)`.

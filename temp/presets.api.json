@@ -189,9 +189,456 @@
       "preserveMemberOrder": false,
       "members": [
         {
+          "kind": "TypeAlias",
+          "canonicalReference": "@erlcjs/presets!Allowlist:type",
+          "docComment": "/**\n * Type which represents allowlists, a set array can be used for a set allowlist or a callback function for a dynamic one.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "type Allowlist = "
+            },
+            {
+              "kind": "Content",
+              "text": "(number | "
+            },
+            {
+              "kind": "Reference",
+              "text": "PlayerPermission",
+              "canonicalReference": "@erlcjs/core!PlayerPermission:enum"
+            },
+            {
+              "kind": "Content",
+              "text": ")[] | (() => (number | "
+            },
+            {
+              "kind": "Reference",
+              "text": "PlayerPermission",
+              "canonicalReference": "@erlcjs/core!PlayerPermission:enum"
+            },
+            {
+              "kind": "Content",
+              "text": ")[])"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "releaseTag": "Public",
+          "name": "Allowlist",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 6
+          }
+        },
+        {
+          "kind": "Function",
+          "canonicalReference": "@erlcjs/presets!autoAnnouncement:function(1)",
+          "docComment": "/**\n * Sends an announcement in-game every interval,\n *\n * @param server - The server to send to.\n *\n * @param message - The message to send every interval.\n *\n * @param interval - The interval to send the message at. Default is every 2 minutes.\n *\n * @returns The setInterval used to it can be stopped with clearInterval.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare function autoAnnouncement(server: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Server",
+              "canonicalReference": "@erlcjs/core!Server:class"
+            },
+            {
+              "kind": "Content",
+              "text": ", message: "
+            },
+            {
+              "kind": "Content",
+              "text": "string"
+            },
+            {
+              "kind": "Content",
+              "text": ", interval?: "
+            },
+            {
+              "kind": "Content",
+              "text": "number"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Reference",
+              "text": "NodeJS.Timeout",
+              "canonicalReference": "!\"\\\"node:timers\\\"\".__global.NodeJS.Timeout:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 7,
+            "endIndex": 8
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "server",
+              "parameterTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isOptional": false
+            },
+            {
+              "parameterName": "message",
+              "parameterTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "isOptional": false
+            },
+            {
+              "parameterName": "interval",
+              "parameterTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "isOptional": true
+            }
+          ],
+          "name": "autoAnnouncement"
+        },
+        {
+          "kind": "Function",
+          "canonicalReference": "@erlcjs/presets!autoCommand:function(1)",
+          "docComment": "/**\n * Sends a command in-game every interval,\n *\n * @param server - The server to send to.\n *\n * @param command - The command to send every interval.\n *\n * @param interval - The interval to send the command at. Default is every 2 minutes.\n *\n * @returns The setInterval used to it can be stopped with clearInterval.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare function autoCommand(server: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Server",
+              "canonicalReference": "@erlcjs/core!Server:class"
+            },
+            {
+              "kind": "Content",
+              "text": ", command: "
+            },
+            {
+              "kind": "Content",
+              "text": "string"
+            },
+            {
+              "kind": "Content",
+              "text": ", interval?: "
+            },
+            {
+              "kind": "Content",
+              "text": "number"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Reference",
+              "text": "NodeJS.Timeout",
+              "canonicalReference": "!\"\\\"node:timers\\\"\".__global.NodeJS.Timeout:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 7,
+            "endIndex": 8
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "server",
+              "parameterTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isOptional": false
+            },
+            {
+              "parameterName": "command",
+              "parameterTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "isOptional": false
+            },
+            {
+              "parameterName": "interval",
+              "parameterTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "isOptional": true
+            }
+          ],
+          "name": "autoCommand"
+        },
+        {
+          "kind": "Function",
+          "canonicalReference": "@erlcjs/presets!autoHint:function(1)",
+          "docComment": "/**\n * Sends a hint in-game every interval,\n *\n * @param server - The server to send to.\n *\n * @param message - The message to send every interval.\n *\n * @param interval - The interval to send the message at. Default is every 2 minutes.\n *\n * @returns The setInterval used to it can be stopped with clearInterval.\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare function autoHint(server: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Server",
+              "canonicalReference": "@erlcjs/core!Server:class"
+            },
+            {
+              "kind": "Content",
+              "text": ", message: "
+            },
+            {
+              "kind": "Content",
+              "text": "string"
+            },
+            {
+              "kind": "Content",
+              "text": ", interval?: "
+            },
+            {
+              "kind": "Content",
+              "text": "number"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Reference",
+              "text": "NodeJS.Timeout",
+              "canonicalReference": "!\"\\\"node:timers\\\"\".__global.NodeJS.Timeout:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 7,
+            "endIndex": 8
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "server",
+              "parameterTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isOptional": false
+            },
+            {
+              "parameterName": "message",
+              "parameterTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "isOptional": false
+            },
+            {
+              "parameterName": "interval",
+              "parameterTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "isOptional": true
+            }
+          ],
+          "name": "autoHint"
+        },
+        {
+          "kind": "Function",
+          "canonicalReference": "@erlcjs/presets!banCommand:function(1)",
+          "docComment": "/**\n * Ban commands for specific users.\n *\n * @param commands - The commands to ban.\n *\n * @param action - The callback to run if a match if found.\n *\n * @param startsWith - Exact match or starts with match.\n *\n * @param allowlist - Users/Permissions that can run the command\n *\n * @returns - Callback function to pass into client event.\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.Command, banCommand([':bring all', ':load all'], CommandPunishments.removePermissions(), false, [ PlayerPermission.Owner ] ));\n * ```\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.Command, banCommand([':admin', ':mod'], CommandPunishments.removePermissions(), true, [ PlayerPermission.Owner ] ));\n * ```\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare function banCommand(commands: "
+            },
+            {
+              "kind": "Content",
+              "text": "string | string[]"
+            },
+            {
+              "kind": "Content",
+              "text": ", action: "
+            },
+            {
+              "kind": "Content",
+              "text": "(log: "
+            },
+            {
+              "kind": "Reference",
+              "text": "CommandLog",
+              "canonicalReference": "@erlcjs/core!CommandLog:class"
+            },
+            {
+              "kind": "Content",
+              "text": ") => void"
+            },
+            {
+              "kind": "Content",
+              "text": ", startsWith?: "
+            },
+            {
+              "kind": "Content",
+              "text": "boolean"
+            },
+            {
+              "kind": "Content",
+              "text": ", allowlist?: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Allowlist",
+              "canonicalReference": "@erlcjs/presets!Allowlist:type"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Content",
+              "text": "(log: "
+            },
+            {
+              "kind": "Reference",
+              "text": "CommandLog",
+              "canonicalReference": "@erlcjs/core!CommandLog:class"
+            },
+            {
+              "kind": "Content",
+              "text": ") => void"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 11,
+            "endIndex": 14
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "commands",
+              "parameterTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isOptional": false
+            },
+            {
+              "parameterName": "action",
+              "parameterTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 6
+              },
+              "isOptional": false
+            },
+            {
+              "parameterName": "startsWith",
+              "parameterTypeTokenRange": {
+                "startIndex": 7,
+                "endIndex": 8
+              },
+              "isOptional": true
+            },
+            {
+              "parameterName": "allowlist",
+              "parameterTypeTokenRange": {
+                "startIndex": 9,
+                "endIndex": 10
+              },
+              "isOptional": true
+            }
+          ],
+          "name": "banCommand"
+        },
+        {
+          "kind": "Function",
+          "canonicalReference": "@erlcjs/presets!banKickRejoin:function(1)",
+          "docComment": "/**\n * Bans player that rejoin within a set number of seconds after a kick.\n *\n * @param timespan - The number of seconds which they can rejoin after, default 1800 (30 minutes).\n *\n * @returns Callback function to pass into client event.\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.playerJoin, banKickRejoin())\n * ```\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare function banKickRejoin(timespan?: "
+            },
+            {
+              "kind": "Content",
+              "text": "number"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Content",
+              "text": "(player: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Player",
+              "canonicalReference": "@erlcjs/core!Player:class"
+            },
+            {
+              "kind": "Content",
+              "text": ") => void"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 3,
+            "endIndex": 6
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "timespan",
+              "parameterTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isOptional": true
+            }
+          ],
+          "name": "banKickRejoin"
+        },
+        {
           "kind": "Function",
           "canonicalReference": "@erlcjs/presets!banLiveries:function(1)",
-          "docComment": "/**\n * Bans liveries for everyone except specific users.\n *\n * @param liveries - A list of liveries to ban.\n *\n * @param action - Callback function executed when a match if found.\n *\n * @param allowlist - Users which can use the livery.\n *\n * @returns Callback function to pass into the client event.\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.vehicleAdd, banLiveries([ 'Staff' ], LiveryPunishments.warnThenKick(), [ PlayerPermission.Mod, PlayerPermission.Administrator, PlayerPermission.Owner ]))\n * ```\n *\n */\n",
+          "docComment": "/**\n * Bans liveries for everyone except specific users.\n *\n * @param liveries - A list of liveries to ban.\n *\n * @param action - Callback function executed when a match if found.\n *\n * @param allowlist - Users which can use the livery.\n *\n * @returns Callback function to pass into the client event.\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.vehicleAdd, banLiveries([ 'Staff' ], LiveryPunishments.warnThenKick(), [ PlayerPermission.Mod, PlayerPermission.Administrator, PlayerPermission.Owner ]))\n * ```\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -204,7 +651,7 @@
             {
               "kind": "Reference",
               "text": "Livery",
-              "canonicalReference": "@erlcjs/presets!~Livery:interface"
+              "canonicalReference": "@erlcjs/presets!Livery:interface"
             },
             {
               "kind": "Content",
@@ -232,17 +679,9 @@
               "text": ", allowlist?: "
             },
             {
-              "kind": "Content",
-              "text": "(number | "
-            },
-            {
               "kind": "Reference",
-              "text": "PlayerPermission",
-              "canonicalReference": "@erlcjs/core!PlayerPermission:enum"
-            },
-            {
-              "kind": "Content",
-              "text": ")[]"
+              "text": "Allowlist",
+              "canonicalReference": "@erlcjs/presets!Allowlist:type"
             },
             {
               "kind": "Content",
@@ -268,8 +707,8 @@
           ],
           "fileUrlPath": "dist/index.d.ts",
           "returnTypeTokenRange": {
-            "startIndex": 13,
-            "endIndex": 16
+            "startIndex": 11,
+            "endIndex": 14
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
@@ -294,7 +733,7 @@
               "parameterName": "allowlist",
               "parameterTypeTokenRange": {
                 "startIndex": 9,
-                "endIndex": 12
+                "endIndex": 10
               },
               "isOptional": true
             }
@@ -304,7 +743,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@erlcjs/presets!banVehicles:function(1)",
-          "docComment": "/**\n * Bans vehicles for everyone except specific users.\n *\n * @param vehicles - A list of vehicles to ban.\n *\n * @param action - Callback function executed when a match is found.\n *\n * @param allowlist - Users which can use the vehicle.\n *\n * @returns Callback function to pass into client event.\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.vehicleAdd, banVehicles([ Vehicles.STRUGATTI_ETTORE_2020 ], VehiclePunishments.warnThenKick()))\n * ```\n *\n */\n",
+          "docComment": "/**\n * Bans vehicles for everyone except specific users.\n *\n * @param vehicles - A list of vehicles to ban.\n *\n * @param action - Callback function executed when a match is found.\n *\n * @param allowlist - Users which can use the vehicle.\n *\n * @returns Callback function to pass into client event.\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.vehicleAdd, banVehicles([ Vehicles.STRUGATTI_ETTORE_2020 ], VehiclePunishments.warnThenKick()))\n * ```\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -345,17 +784,9 @@
               "text": ", allowlist?: "
             },
             {
-              "kind": "Content",
-              "text": "(number | "
-            },
-            {
               "kind": "Reference",
-              "text": "PlayerPermission",
-              "canonicalReference": "@erlcjs/core!PlayerPermission:enum"
-            },
-            {
-              "kind": "Content",
-              "text": ")[]"
+              "text": "Allowlist",
+              "canonicalReference": "@erlcjs/presets!Allowlist:type"
             },
             {
               "kind": "Content",
@@ -381,8 +812,8 @@
           ],
           "fileUrlPath": "dist/index.d.ts",
           "returnTypeTokenRange": {
-            "startIndex": 13,
-            "endIndex": 16
+            "startIndex": 11,
+            "endIndex": 14
           },
           "releaseTag": "Public",
           "overloadIndex": 1,
@@ -407,7 +838,7 @@
               "parameterName": "allowlist",
               "parameterTypeTokenRange": {
                 "startIndex": 9,
-                "endIndex": 12
+                "endIndex": 10
               },
               "isOptional": true
             }
@@ -416,8 +847,220 @@
         },
         {
           "kind": "Class",
+          "canonicalReference": "@erlcjs/presets!CommandPunishments:class",
+          "docComment": "/**\n * Provides punishment actions for banned commands.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class CommandPunishments "
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "releaseTag": "Public",
+          "isAbstract": false,
+          "name": "CommandPunishments",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/presets!CommandPunishments.ban:member(1)",
+              "docComment": "/**\n * Removes permissions and bans the player.\n *\n * @returns A callback that bans the command sender.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static ban(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(log: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CommandLog",
+                  "canonicalReference": "@erlcjs/core!CommandLog:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": true,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "ban"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/presets!CommandPunishments.kick:member(1)",
+              "docComment": "/**\n * Removes permissions and kicks the player.\n *\n * @returns A callback that kicks the command sender.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static kick(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(log: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CommandLog",
+                  "canonicalReference": "@erlcjs/core!CommandLog:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": true,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "kick"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@erlcjs/presets!CommandPunishments.removePermissions:member(1)",
+              "docComment": "/**\n * Removes admin/mod permissions from the player.\n *\n * @returns A callback that removes permissions from the command sender.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static removePermissions(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(log: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CommandLog",
+                  "canonicalReference": "@erlcjs/core!CommandLog:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ") => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": true,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "removePermissions"
+            }
+          ],
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@erlcjs/presets!Livery:interface",
+          "docComment": "/**\n * Represents a vehicle livery to ban, optionally scoped to a specific vehicle model.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "interface Livery "
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "releaseTag": "Public",
+          "name": "Livery",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@erlcjs/presets!Livery#livery:member",
+              "docComment": "/**\n * The livery/texture name to ban.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "livery: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "livery",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@erlcjs/presets!Livery#vehicle:member",
+              "docComment": "/**\n * The vehicle model this livery restriction applies to.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "vehicle: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Vehicles",
+                  "canonicalReference": "@erlcjs/core!Vehicles:enum"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "vehicle",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "extendsTokenRanges": []
+        },
+        {
+          "kind": "Class",
           "canonicalReference": "@erlcjs/presets!LiveryPunishments:class",
-          "docComment": "",
+          "docComment": "/**\n * Provides punishment actions for banned liveries.  @class LiveryPunishments\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.vehicleAdd, banLiveries(\n *   ['Staff'],\n *   LiveryPunishments.warnThenKick(10, true, 'This livery is restricted'),\n *   [PlayerPermission.Mod, PlayerPermission.Administrator]\n * ))\n * ```\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -433,7 +1076,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@erlcjs/presets!LiveryPunishments.warnThenKick:member(1)",
-              "docComment": "",
+              "docComment": "/**\n * Warns a player and kicks them if they don't change their livery within the specified delay.  @static\n *\n * @param delay - Time in seconds before kicking the player.\n *\n * @param warning - Whether to send a warning message before kicking.\n *\n * @param message - Custom message to send to the player. Defaults to a generic message.\n *\n * @returns {(vehicle: Vehicle) => void} A callback function that handles the punishment logic.\n *\n * @example\n * ```typescript\n * const punishment = LiveryPunishments.warnThenKick(15, true, 'Change your livery');\n * client.on(ERLCEvents.vehicleAdd, banLiveries(['Staff'], punishment, [PlayerPermission.Mod]))\n * ```\n *\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -523,9 +1166,121 @@
           "implementsTokenRanges": []
         },
         {
+          "kind": "Function",
+          "canonicalReference": "@erlcjs/presets!RDM:function(1)",
+          "docComment": "/**\n * Fires an action if a player reaches a kill threshold in a specific timespan.\n *\n * @param action - The callback to run if a match if found.\n *\n * @param allowlist - Users/Permissions that can RDM.\n *\n * @param minKills - The minimum number of kills in the threshold.\n *\n * @param timespan - The timespan in which the number of kills must be reached in seconds.\n *\n * @returns - Callback function to pass into client event.\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.Kill, RDM((log) => log.killer.kick()));\n * ```\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.Kill, RDM((log) => log.killer.kick(), [ PlayerPermission.Administrator, PlayerPermission.Owner ], 5, 30));\n * ```\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare function RDM(action: "
+            },
+            {
+              "kind": "Content",
+              "text": "(log: "
+            },
+            {
+              "kind": "Reference",
+              "text": "KillLog",
+              "canonicalReference": "@erlcjs/core!KillLog:class"
+            },
+            {
+              "kind": "Content",
+              "text": ") => void"
+            },
+            {
+              "kind": "Content",
+              "text": ", allowlist?: "
+            },
+            {
+              "kind": "Reference",
+              "text": "Allowlist",
+              "canonicalReference": "@erlcjs/presets!Allowlist:type"
+            },
+            {
+              "kind": "Content",
+              "text": ", minKills?: "
+            },
+            {
+              "kind": "Content",
+              "text": "number"
+            },
+            {
+              "kind": "Content",
+              "text": ", timespan?: "
+            },
+            {
+              "kind": "Content",
+              "text": "number"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Content",
+              "text": "(log: "
+            },
+            {
+              "kind": "Reference",
+              "text": "KillLog",
+              "canonicalReference": "@erlcjs/core!KillLog:class"
+            },
+            {
+              "kind": "Content",
+              "text": ") => void"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "dist/index.d.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 11,
+            "endIndex": 14
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "action",
+              "parameterTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "isOptional": false
+            },
+            {
+              "parameterName": "allowlist",
+              "parameterTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "isOptional": true
+            },
+            {
+              "parameterName": "minKills",
+              "parameterTypeTokenRange": {
+                "startIndex": 7,
+                "endIndex": 8
+              },
+              "isOptional": true
+            },
+            {
+              "parameterName": "timespan",
+              "parameterTypeTokenRange": {
+                "startIndex": 9,
+                "endIndex": 10
+              },
+              "isOptional": true
+            }
+          ],
+          "name": "RDM"
+        },
+        {
           "kind": "Class",
           "canonicalReference": "@erlcjs/presets!VehiclePunishments:class",
-          "docComment": "",
+          "docComment": "/**\n * Provides punishment actions for banned vehicles.  @class VehiclePunishments\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.vehicleAdd, banVehicles(\n *   [Vehicles.BUGATTI_VEYRON],\n *   VehiclePunishments.warnThenKick(15, true, 'This vehicle is not allowed')\n * ))\n * ```\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -541,7 +1296,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@erlcjs/presets!VehiclePunishments.warnThenKick:member(1)",
-              "docComment": "",
+              "docComment": "/**\n * Warns a player and kicks them if they don't change vehicles within the specified delay.  @static\n *\n * @param delay - Time in seconds before kicking the player.\n *\n * @param warning - Whether to send a warning message before kicking.\n *\n * @param message - Custom message to send to the player. Defaults to a generic message.\n *\n * @returns {(vehicle: Vehicle) => void} A callback function that handles the punishment logic.\n *\n * @example\n * ```typescript\n * const punishment = VehiclePunishments.warnThenKick(15, true, 'Please change your vehicle');\n * client.on(ERLCEvents.vehicleAdd, banVehicles([Vehicles.BUGATTI_VEYRON], punishment))\n * ```\n *\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -633,7 +1388,7 @@
         {
           "kind": "Function",
           "canonicalReference": "@erlcjs/presets!welcomePlayer:function(1)",
-          "docComment": "/**\n * Welcomes the player on join.\n *\n * @param message - Optional custom message to send to player.\n *\n * @returns Callback function to pass into client event.\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.playerJoin, welcomePlayer())\n * ```\n *\n */\n",
+          "docComment": "/**\n * Welcomes the player on join.\n *\n * @param message - Optional custom message to send to player.\n *\n * @returns Callback function to pass into client event.\n *\n * @example\n * ```typescript\n * client.on(ERLCEvents.playerJoin, welcomePlayer())\n * ```\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
