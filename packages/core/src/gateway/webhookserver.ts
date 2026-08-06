@@ -71,6 +71,13 @@ export class WebhookServer {
                         return res.end('Missing verification headers or public key config');
                     }
 
+                    const timestampSeconds = Number(timestamp);
+                    const tolerance = this.client.options.webhook?.timestampTolerance ?? 5;
+                    if (!Number.isFinite(timestampSeconds) || Math.abs(Date.now() / 1000 - timestampSeconds) > tolerance) {
+                        res.writeHead(401, { 'Content-Type': 'text/plain' });
+                        return res.end('Invalid Signature');
+                    }
+
                     try {
                         const timestampBuffer = Buffer.from(timestamp, 'utf-8');
                         const messageBuffer = Buffer.concat([timestampBuffer, rawBody]);

@@ -35,6 +35,11 @@ export interface ClientOptions {
          * The URL path for incoming webhooks.
          */
         path?: string;
+        /**
+         * Maximum age in seconds a signed webhook may be before it is rejected
+         * as a replay. Defaults to 5.
+         */
+        timestampTolerance?: number;
     };
     /**
      * Configuration to poll the ER:LC API endpoints periodically.
