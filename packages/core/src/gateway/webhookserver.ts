@@ -39,7 +39,7 @@ function parseArgs(input: string): string[] {
 
 /**
  * Webhook Server for handling real-time gateway events pushed by ER:LC for all managed servers.
- * Incoming events are routed to the matching server by their `origin` field.
+ * Incoming events are routed to the matching server by the top-level `payload.server` field.
  * @public
  */
 export class WebhookServer {
@@ -127,11 +127,11 @@ export class WebhookServer {
      * @param payload - Raw JSON payload received.
      */
     private async handleGatewayEvent(payload: any) {
+        const server = this.resolveServer(payload.server);
+        if (!server) return;
+
         const events = payload.events;
         for (const event of events) {
-            const server = this.resolveServer(event.origin);
-            if (!server) continue;
-
             if (event.event === 'WebhookProbe') {
                 this.client.emit(ERLCEvents.webhookProbe, server);
             } else if (event.event === 'EmergencyCallStarted') {
@@ -160,12 +160,12 @@ export class WebhookServer {
     }
 
     /**
-     * Resolves a server by the webhook event's origin field.
+     * Resolves a server by the webhook payload's server field.
      */
-    private resolveServer(origin: string | number): Server | undefined {
-        const server = this.client.servers.resolve(origin);
+    private resolveServer(serverId: string): Server | undefined {
+        const server = this.client.servers.resolve(serverId);
         if (!server) {
-            this.client._emitError(new ServerNotConfiguredError(String(origin)));
+            this.client._emitError(new ServerNotConfiguredError(String(serverId)));
             return undefined;
         }
         return server;
